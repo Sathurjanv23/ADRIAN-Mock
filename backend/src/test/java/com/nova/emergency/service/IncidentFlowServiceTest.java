@@ -41,6 +41,9 @@ class IncidentFlowServiceTest {
     @Mock
     private AuditLogRepository auditLogRepository;
 
+    @Mock
+    private ReliefService reliefService;
+
     @InjectMocks
     private IncidentService incidentService;
 

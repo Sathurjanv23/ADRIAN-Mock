@@ -98,9 +98,9 @@ export default function CitizenOperationsCatchAll() {
             <ShieldAlert className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" />
             <div>
               <span className="font-bold text-orange-300 block">Direct Emergency Filing Mode</span>
-              <p className="text-nova-text-dim text-[11px] mt-0.5 leading-relaxed">
+              <p className="text-em-text-dim text-[11px] mt-0.5 leading-relaxed">
                 Emergency reporting is open to all citizens without signing in. To access the full Citizen Portal (view dashboard, track report progress, and receive live updates), please{' '}
-                <Link href="/login?portal=citizen" className="text-nova-cyan underline font-semibold">
+                <Link href="/login?portal=citizen" className="text-er-blue underline font-semibold">
                   sign in to Citizen Portal
                 </Link>.
               </p>
@@ -111,13 +111,13 @@ export default function CitizenOperationsCatchAll() {
           <AlertTriangle className="w-6 h-6 text-red-400" />
           <h2 className="text-lg font-bold text-nova-text">{t('heading.distress_form')}</h2>
         </div>
-        <form onSubmit={handleReportSubmit} className="nova-card border border-nova-border rounded-xl p-5 space-y-4">
+        <form onSubmit={handleReportSubmit} className="em-card border border-em-border rounded-xl p-5 space-y-4">
           <div>
-            <label className="block text-xs font-bold text-nova-text-muted uppercase tracking-wider mb-1.5">Emergency Type</label>
+            <label className="block text-xs font-bold text-em-text-muted uppercase tracking-wider mb-1.5">Emergency Type</label>
             <select
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="w-full bg-nova-surface border border-nova-border rounded-xl px-3 py-2.5 text-sm text-nova-text focus:outline-none focus:border-nova-cyan/40"
+              className="w-full bg-white border border-em-border rounded-xl px-3 py-2.5 text-sm text-nova-text focus:outline-none focus:border-er-blue/40"
             >
               <option value="flood">Flood / Rising Water</option>
               <option value="landslide">Landslide / Mudflow</option>
@@ -129,41 +129,41 @@ export default function CitizenOperationsCatchAll() {
             </select>
           </div>
           <div>
-            <label className="block text-xs font-bold text-nova-text-muted uppercase tracking-wider mb-1.5">Short Title</label>
+            <label className="block text-xs font-bold text-em-text-muted uppercase tracking-wider mb-1.5">Short Title</label>
             <input
               type="text"
               placeholder="e.g. Water flooded into first floor of residence"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-nova-surface border border-nova-border rounded-xl px-3 py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/40"
+              className="w-full bg-white border border-em-border rounded-xl px-3 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/40"
               required
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-nova-text-muted uppercase tracking-wider mb-1.5">Full Details</label>
+            <label className="block text-xs font-bold text-em-text-muted uppercase tracking-wider mb-1.5">Full Details</label>
             <textarea
               rows={4}
               placeholder="Provide details about trapped people, medical needs, or direct hazards..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full bg-nova-surface border border-nova-border rounded-xl px-3 py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/40"
+              className="w-full bg-white border border-em-border rounded-xl px-3 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/40"
               required
             />
           </div>
           <div>
-            <label className="block text-xs font-bold text-nova-text-muted uppercase tracking-wider mb-1.5">Location Address</label>
+            <label className="block text-xs font-bold text-em-text-muted uppercase tracking-wider mb-1.5">Location Address</label>
             <input
               type="text"
               placeholder="Provide exact street address, house number or landmark..."
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              className="w-full bg-nova-surface border border-nova-border rounded-xl px-3 py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/40"
+              className="w-full bg-white border border-em-border rounded-xl px-3 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/40"
               required
             />
           </div>
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-nova-text-muted uppercase tracking-wider">Contact Phone</label>
+              <label className="block text-xs font-bold text-em-text-muted uppercase tracking-wider">Contact Phone</label>
               {phone.trim() && (
                 <span className={cn(
                   'text-[10px] font-medium font-mono px-1.5 py-0.2 rounded',
@@ -179,8 +179,8 @@ export default function CitizenOperationsCatchAll() {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               className={cn(
-                "w-full bg-nova-surface border rounded-xl px-3 py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none transition-colors",
-                phone.trim() && validatePhone(phone) ? "border-red-500/60 focus:border-red-500" : "border-nova-border focus:border-nova-cyan/40"
+                "w-full bg-white border rounded-xl px-3 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none transition-colors",
+                phone.trim() && validatePhone(phone) ? "border-red-500/60 focus:border-red-500" : "border-em-border focus:border-er-blue/40"
               )}
             />
             {phone.trim() && validatePhone(phone) && (
@@ -206,29 +206,29 @@ export default function CitizenOperationsCatchAll() {
     return (
       <div className="space-y-4 max-w-xl mx-auto">
         <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-          <ClipboardList className="w-5 h-5 text-nova-cyan" /> {t('heading.my_reports')}
+          <ClipboardList className="w-5 h-5 text-er-blue" /> {t('heading.my_reports')}
         </h2>
         {citizenReports.length > 0 ? (
           <div className="space-y-3">
             {citizenReports.map((rep) => (
-              <div key={rep.id} className="nova-card border border-nova-border rounded-xl p-4 flex flex-col gap-3">
+              <div key={rep.id} className="em-card border border-em-border rounded-xl p-4 flex flex-col gap-3">
                 <div className="flex justify-between items-start">
                   <div>
-                    <span className="text-[10px] font-mono text-nova-text-muted">{rep.id}</span>
+                    <span className="text-[10px] font-mono text-em-text-muted">{rep.id}</span>
                     <p className="text-sm font-bold text-nova-text mt-0.5">{rep.title}</p>
                   </div>
                   <span className={cn('text-[10px] font-bold px-2 py-0.5 rounded-full border uppercase', {
                     'bg-green-500/10 border-green-500/30 text-green-400': rep.status === 'resolved',
                     'bg-yellow-500/10 border-yellow-500/30 text-yellow-400': rep.status === 'assigned' || rep.status === 'en_route',
-                    'bg-nova-surface border-nova-border text-nova-text-muted': rep.status === 'reported',
+                    'bg-white border-em-border text-em-text-muted': rep.status === 'reported',
                   })}>
                     {rep.status}
                   </span>
                 </div>
-                <div className="flex justify-between pt-2 border-t border-nova-border/50 text-[10px] text-nova-text-muted">
+                <div className="flex justify-between pt-2 border-t border-em-border text-[10px] text-em-text-muted">
                   <span>Filed: {formatDateTime(rep.reportedAt).split(',')[1]}</span>
                   {rep.status !== 'reported' && (
-                    <button onClick={() => router.push(`/citizen/tracking/${rep.id}`)} className="text-nova-cyan hover:underline flex items-center gap-0.5">
+                    <button onClick={() => router.push(`/citizen/tracking/${rep.id}`)} className="text-er-blue hover:underline flex items-center gap-0.5">
                       Track Dispatch <ChevronRight className="w-3 h-3" />
                     </button>
                   )}
@@ -237,10 +237,10 @@ export default function CitizenOperationsCatchAll() {
             ))}
           </div>
         ) : (
-          <div className="nova-card border border-nova-border rounded-xl p-8 text-center">
-            <CheckCircle2 className="w-10 h-10 text-nova-text-muted mx-auto mb-3" />
+          <div className="em-card border border-em-border rounded-xl p-8 text-center">
+            <CheckCircle2 className="w-10 h-10 text-em-text-muted mx-auto mb-3" />
             <p className="text-base font-bold text-nova-text">No active reports</p>
-            <p className="text-xs text-nova-text-muted mt-1">You haven't submitted any emergency reports.</p>
+            <p className="text-xs text-em-text-muted mt-1">You haven't submitted any emergency reports.</p>
           </div>
         )}
       </div>
@@ -257,13 +257,13 @@ export default function CitizenOperationsCatchAll() {
     return (
       <div className="space-y-4 max-w-xl mx-auto">
         <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-          <ShieldAlert className="w-5 h-5 text-nova-cyan" /> {t('heading.safety_guidelines')}
+          <ShieldAlert className="w-5 h-5 text-er-blue" /> {t('heading.safety_guidelines')}
         </h2>
         <div className="space-y-3">
           {tips.map((tip, idx) => (
-            <div key={idx} className="nova-card border border-nova-border rounded-xl p-4 space-y-2">
-              <p className="text-xs font-bold text-nova-cyan">{tip.category}</p>
-              <p className="text-xs text-nova-text-dim leading-relaxed">{tip.text}</p>
+            <div key={idx} className="em-card border border-em-border rounded-xl p-4 space-y-2">
+              <p className="text-xs font-bold text-er-blue">{tip.category}</p>
+              <p className="text-xs text-em-text-dim leading-relaxed">{tip.text}</p>
             </div>
           ))}
         </div>
@@ -272,7 +272,7 @@ export default function CitizenOperationsCatchAll() {
   };
 
   return (
-    <div className="min-h-screen bg-nova-bg">
+    <div className="min-h-screen bg-em-bg">
       <TopNav role="citizen" />
       <DashboardShell role="citizen">
         <div className="p-6 space-y-6">

@@ -73,29 +73,29 @@ export default function HospitalOperationsCatchAll() {
           <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-red-400 animate-pulse" /> {t('heading.incoming_emergencies')}
           </h2>
-          <span className="text-xs text-nova-cyan font-mono bg-nova-cyan/10 border border-nova-cyan/20 px-2.5 py-1 rounded-full">
+          <span className="text-xs text-er-blue font-mono bg-er-blue-light border border-er-blue/20 px-2.5 py-1 rounded-full">
             {myHospital.name} ({myHospital.district})
           </span>
         </div>
 
         {cases.length === 0 ? (
-          <div className="nova-card border border-nova-border rounded-xl p-10 text-center text-nova-text-muted text-xs">
+          <div className="em-card border border-em-border rounded-xl p-10 text-center text-em-text-muted text-xs">
             No active incoming emergency casualties reported for {myHospital.name} at this time.
           </div>
         ) : (
           <div className="space-y-3">
             {cases.map((ic) => (
-              <div key={ic.id} className="nova-card border border-nova-border rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div key={ic.id} className="em-card border border-em-border rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                  <span className="text-[10px] font-mono text-nova-cyan">{ic.incidentId}</span>
+                  <span className="text-[10px] font-mono text-er-blue">{ic.incidentId}</span>
                   <p className="text-sm font-bold text-nova-text mt-0.5">{localize(ic.condition)}</p>
-                  <p className="text-xs text-nova-text-muted mt-1">Care Required: {ic.requiredCare.join(', ')}</p>
+                  <p className="text-xs text-em-text-muted mt-1">Care Required: {ic.requiredCare.join(', ')}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <SeverityBadge severity={ic.severity} size="sm" pulse={ic.severity === 'critical'} />
                   <div className="text-right">
-                    <p className="text-xs text-nova-text-muted">{t('common.eta')}</p>
-                    <p className="text-sm font-bold text-nova-high">{ic.eta} {t('common.min')}</p>
+                    <p className="text-xs text-em-text-muted">{t('common.eta')}</p>
+                    <p className="text-sm font-bold text-er-orange">{ic.eta} {t('common.min')}</p>
                   </div>
                 </div>
               </div>
@@ -134,22 +134,22 @@ export default function HospitalOperationsCatchAll() {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-            <ClipboardList className="w-5 h-5 text-nova-cyan" /> {t('heading.triage_queue')}
+            <ClipboardList className="w-5 h-5 text-er-blue" /> {t('heading.triage_queue')}
           </h2>
-          <span className="text-xs text-nova-cyan font-mono bg-nova-cyan/10 border border-nova-cyan/20 px-2.5 py-1 rounded-full">
+          <span className="text-xs text-er-blue font-mono bg-er-blue-light border border-er-blue/20 px-2.5 py-1 rounded-full">
             {myHospital.name} Queue
           </span>
         </div>
 
         {cases.length === 0 ? (
-          <div className="nova-card border border-nova-border rounded-xl p-10 text-center text-nova-text-muted text-xs">
+          <div className="em-card border border-em-border rounded-xl p-10 text-center text-em-text-muted text-xs">
             Triage queue is clear for {myHospital.name}. No high-priority casualties waiting.
           </div>
         ) : (
-          <div className="nova-card border border-nova-border rounded-xl overflow-hidden">
+          <div className="em-card border border-em-border rounded-xl overflow-hidden">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-nova-border bg-nova-surface/40 text-[10px] font-bold text-nova-text-muted uppercase tracking-wider">
+                <tr className="border-b border-em-border bg-white/40 text-[10px] font-bold text-em-text-muted uppercase tracking-wider">
                   <th className="p-4">Patient Code</th>
                   <th className="p-4">{t('stats.status')}</th>
                   <th className="p-4">Medical Condition</th>
@@ -158,11 +158,11 @@ export default function HospitalOperationsCatchAll() {
               </thead>
               <tbody className="divide-y divide-nova-border/50 text-sm text-nova-text">
                 {cases.map((ic, i) => (
-                  <tr key={ic.id} className="hover:bg-nova-surface/10 transition-colors">
-                    <td className="p-4 font-mono text-nova-cyan">PT-{1024 + i}</td>
+                  <tr key={ic.id} className="hover:bg-white/10 transition-colors">
+                    <td className="p-4 font-mono text-er-blue">PT-{1024 + i}</td>
                     <td className="p-4"><SeverityBadge severity={ic.severity} size="sm" /></td>
                     <td className="p-4">{localize(ic.condition)}</td>
-                    <td className="p-4 text-xs text-nova-high font-bold">Priority {i + 1}</td>
+                    <td className="p-4 text-xs text-er-orange font-bold">Priority {i + 1}</td>
                   </tr>
                 ))}
               </tbody>
@@ -178,32 +178,32 @@ export default function HospitalOperationsCatchAll() {
     return (
       <div className="space-y-4">
         <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-          <Bed className="w-5 h-5 text-nova-cyan" /> {t('heading.ward_capacity')}
+          <Bed className="w-5 h-5 text-er-blue" /> {t('heading.ward_capacity')}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="nova-card border border-nova-border rounded-xl p-5 space-y-4">
+          <div className="em-card border border-em-border rounded-xl p-5 space-y-4">
             <div>
               <p className="text-sm font-bold text-nova-text">{t('stats.available_beds')}</p>
-              <p className="text-xs text-nova-text-muted mt-0.5">Directly controls available emergency beds</p>
+              <p className="text-xs text-em-text-muted mt-0.5">Directly controls available emergency beds</p>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-3xl font-bold font-mono text-nova-text">{myHospital.availableBeds}</span>
               <div className="flex items-center gap-2">
-                <button onClick={() => updateBeds(-1)} className="w-10 h-10 bg-nova-surface border border-nova-border rounded-lg text-nova-text hover:bg-nova-surface2 transition-colors flex items-center justify-center"><Minus className="w-4 h-4" /></button>
-                <button onClick={() => updateBeds(1)} className="w-10 h-10 bg-nova-surface border border-nova-border rounded-lg text-nova-text hover:bg-nova-surface2 transition-colors flex items-center justify-center"><Plus className="w-4 h-4" /></button>
+                <button onClick={() => updateBeds(-1)} className="w-10 h-10 bg-white border border-em-border rounded-lg text-nova-text hover:bg-em-subtle transition-colors flex items-center justify-center"><Minus className="w-4 h-4" /></button>
+                <button onClick={() => updateBeds(1)} className="w-10 h-10 bg-white border border-em-border rounded-lg text-nova-text hover:bg-em-subtle transition-colors flex items-center justify-center"><Plus className="w-4 h-4" /></button>
               </div>
             </div>
           </div>
-          <div className="nova-card border border-nova-border rounded-xl p-5 space-y-4">
+          <div className="em-card border border-em-border rounded-xl p-5 space-y-4">
             <div>
               <p className="text-sm font-bold text-nova-text">{t('stats.icu_available')}</p>
-              <p className="text-xs text-nova-text-muted mt-0.5">Critical care patient ventilators count</p>
+              <p className="text-xs text-em-text-muted mt-0.5">Critical care patient ventilators count</p>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-3xl font-bold font-mono text-nova-text">{myHospital.icuAvailable}</span>
               <div className="flex items-center gap-2">
-                <button onClick={() => updateICU(-1)} className="w-10 h-10 bg-nova-surface border border-nova-border rounded-lg text-nova-text hover:bg-nova-surface2 transition-colors flex items-center justify-center"><Minus className="w-4 h-4" /></button>
-                <button onClick={() => updateICU(1)} className="w-10 h-10 bg-nova-surface border border-nova-border rounded-lg text-nova-text hover:bg-nova-surface2 transition-colors flex items-center justify-center"><Plus className="w-4 h-4" /></button>
+                <button onClick={() => updateICU(-1)} className="w-10 h-10 bg-white border border-em-border rounded-lg text-nova-text hover:bg-em-subtle transition-colors flex items-center justify-center"><Minus className="w-4 h-4" /></button>
+                <button onClick={() => updateICU(1)} className="w-10 h-10 bg-white border border-em-border rounded-lg text-nova-text hover:bg-em-subtle transition-colors flex items-center justify-center"><Plus className="w-4 h-4" /></button>
               </div>
             </div>
           </div>
@@ -234,9 +234,9 @@ export default function HospitalOperationsCatchAll() {
       <div className="space-y-5">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-            <Truck className="w-5 h-5 text-nova-cyan" /> {t('heading.ambulance_fleet')}
+            <Truck className="w-5 h-5 text-er-blue" /> {t('heading.ambulance_fleet')}
           </h2>
-          <div className="text-xs text-nova-text-muted">
+          <div className="text-xs text-em-text-muted">
             {myHospital?.name}
           </div>
         </div>
@@ -244,27 +244,27 @@ export default function HospitalOperationsCatchAll() {
         {/* Fleet Summary Stats */}
         {ambulances.length > 0 && (
           <div className="grid grid-cols-3 gap-3">
-            <div className="nova-card border border-green-500/20 rounded-xl p-3 text-center bg-green-500/5">
+            <div className="em-card border border-green-500/20 rounded-xl p-3 text-center bg-green-500/5">
               <p className="text-2xl font-bold font-mono text-green-400">{available}</p>
-              <p className="text-[10px] text-nova-text-muted uppercase tracking-wider mt-0.5">Available</p>
+              <p className="text-[10px] text-em-text-muted uppercase tracking-wider mt-0.5">Available</p>
             </div>
-            <div className="nova-card border border-orange-500/20 rounded-xl p-3 text-center bg-orange-500/5">
+            <div className="em-card border border-orange-500/20 rounded-xl p-3 text-center bg-orange-500/5">
               <p className="text-2xl font-bold font-mono text-orange-400">{dispatched}</p>
-              <p className="text-[10px] text-nova-text-muted uppercase tracking-wider mt-0.5">Dispatched</p>
+              <p className="text-[10px] text-em-text-muted uppercase tracking-wider mt-0.5">Dispatched</p>
             </div>
-            <div className="nova-card border border-nova-border rounded-xl p-3 text-center">
-              <p className="text-2xl font-bold font-mono text-nova-text-muted">{maintenance}</p>
-              <p className="text-[10px] text-nova-text-muted uppercase tracking-wider mt-0.5">Maintenance</p>
+            <div className="em-card border border-em-border rounded-xl p-3 text-center">
+              <p className="text-2xl font-bold font-mono text-em-text-muted">{maintenance}</p>
+              <p className="text-[10px] text-em-text-muted uppercase tracking-wider mt-0.5">Maintenance</p>
             </div>
           </div>
         )}
 
         {/* Fleet Grid */}
         {ambulances.length === 0 ? (
-          <div className="nova-card border border-nova-border rounded-xl p-10 flex flex-col items-center gap-3 text-center">
-            <Truck className="w-12 h-12 text-nova-text-muted opacity-40" />
-            <p className="text-sm font-semibold text-nova-text-dim">No Ambulances in Fleet</p>
-            <p className="text-xs text-nova-text-muted max-w-xs">
+          <div className="em-card border border-em-border rounded-xl p-10 flex flex-col items-center gap-3 text-center">
+            <Truck className="w-12 h-12 text-em-text-muted opacity-40" />
+            <p className="text-sm font-semibold text-em-text-dim">No Ambulances in Fleet</p>
+            <p className="text-xs text-em-text-muted max-w-xs">
               This hospital has no registered ambulance units. Contact the system administrator to add vehicles to the fleet.
             </p>
           </div>
@@ -273,7 +273,7 @@ export default function HospitalOperationsCatchAll() {
             {ambulances.map((amb) => (
               <motion.div
                 key={amb.id}
-                className="nova-card border border-nova-border rounded-xl p-4 flex justify-between items-center gap-3 hover:border-nova-border2 transition-all"
+                className="em-card border border-em-border rounded-xl p-4 flex justify-between items-center gap-3 hover:border-em-border-strong transition-all"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
               >
@@ -281,30 +281,30 @@ export default function HospitalOperationsCatchAll() {
                   <div className={cn('w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0', {
                     'bg-green-500/10': amb.status === 'available',
                     'bg-orange-500/10': amb.status === 'dispatched',
-                    'bg-nova-surface': amb.status === 'maintenance',
+                    'bg-white': amb.status === 'maintenance',
                   })}>
                     <Truck className={cn('w-4 h-4', {
                       'text-green-400': amb.status === 'available',
                       'text-orange-400': amb.status === 'dispatched',
-                      'text-nova-text-muted': amb.status === 'maintenance',
+                      'text-em-text-muted': amb.status === 'maintenance',
                     })} />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-nova-text font-mono">{amb.code}</p>
                     {amb.assignedCase ? (
-                      <p className="text-[10px] text-nova-cyan mt-0.5">→ Case: {amb.assignedCase}</p>
+                      <p className="text-[10px] text-er-blue mt-0.5">→ Case: {amb.assignedCase}</p>
                     ) : (
-                      <p className="text-[10px] text-nova-text-muted mt-0.5">GPS tracking active</p>
+                      <p className="text-[10px] text-em-text-muted mt-0.5">GPS tracking active</p>
                     )}
                     {amb.eta != null && (
-                      <p className="text-[10px] text-nova-high mt-0.5 font-semibold">ETA: {amb.eta} min</p>
+                      <p className="text-[10px] text-er-orange mt-0.5 font-semibold">ETA: {amb.eta} min</p>
                     )}
                   </div>
                 </div>
                 <span className={cn('text-[9px] font-bold px-2.5 py-1 rounded-full border uppercase tracking-wide flex-shrink-0', {
                   'bg-green-500/10 border-green-500/30 text-green-400': amb.status === 'available',
                   'bg-orange-500/10 border-orange-500/30 text-orange-400': amb.status === 'dispatched',
-                  'bg-nova-surface border-nova-border text-nova-text-muted': amb.status === 'maintenance',
+                  'bg-white border-em-border text-em-text-muted': amb.status === 'maintenance',
                 })}>
                   {amb.status === 'available' ? 'Available' : amb.status === 'dispatched' ? 'Dispatched' : 'Maintenance'}
                 </span>
@@ -317,31 +317,31 @@ export default function HospitalOperationsCatchAll() {
   };
 
   return (
-    <div className="min-h-screen bg-nova-bg">
+    <div className="min-h-screen bg-em-bg">
       <TopNav role="hospital" />
       <DashboardShell role="hospital">
         <div className="p-6 space-y-6">
           {/* Facility Selector Header Bar */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-nova-surface/40 p-3.5 rounded-2xl border border-nova-border">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white/40 p-3.5 rounded-2xl border border-em-border">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-nova-cyan/10 border border-nova-cyan/30 text-nova-cyan uppercase font-mono">
+              <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-er-blue-light border border-er-blue/30 text-er-blue uppercase font-mono">
                 {myHospital.type} Facility
               </span>
               <span className="text-xs font-bold text-nova-text">{localize(myHospital.name)}</span>
-              <span className="text-xs text-nova-text-muted">• {myHospital.district}</span>
+              <span className="text-xs text-em-text-muted">• {myHospital.district}</span>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-xs text-nova-text-muted">Switch Facility:</span>
-              <div className="flex items-center gap-2 bg-nova-surface border border-nova-border rounded-xl px-3 py-1 text-xs text-nova-text">
-                <HeartPulse className="w-3.5 h-3.5 text-nova-cyan flex-shrink-0" />
+              <span className="text-xs text-em-text-muted">Switch Facility:</span>
+              <div className="flex items-center gap-2 bg-white border border-em-border rounded-xl px-3 py-1 text-xs text-nova-text">
+                <HeartPulse className="w-3.5 h-3.5 text-er-blue flex-shrink-0" />
                 <select
                   value={myHospital.id}
                   onChange={(e) => setSelectedHospitalId(e.target.value)}
                   className="bg-transparent text-nova-text font-bold focus:outline-none cursor-pointer pr-1"
                 >
                   {hospitals.map((h) => (
-                    <option key={h.id} value={h.id} className="bg-nova-surface text-nova-text">
+                    <option key={h.id} value={h.id} className="bg-white text-nova-text">
                       🏥 {h.name} ({h.district})
                     </option>
                   ))}

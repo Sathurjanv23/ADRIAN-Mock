@@ -50,10 +50,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/auth/oauth2/**").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
-                        // Public citizen emergency report submission (no auth required for anonymous
-                        // SOS)
+                        // Public citizen emergency report submission & tracking (no auth required for anonymous SOS)
                         .requestMatchers(HttpMethod.POST, "/api/incidents/report", "/api/incidents").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/incidents/media/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/incidents/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/relief-missions/by-incident/**", "/api/relief-missions/stats").permitAll()
                         // Admin endpoints strictly require ROLE_ADMIN
                         .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
                         // Rescue-team-specific action endpoints
@@ -67,10 +68,12 @@ public class SecurityConfig {
                         .hasAnyAuthority("ROLE_RESCUE_TEAM", "ROLE_ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/rescue-teams/assign")
                         .hasAnyAuthority("ROLE_OFFICER", "ROLE_ADMIN")
-                        // Citizens + all authenticated roles can READ incidents and alerts
-                        // (citizens need this to track their own emergency status)
-                        .requestMatchers(HttpMethod.GET, "/api/incidents/**").hasAnyAuthority(
-                                "ROLE_CITIZEN", "ROLE_OFFICER", "ROLE_ADMIN", "ROLE_RESCUE_TEAM", "ROLE_HOSPITAL")
+                        // Hospital admit and capacity updates
+                        .requestMatchers(HttpMethod.POST, "/api/hospitals/*/admit", "/api/hospitals/*/ambulances/dispatch")
+                        .hasAnyAuthority("ROLE_HOSPITAL", "ROLE_OFFICER", "ROLE_ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/hospitals/*/capacity")
+                        .hasAnyAuthority("ROLE_HOSPITAL", "ROLE_OFFICER", "ROLE_ADMIN")
+                        // Alerts read access
                         .requestMatchers(HttpMethod.GET, "/api/alerts/**").hasAnyAuthority(
                                 "ROLE_CITIZEN", "ROLE_OFFICER", "ROLE_ADMIN", "ROLE_RESCUE_TEAM", "ROLE_HOSPITAL")
                         // Other incident mutations require authenticated operational roles

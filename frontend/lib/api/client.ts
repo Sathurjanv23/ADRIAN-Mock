@@ -202,6 +202,10 @@ export const hospitalsApi = {
     apiFetch(`/hospitals/${hospitalId}/ambulances/dispatch`, {
       method: 'POST', body: JSON.stringify({ incidentId })
     }),
+  admitPatient: (hospitalId: string, data: { patientCount?: number; requiresIcu?: boolean; incomingCaseId?: string }) =>
+    apiFetch(`/hospitals/${hospitalId}/admit`, {
+      method: 'POST', body: JSON.stringify(data)
+    }),
 };
 
 // ─── Resources API ────────────────────────────────────────────
@@ -305,6 +309,12 @@ export const reliefMissionsApi = {
 
   getById: (id: string) =>
     apiFetch(`/relief-missions/${id}`),
+
+  getByIncidentId: (incidentId: string) =>
+    apiFetch(`/relief-missions/by-incident/${incidentId}`),
+
+  getStats: () =>
+    apiFetch('/relief-missions/stats'),
 
   create: (data: {
     reliefRequestId: string;

@@ -87,30 +87,30 @@ export default function ReliefMissionsPage() {
   return (
     <AuthGuard allowedRoles={['officer', 'admin']}>
       <DashboardShell role="officer">
-        <TopNav title="Relief Missions" subtitle="Track and manage all relief deliveries" />
+        <TopNav role="officer" title="Relief Missions" subtitle="Track and manage all relief deliveries" />
 
         <div className="p-6 space-y-6">
           {/* Header */}
           <div className="flex items-center justify-between">
-            <Link href="/relief" className="flex items-center gap-2 text-nova-text-dim hover:text-nova-text text-xs transition-colors">
+            <Link href="/relief" className="flex items-center gap-2 text-em-text-dim hover:text-em-text text-xs transition-colors">
               <ArrowLeft className="w-3.5 h-3.5" /> Back to Relief
             </Link>
-            <button onClick={handleRefresh} className="p-2 rounded-lg nova-card border border-nova-border hover:border-orange-500/50 transition-colors">
-              <RefreshCw className={cn('w-4 h-4 text-nova-text-dim', refreshing && 'animate-spin')} />
+            <button onClick={handleRefresh} className="p-2 rounded-lg em-card border border-em-border hover:border-orange-500/50 transition-colors">
+              <RefreshCw className={cn('w-4 h-4 text-em-text-dim', refreshing && 'animate-spin')} />
             </button>
           </div>
 
           {/* Summary cards */}
           <div className="grid grid-cols-4 gap-3">
             {[
-              { label: 'Total', value: stats.total, color: 'text-nova-text' },
-              { label: 'Active', value: stats.active, color: 'text-orange-400' },
-              { label: 'Completed', value: stats.completed, color: 'text-emerald-400' },
-              { label: 'Cancelled', value: stats.cancelled, color: 'text-red-400' },
+              { label: 'Total', value: stats.total, color: 'text-em-text font-black' },
+              { label: 'Active', value: stats.active, color: 'text-er-orange font-black' },
+              { label: 'Completed', value: stats.completed, color: 'text-er-green font-black' },
+              { label: 'Cancelled', value: stats.cancelled, color: 'text-er-red font-black' },
             ].map(s => (
-              <div key={s.label} className="nova-card border border-nova-border rounded-xl p-3 text-center">
+              <div key={s.label} className="em-card border border-em-border rounded-xl p-3 text-center shadow-em-xs">
                 <p className={cn('text-2xl font-bold', s.color)}>{s.value}</p>
-                <p className="text-[10px] text-nova-text-dim">{s.label}</p>
+                <p className="text-[10px] text-em-text-muted font-bold uppercase tracking-wider mt-1">{s.label}</p>
               </div>
             ))}
           </div>
@@ -122,15 +122,15 @@ export default function ReliefMissionsPage() {
                 key={opt.value}
                 onClick={() => setFilter(opt.value)}
                 className={cn(
-                  'px-3 py-1.5 rounded-lg text-xs transition-all border',
+                  'px-3.5 py-1.5 rounded-xl text-xs transition-all border font-semibold shadow-xs',
                   filter === opt.value
-                    ? 'bg-orange-500/20 border-orange-500/40 text-orange-400'
-                    : 'bg-nova-surface border-nova-border text-nova-text-dim hover:text-nova-text'
+                    ? 'bg-orange-50 border-orange-300 text-orange-800 font-bold shadow-sm'
+                    : 'bg-white border-em-border text-em-text-dim hover:text-em-text hover:bg-em-subtle'
                 )}
               >
                 {opt.label}
                 {opt.value !== 'all' && (
-                  <span className="ml-1.5 text-[10px] opacity-70">
+                  <span className="ml-1.5 text-[10px] opacity-80">
                     ({opt.value === 'active'
                       ? stats.active
                       : missions.filter(m => m.status === opt.value).length})
@@ -144,13 +144,13 @@ export default function ReliefMissionsPage() {
           {loading ? (
             <div className="space-y-3">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="nova-card border border-nova-border rounded-xl p-5 h-32 animate-pulse" />
+                <div key={i} className="em-card border border-em-border rounded-xl p-5 h-32 animate-pulse" />
               ))}
             </div>
           ) : filteredMissions.length === 0 ? (
-            <div className="nova-card border border-nova-border rounded-xl p-12 text-center">
-              <Truck className="w-12 h-12 text-nova-text-dim mx-auto mb-3 opacity-40" />
-              <p className="text-sm text-nova-text-dim">No missions found for this filter</p>
+            <div className="em-card border border-em-border rounded-xl p-12 text-center">
+              <Truck className="w-12 h-12 text-em-text-dim mx-auto mb-3 opacity-40" />
+              <p className="text-sm text-em-text-dim">No missions found for this filter</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -163,7 +163,7 @@ export default function ReliefMissionsPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.04 }}
-                    className="nova-card border border-nova-border rounded-xl p-5"
+                    className="em-card border border-em-border rounded-xl p-5"
                   >
                     <div className="flex items-start justify-between gap-4">
                       {/* Left: Mission info */}
@@ -180,28 +180,28 @@ export default function ReliefMissionsPage() {
                           </div>
 
                           <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs mb-2">
-                            <div className="flex items-center gap-1 text-nova-text-dim">
+                            <div className="flex items-center gap-1 text-em-text-dim">
                               <Package className="w-3 h-3 text-orange-400" />
                               {mission.meals.toLocaleString()} meals
                             </div>
-                            <div className="flex items-center gap-1 text-nova-text-dim">
+                            <div className="flex items-center gap-1 text-em-text-dim">
                               <Clock className="w-3 h-3 text-blue-400" />
                               ETA: {mission.eta > 0 ? `${mission.eta} min` : 'Arrived'}
                             </div>
                             {mission.driverName && (
-                              <div className="flex items-center gap-1 text-nova-text-dim">
+                              <div className="flex items-center gap-1 text-em-text-dim">
                                 <Phone className="w-3 h-3" />
                                 {mission.driverName}
                               </div>
                             )}
-                            <div className="flex items-center gap-1 text-nova-text-dim">
+                            <div className="flex items-center gap-1 text-em-text-dim">
                               <Package className="w-3 h-3 text-blue-400" />
                               {mission.waterBottles.toLocaleString()} water
                             </div>
                           </div>
 
                           {/* Route */}
-                          <div className="flex items-center gap-2 text-[10px] text-nova-text-dim">
+                          <div className="flex items-center gap-2 text-[10px] text-em-text-dim">
                             <MapPin className="w-2.5 h-2.5 text-green-400" />
                             {mission.pickupLocation?.district || mission.foodSourceName || 'Source'}
                             <span className="text-nova-border">→</span>

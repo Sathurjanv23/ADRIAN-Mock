@@ -279,7 +279,7 @@ export default function SOSPage() {
   };
 
   return (
-    <div className="min-h-screen bg-nova-bg text-nova-text">
+    <div className="min-h-screen bg-em-bg text-nova-text">
       <TopNav role="citizen" showTicker={false} />
       <DashboardShell role="citizen">
         <div className="max-w-xl mx-auto p-4 space-y-6">
@@ -290,14 +290,14 @@ export default function SOSPage() {
               <span className="w-2 h-2 rounded-full bg-orange-400 animate-ping" />
               SIMULATION MODE ACTIVE
             </div>
-            <span className="text-[11px] text-nova-text-muted">Internal portal dispatch only</span>
+            <span className="text-[11px] text-em-text-muted">Internal portal dispatch only</span>
           </div>
 
           {/* Guest Emergency Mode Banner */}
           {(!currentUser || currentUser.role !== 'citizen') && (
-            <div className="p-4 rounded-xl bg-nova-surface2 border border-nova-cyan/30 text-xs flex items-start justify-between gap-3 shadow-sm">
+            <div className="p-4 rounded-xl bg-em-subtle border border-er-blue/30 text-xs flex items-start justify-between gap-3 shadow-sm">
               <div className="flex items-start gap-3">
-                <ShieldAlert className="w-5 h-5 text-nova-cyan flex-shrink-0 mt-0.5" />
+                <ShieldAlert className="w-5 h-5 text-er-blue flex-shrink-0 mt-0.5" />
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-bold text-nova-text text-sm">Emergency Reporting Mode</span>
@@ -305,14 +305,14 @@ export default function SOSPage() {
                       Open to All
                     </span>
                   </div>
-                  <p className="text-nova-text-dim text-xs mt-1 leading-relaxed">
+                  <p className="text-em-text-dim text-xs mt-1 leading-relaxed">
                     Emergency reporting is open to all citizens without signing in. To access full Citizen Portal features (personal dashboard, track all submitted reports, and safety resources), please sign in.
                   </p>
                 </div>
               </div>
               <Link
                 href="/login?portal=citizen"
-                className="flex items-center gap-1 text-xs font-bold text-nova-cyan hover:text-nova-cyan-dim bg-nova-cyan/10 border border-nova-cyan/30 px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors flex-shrink-0"
+                className="flex items-center gap-1 text-xs font-bold text-er-blue hover:text-er-blue-dim bg-er-blue-light border border-er-blue/30 px-3 py-1.5 rounded-lg whitespace-nowrap transition-colors flex-shrink-0"
               >
                 Sign In <ChevronRight className="w-3.5 h-3.5" />
               </Link>
@@ -349,18 +349,18 @@ export default function SOSPage() {
                   </div>
                 </motion.div>
                 <h1 className="text-2xl font-black text-nova-text mt-4">{t.title}</h1>
-                <p className="text-xs text-nova-text-dim mt-1">AI-Powered Rapid Emergency Response & Multi-Agency Dispatch</p>
+                <p className="text-xs text-em-text-dim mt-1">AI-Powered Rapid Emergency Response & Multi-Agency Dispatch</p>
               </div>
 
               {/* Silent SOS Toggle */}
-              <div className="p-3.5 rounded-2xl bg-nova-surface border border-nova-border flex items-center justify-between">
+              <div className="p-3.5 rounded-2xl bg-white border border-em-border flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={cn('p-2 rounded-xl transition-colors', isSilentSos ? 'bg-red-500/20 text-red-400' : 'bg-nova-surface2 text-nova-text-muted')}>
+                  <div className={cn('p-2 rounded-xl transition-colors', isSilentSos ? 'bg-red-500/20 text-red-400' : 'bg-em-subtle text-em-text-muted')}>
                     <ShieldAlert className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="text-sm font-bold text-nova-text">Silent SOS (I cannot speak safely)</p>
-                    <p className="text-[11px] text-nova-text-muted">Direct high-priority stealth alert without audio callbacks</p>
+                    <p className="text-[11px] text-em-text-muted">Direct high-priority stealth alert without audio callbacks</p>
                   </div>
                 </div>
                 <button
@@ -384,7 +384,7 @@ export default function SOSPage() {
 
               {/* Emergency Category Selection */}
               <div>
-                <label className="text-xs font-bold text-nova-text-muted uppercase tracking-wider block mb-2.5">
+                <label className="text-xs font-bold text-em-text-muted uppercase tracking-wider block mb-2.5">
                   1. Select Emergency Type
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -396,8 +396,8 @@ export default function SOSPage() {
                       className={cn(
                         'flex items-center gap-2.5 p-3 rounded-xl border text-left transition-all',
                         selectedType === type
-                          ? 'border-nova-cyan bg-nova-cyan/10 text-nova-text shadow-sm'
-                          : 'border-nova-border bg-nova-surface/60 text-nova-text-dim hover:border-nova-border2 hover:text-nova-text'
+                          ? 'border-nova-cyan bg-er-blue-light text-nova-text shadow-sm'
+                          : 'border-em-border bg-white/60 text-em-text-dim hover:border-em-border-strong hover:text-nova-text'
                       )}
                     >
                       <span className="text-xl flex-shrink-0">{icon}</span>
@@ -409,7 +409,7 @@ export default function SOSPage() {
 
               {/* Hardware Evidence Capture (Voice, Camera, Location) */}
               <div>
-                <label className="text-xs font-bold text-nova-text-muted uppercase tracking-wider block mb-2.5">
+                <label className="text-xs font-bold text-em-text-muted uppercase tracking-wider block mb-2.5">
                   2. Attach Real-Time Evidence (Optional but Recommended)
                 </label>
                 <div className="grid grid-cols-3 gap-3">
@@ -422,7 +422,7 @@ export default function SOSPage() {
                         ? 'border-red-500 bg-red-500/10 shadow-lg'
                         : audio.audioBlob
                         ? 'border-green-500/60 bg-green-500/10'
-                        : 'border-nova-border bg-nova-surface hover:border-nova-border2'
+                        : 'border-em-border bg-white hover:border-em-border-strong'
                     )}
                   >
                     <div className="flex flex-col items-center">
@@ -435,7 +435,7 @@ export default function SOSPage() {
                           <Mic className="w-5 h-5" />
                         </motion.div>
                       ) : (
-                        <Mic className={cn('w-7 h-7 mb-1.5', audio.audioBlob ? 'text-green-400' : 'text-nova-cyan')} />
+                        <Mic className={cn('w-7 h-7 mb-1.5', audio.audioBlob ? 'text-green-400' : 'text-er-blue')} />
                       )}
                       <span className="text-xs font-bold">
                         {audio.isRecording ? audio.formattedTime : audio.audioBlob ? 'Voice Saved' : 'Voice'}
@@ -456,7 +456,7 @@ export default function SOSPage() {
                           type="button"
                           onClick={audio.resetRecording}
                           title="Record Again"
-                          className="p-1 text-nova-text-muted hover:text-red-400 rounded-lg hover:bg-nova-surface2"
+                          className="p-1 text-em-text-muted hover:text-red-400 rounded-lg hover:bg-em-subtle"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -464,7 +464,7 @@ export default function SOSPage() {
                           type="button"
                           onClick={audio.startRecording}
                           title="Re-record"
-                          className="p-1 text-nova-cyan hover:underline text-[10px] font-semibold"
+                          className="p-1 text-er-blue hover:underline text-[10px] font-semibold"
                         >
                           Retake
                         </button>
@@ -473,7 +473,7 @@ export default function SOSPage() {
                       <button
                         type="button"
                         onClick={audio.startRecording}
-                        className="mt-2 w-full py-1 bg-nova-surface2 hover:bg-nova-cyan/20 text-nova-cyan border border-nova-cyan/30 rounded-lg text-[11px] font-bold"
+                        className="mt-2 w-full py-1 bg-em-subtle hover:bg-er-blue-light text-er-blue border border-er-blue/30 rounded-lg text-[11px] font-bold"
                       >
                         Record
                       </button>
@@ -486,7 +486,7 @@ export default function SOSPage() {
                       'p-3.5 rounded-2xl border flex flex-col items-center justify-between text-center transition-all min-h-[120px]',
                       camera.photoBlob
                         ? 'border-green-500/60 bg-green-500/10'
-                        : 'border-nova-border bg-nova-surface hover:border-nova-border2'
+                        : 'border-em-border bg-white hover:border-em-border-strong'
                     )}
                   >
                     <div className="flex flex-col items-center">
@@ -502,7 +502,7 @@ export default function SOSPage() {
                           type="button"
                           onClick={camera.removePhoto}
                           title="Remove Photo"
-                          className="p-1 text-nova-text-muted hover:text-red-400 rounded-lg hover:bg-nova-surface2"
+                          className="p-1 text-em-text-muted hover:text-red-400 rounded-lg hover:bg-em-subtle"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
@@ -518,7 +518,7 @@ export default function SOSPage() {
                       <button
                         type="button"
                         onClick={camera.openCamera}
-                        className="mt-2 w-full py-1 bg-nova-surface2 hover:bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-lg text-[11px] font-bold"
+                        className="mt-2 w-full py-1 bg-em-subtle hover:bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-lg text-[11px] font-bold"
                       >
                         Open Cam
                       </button>
@@ -530,15 +530,15 @@ export default function SOSPage() {
                     className={cn(
                       'p-3.5 rounded-2xl border flex flex-col items-center justify-between text-center transition-all min-h-[120px]',
                       geo.isDetecting
-                        ? 'border-nova-cyan bg-nova-cyan/10'
+                        ? 'border-nova-cyan bg-er-blue-light'
                         : geo.isDetected
                         ? 'border-green-500/60 bg-green-500/10'
-                        : 'border-nova-border bg-nova-surface hover:border-nova-border2'
+                        : 'border-em-border bg-white hover:border-em-border-strong'
                     )}
                   >
                     <div className="flex flex-col items-center">
                       {geo.isDetecting ? (
-                        <Loader2 className="w-7 h-7 mb-1.5 text-nova-cyan animate-spin" />
+                        <Loader2 className="w-7 h-7 mb-1.5 text-er-blue animate-spin" />
                       ) : (
                         <MapPin className={cn('w-7 h-7 mb-1.5', geo.isDetected ? 'text-green-400' : 'text-orange-400')} />
                       )}
@@ -561,7 +561,7 @@ export default function SOSPage() {
                         type="button"
                         onClick={geo.detectLocation}
                         disabled={geo.isDetecting}
-                        className="mt-2 w-full py-1 bg-nova-surface2 hover:bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-lg text-[11px] font-bold"
+                        className="mt-2 w-full py-1 bg-em-subtle hover:bg-orange-500/20 text-orange-400 border border-orange-500/30 rounded-lg text-[11px] font-bold"
                       >
                         Get GPS
                       </button>
@@ -571,19 +571,19 @@ export default function SOSPage() {
 
                 {/* Evidence Previews (Audio Player & Captured Photo Thumbnail) */}
                 {(audio.audioUrl || camera.photoUrl || geo.isDetected) && (
-                  <div className="mt-3 space-y-2.5 p-3.5 rounded-2xl bg-nova-surface border border-nova-border">
+                  <div className="mt-3 space-y-2.5 p-3.5 rounded-2xl bg-white border border-em-border">
                     {/* Audio Player */}
                     {audio.audioUrl && (
                       <div className="space-y-1">
                         <div className="flex items-center justify-between text-xs">
                           <span className="font-semibold text-nova-text flex items-center gap-1.5">
-                            <Volume2 className="w-3.5 h-3.5 text-nova-cyan" /> Voice Recording Preview
+                            <Volume2 className="w-3.5 h-3.5 text-er-blue" /> Voice Recording Preview
                           </span>
-                          <span className="text-nova-text-muted font-mono">{audio.formattedTime}</span>
+                          <span className="text-em-text-muted font-mono">{audio.formattedTime}</span>
                         </div>
                         <audio controls src={audio.audioUrl} className="w-full h-8 rounded-lg mt-1" />
                         {audio.transcript && (
-                          <p className="text-[11px] text-nova-text-dim italic bg-nova-surface2 p-2 rounded-lg mt-1">
+                          <p className="text-[11px] text-em-text-dim italic bg-em-subtle p-2 rounded-lg mt-1">
                             &quot;{audio.transcript}&quot;
                           </p>
                         )}
@@ -592,13 +592,13 @@ export default function SOSPage() {
 
                     {/* Photo Preview */}
                     {camera.photoUrl && (
-                      <div className="flex items-center gap-3 pt-2 border-t border-nova-border/60">
+                      <div className="flex items-center gap-3 pt-2 border-t border-em-border/60">
                         <div className="relative w-16 h-16 rounded-xl overflow-hidden border border-purple-500/40 flex-shrink-0">
                           <Image src={camera.photoUrl} alt="Emergency Evidence" fill unoptimized className="object-cover" />
                         </div>
                         <div className="flex-1 text-xs">
                           <p className="font-bold text-nova-text">Photo Attached</p>
-                          <p className="text-[11px] text-nova-text-muted">1 image file ready for authority triage</p>
+                          <p className="text-[11px] text-em-text-muted">1 image file ready for authority triage</p>
                         </div>
                         <button
                           type="button"
@@ -612,10 +612,10 @@ export default function SOSPage() {
 
                     {/* GPS Coordinates Badge */}
                     {geo.isDetected && geo.latitude && geo.longitude && (
-                      <div className="flex items-center justify-between pt-2 border-t border-nova-border/60 text-xs">
+                      <div className="flex items-center justify-between pt-2 border-t border-em-border/60 text-xs">
                         <div className="flex items-center gap-2">
                           <CheckCircle className="w-4 h-4 text-green-400 flex-shrink-0" />
-                          <span className="font-mono text-nova-text-dim">
+                          <span className="font-mono text-em-text-dim">
                             {geo.latitude.toFixed(5)}° N, {geo.longitude.toFixed(5)}° E (±{geo.accuracy}m)
                           </span>
                         </div>
@@ -624,7 +624,7 @@ export default function SOSPage() {
                             href={geo.mapsUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-1 text-nova-cyan hover:underline font-semibold"
+                            className="flex items-center gap-1 text-er-blue hover:underline font-semibold"
                           >
                             Open Maps <ExternalLink className="w-3 h-3" />
                           </a>
@@ -638,30 +638,30 @@ export default function SOSPage() {
               {/* Description & Manual Location */}
               <div className="space-y-4">
                 <div>
-                  <label className="text-xs font-bold text-nova-text-muted uppercase tracking-wider block mb-2">
+                  <label className="text-xs font-bold text-em-text-muted uppercase tracking-wider block mb-2">
                     3. Emergency Description
                   </label>
                   <textarea
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     rows={3}
-                    className="w-full bg-nova-surface border border-nova-border rounded-xl px-4 py-3 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/50 resize-none"
+                    className="w-full bg-white border border-em-border rounded-xl px-4 py-3 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/30 resize-none"
                     placeholder={t.placeholder}
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-nova-text-muted uppercase tracking-wider block mb-2">
+                  <label className="text-xs font-bold text-em-text-muted uppercase tracking-wider block mb-2">
                     Manual Address / Landmark (Fallback)
                   </label>
                   <div className="relative">
-                    <Navigation className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-nova-text-muted" />
+                    <Navigation className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-em-text-muted" />
                     <input
                       type="text"
                       value={geo.manualAddress}
                       onChange={(e) => geo.setManualAddress(e.target.value)}
                       placeholder="e.g. Near Kaduwela Bridge, Kelani River Bank, Colombo"
-                      className="w-full bg-nova-surface border border-nova-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/50"
+                      className="w-full bg-white border border-em-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/30"
                     />
                   </div>
                 </div>
@@ -669,18 +669,18 @@ export default function SOSPage() {
                 {/* Reporter Contact Info */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs font-medium text-nova-text-muted block mb-1">Your Name</label>
+                    <label className="text-xs font-medium text-em-text-muted block mb-1">Your Name</label>
                     <input
                       type="text"
                       value={reporterName}
                       onChange={(e) => setReporterName(e.target.value)}
                       placeholder="Amal Perera"
-                      className="w-full bg-nova-surface border border-nova-border rounded-xl px-3.5 py-2 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/50"
+                      className="w-full bg-white border border-em-border rounded-xl px-3.5 py-2 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/30"
                     />
                   </div>
                   <div>
                     <div className="flex items-center justify-between mb-1">
-                      <label className="text-xs font-medium text-nova-text-muted">Contact Phone</label>
+                      <label className="text-xs font-medium text-em-text-muted">Contact Phone</label>
                       {reporterPhone.trim() && (
                         <span className={cn(
                           'text-[10px] font-medium font-mono px-1.5 py-0.2 rounded',
@@ -696,8 +696,8 @@ export default function SOSPage() {
                       onChange={(e) => setReporterPhone(e.target.value)}
                       placeholder="+94 77 123 4567"
                       className={cn(
-                        "w-full bg-nova-surface border rounded-xl px-3.5 py-2 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none transition-colors",
-                        reporterPhone.trim() && phoneError ? "border-red-500/60 focus:border-red-500" : "border-nova-border focus:border-nova-cyan/50"
+                        "w-full bg-white border rounded-xl px-3.5 py-2 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none transition-colors",
+                        reporterPhone.trim() && phoneError ? "border-red-500/60 focus:border-red-500" : "border-em-border focus:border-er-blue/30"
                       )}
                     />
                     {reporterPhone.trim() && phoneError && (
@@ -722,7 +722,7 @@ export default function SOSPage() {
                 <ChevronRight className="w-5 h-5" />
               </motion.button>
 
-              <p className="text-center text-xs text-nova-text-muted">
+              <p className="text-center text-xs text-em-text-muted">
                 Your report triggers AI-assisted severity assessment and simultaneous multi-agency alerting.
               </p>
             </motion.div>
@@ -740,37 +740,37 @@ export default function SOSPage() {
                   <Brain className="w-7 h-7 text-purple-400" />
                 </div>
                 <h2 className="text-xl font-bold text-nova-text">{t.aiPreview}</h2>
-                <p className="text-xs text-nova-text-dim mt-1">Review tactical routing and emergency units to be alerted</p>
+                <p className="text-xs text-em-text-dim mt-1">Review tactical routing and emergency units to be alerted</p>
               </div>
 
-              <div className="nova-card border border-purple-500/30 rounded-2xl p-5 space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-nova-border/70">
-                  <span className="text-xs text-nova-text-muted">Emergency Category</span>
+              <div className="em-card border border-purple-500/30 rounded-2xl p-5 space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-em-border/70">
+                  <span className="text-xs text-em-text-muted">Emergency Category</span>
                   <span className="text-sm font-bold text-nova-text flex items-center gap-1.5">
                     {getEmergencyTypeIcon(selectedType)} {selectedType.replace('_', ' ').toUpperCase()}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between pb-3 border-b border-nova-border/70">
-                  <span className="text-xs text-nova-text-muted">Assessed Severity</span>
+                <div className="flex items-center justify-between pb-3 border-b border-em-border/70">
+                  <span className="text-xs text-em-text-muted">Assessed Severity</span>
                   <SeverityBadge severity={computedSeverity} pulse />
                 </div>
 
-                <div className="flex items-center justify-between pb-3 border-b border-nova-border/70">
-                  <span className="text-xs text-nova-text-muted">GPS Location</span>
-                  <span className="text-xs font-semibold text-nova-cyan">
+                <div className="flex items-center justify-between pb-3 border-b border-em-border/70">
+                  <span className="text-xs text-em-text-muted">GPS Location</span>
+                  <span className="text-xs font-semibold text-er-blue">
                     {geo.latitude ? `${geo.latitude.toFixed(4)}° N, ${geo.longitude?.toFixed(4)}° E` : geo.manualAddress || 'Colombo District'}
                   </span>
                 </div>
 
                 {/* Multi-Agency Routing Matrix Preview */}
                 <div>
-                  <span className="text-xs text-nova-text-muted block mb-2">Authorities to be Alerted Simultaneously:</span>
+                  <span className="text-xs text-em-text-muted block mb-2">Authorities to be Alerted Simultaneously:</span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {recommendedAgencies.map((agency) => {
                       const meta = AGENCY_METADATA[agency];
                       return (
-                        <div key={agency} className="flex items-center gap-2 p-2.5 rounded-xl bg-nova-surface2/60 border border-nova-border text-xs">
+                        <div key={agency} className="flex items-center gap-2 p-2.5 rounded-xl bg-em-subtle/60 border border-em-border text-xs">
                           <span className="text-base">{meta.icon}</span>
                           <span className="font-semibold text-nova-text">{meta.name}</span>
                         </div>
@@ -781,7 +781,7 @@ export default function SOSPage() {
 
                 <div className="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 text-xs space-y-1">
                   <p className="font-bold text-purple-400">🤖 AI Recommendation</p>
-                  <p className="text-nova-text-dim leading-relaxed">
+                  <p className="text-em-text-dim leading-relaxed">
                     Immediate dispatch requested. Incident assigned high operational priority with simultaneous tactical unit notification.
                   </p>
                 </div>
@@ -792,7 +792,7 @@ export default function SOSPage() {
                   type="button"
                   onClick={() => setStep('form')}
                   disabled={submitting}
-                  className="flex-1 py-3.5 border border-nova-border text-nova-text-dim rounded-xl hover:border-nova-border2 transition-all font-semibold text-sm"
+                  className="flex-1 py-3.5 border border-em-border text-em-text-dim rounded-xl hover:border-em-border-strong transition-all font-semibold text-sm"
                 >
                   ← Edit Details
                 </button>

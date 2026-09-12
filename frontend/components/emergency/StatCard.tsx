@@ -10,7 +10,7 @@ interface StatCardProps {
   unit?: string;
   icon?: React.ReactNode;
   trend?: { value: number; label: string };
-  variant?: 'default' | 'critical' | 'cyan' | 'warning' | 'success';
+  variant?: 'default' | 'critical' | 'blue' | 'warning' | 'success' | 'cyan';
   animate?: boolean;
   className?: string;
   suffix?: string;
@@ -25,7 +25,7 @@ function useCountUp(target: number, duration = 1500) {
     const timer = setInterval(() => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // ease-out-cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
       setCurrent(Math.round(eased * target));
       if (progress >= 1) clearInterval(timer);
     }, 16);
@@ -51,45 +51,48 @@ export function StatCard({
   const animatedValue = animate ? count : numericValue;
 
   const variantStyles: Record<string, string> = {
-    default: 'border-nova-border',
-    critical: 'border-red-500/30 bg-red-500/5',
-    cyan: 'border-nova-cyan/20 bg-nova-cyan/5',
-    warning: 'border-orange-500/20 bg-orange-500/5',
-    success: 'border-green-500/20 bg-green-500/5',
+    default:  'border-em-border bg-white',
+    critical: 'border-er-red/30 bg-er-red-light',
+    blue:     'border-er-blue/20 bg-er-blue-light',
+    // legacy alias
+    cyan:     'border-er-blue/20 bg-er-blue-light',
+    warning:  'border-er-orange/20 bg-er-orange-light',
+    success:  'border-er-green/20 bg-er-green-light',
   };
 
   const iconStyles: Record<string, string> = {
-    default: 'text-nova-cyan bg-nova-cyan/10',
-    critical: 'text-red-400 bg-red-400/10',
-    cyan: 'text-nova-cyan bg-nova-cyan/10',
-    warning: 'text-orange-400 bg-orange-400/10',
-    success: 'text-green-400 bg-green-400/10',
+    default:  'text-er-blue bg-er-blue-light border border-er-blue/20',
+    critical: 'text-er-red bg-white border border-er-red/20',
+    blue:     'text-er-blue bg-white border border-er-blue/20',
+    cyan:     'text-er-blue bg-white border border-er-blue/20',
+    warning:  'text-er-orange bg-white border border-er-orange/20',
+    success:  'text-er-green bg-white border border-er-green/20',
   };
 
   const valueStyles: Record<string, string> = {
-    default: 'text-nova-text',
-    critical: 'text-red-400',
-    cyan: 'text-nova-cyan',
-    warning: 'text-orange-400',
-    success: 'text-green-400',
+    default:  'text-em-text',
+    critical: 'text-er-red-dark',
+    blue:     'text-er-blue',
+    cyan:     'text-er-blue',
+    warning:  'text-er-orange',
+    success:  'text-er-green',
   };
 
   return (
     <motion.div
       className={cn(
-        'nova-card rounded-xl p-4 border flex flex-col gap-3',
+        'em-card rounded-2xl p-4 border flex flex-col gap-3 stat-card',
         variantStyles[variant],
         className
       )}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      whileHover={{ scale: 1.01 }}
     >
       <div className="flex items-center justify-between">
-        <p className="text-xs font-medium text-nova-text-dim uppercase tracking-wider">{label}</p>
+        <p className="text-xs font-bold text-em-text-muted uppercase tracking-wider">{label}</p>
         {icon && (
-          <div className={cn('w-8 h-8 rounded-lg flex items-center justify-center', iconStyles[variant])}>
+          <div className={cn('w-9 h-9 rounded-xl flex items-center justify-center', iconStyles[variant])}>
             {icon}
           </div>
         )}
@@ -99,7 +102,7 @@ export function StatCard({
         <AnimatePresence mode="wait">
           <motion.span
             key={animatedValue}
-            className={cn('text-3xl font-bold font-display tabular-nums', valueStyles[variant])}
+            className={cn('text-3xl font-black tabular-nums', valueStyles[variant])}
           >
             {typeof value === 'string' && !parseInt(value)
               ? value
@@ -108,21 +111,16 @@ export function StatCard({
               : numericValue.toLocaleString()}
           </motion.span>
         </AnimatePresence>
-        {unit && <span className="text-sm text-nova-text-dim mb-1">{unit}</span>}
-        {suffix && <span className="text-sm text-nova-text-dim mb-1">{suffix}</span>}
+        {unit   && <span className="text-sm text-em-text-muted mb-1 font-semibold">{unit}</span>}
+        {suffix && <span className="text-sm text-em-text-muted mb-1 font-semibold">{suffix}</span>}
       </div>
 
       {trend && (
         <div className="flex items-center gap-1.5">
-          <span
-            className={cn(
-              'text-xs font-medium',
-              trend.value > 0 ? 'text-red-400' : 'text-green-400'
-            )}
-          >
+          <span className={cn('text-xs font-bold', trend.value > 0 ? 'text-er-red' : 'text-er-green')}>
             {trend.value > 0 ? '↑' : '↓'} {Math.abs(trend.value)}%
           </span>
-          <span className="text-xs text-nova-text-muted">{trend.label}</span>
+          <span className="text-xs text-em-text-muted font-semibold">{trend.label}</span>
         </div>
       )}
     </motion.div>

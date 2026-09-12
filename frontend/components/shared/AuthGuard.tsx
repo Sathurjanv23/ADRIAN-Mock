@@ -146,10 +146,10 @@ export function AuthGuard({ children, allowedRoles, redirectTo = '/login', allow
 
   if (status === 'checking') {
     return (
-      <div className="min-h-screen bg-nova-bg flex items-center justify-center">
+      <div className="min-h-screen bg-em-bg flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <Loader2 className="w-8 h-8 text-nova-cyan animate-spin" />
-          <p className="text-sm text-nova-text-dim">Verifying session…</p>
+          <Loader2 className="w-8 h-8 text-er-blue animate-spin" />
+          <p className="text-sm text-em-text-dim">Verifying session…</p>
         </div>
       </div>
     );

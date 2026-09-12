@@ -2,15 +2,16 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import {
   LayoutDashboard, Map, AlertTriangle, Brain, BarChart3, Users,
   Truck, Building2, Cpu, Bell, FileText, Activity, Shield,
   Settings, ClipboardList, HeartPulse, Package, Radio, UserCheck,
-  Navigation, Waves, ChevronLeft, ChevronRight, UtensilsCrossed
+  Navigation, Waves, ChevronLeft, ChevronRight, UtensilsCrossed,
+  Menu, X
 } from 'lucide-react';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { UserRole } from '@/types';
 import { useTranslation } from '@/lib/i18n';
 import { useNovaStore } from '@/lib/store/nova-store';
@@ -20,7 +21,7 @@ interface NavItem {
   label: string;
   icon: React.ReactNode;
   badge?: string | number;
-  badgeVariant?: 'critical' | 'cyan' | 'warning';
+  badgeVariant?: 'critical' | 'blue' | 'warning';
 }
 
 interface NavSection {
@@ -35,54 +36,50 @@ interface BadgeCounts {
   hospitalEmergencies: number;
 }
 
-function getNavSections(role: UserRole, badges: BadgeCounts): NavSection[] {
+function getNavSections(role: UserRole, badges: BadgeCounts, t: (k: string) => string): NavSection[] {
   switch (role) {
     case 'officer':
       return [
         {
-          title: 'Command Center',
+          title: t('section.command_center') || 'Command Center',
           items: [
-            { href: '/command', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
-            { href: '/command/map', label: 'Live Map', icon: <Map className="w-4 h-4" /> },
+            { href: '/command',           label: t('nav.dashboard') || 'Dashboard',   icon: <LayoutDashboard className="w-4 h-4" /> },
+            { href: '/command/map',       label: t('nav.map') || 'Live Map',    icon: <Map className="w-4 h-4" /> },
             {
-              href: '/command/incidents',
-              label: 'Incidents',
-              icon: <AlertTriangle className="w-4 h-4" />,
+              href: '/command/incidents', label: t('nav.incidents') || 'Incidents',   icon: <AlertTriangle className="w-4 h-4" />,
               badge: badges.officerIncidents > 0 ? badges.officerIncidents : undefined,
               badgeVariant: 'critical',
             },
-            { href: '/command/ai-analysis', label: 'AI Analysis', icon: <Brain className="w-4 h-4" /> },
+            { href: '/command/ai-analysis', label: t('nav.ai_analysis') || 'AI Analysis', icon: <Brain className="w-4 h-4" /> },
           ],
         },
         {
-          title: 'Operations',
+          title: t('section.operations') || 'Operations',
           items: [
-            { href: '/command/prediction', label: 'Prediction', icon: <Waves className="w-4 h-4" /> },
-            { href: '/command/rescue', label: 'Rescue Ops', icon: <Truck className="w-4 h-4" /> },
-            { href: '/command/resources', label: 'Resources', icon: <Package className="w-4 h-4" /> },
-            { href: '/command/hospitals', label: 'Hospitals', icon: <HeartPulse className="w-4 h-4" /> },
+            { href: '/command/prediction', label: t('nav.prediction') || 'Prediction',  icon: <Waves className="w-4 h-4" /> },
+            { href: '/command/rescue',     label: t('nav.rescue_ops') || 'Rescue Ops',  icon: <Truck className="w-4 h-4" /> },
+            { href: '/command/resources',  label: t('nav.resources') || 'Resources',   icon: <Package className="w-4 h-4" /> },
+            { href: '/command/hospitals',  label: t('nav.hospitals') || 'Hospitals',   icon: <HeartPulse className="w-4 h-4" /> },
           ],
         },
         {
-          title: 'Intelligence',
+          title: t('section.intelligence') || 'Intelligence',
           items: [
-            { href: '/command/copilot', label: 'NOVA Copilot', icon: <Cpu className="w-4 h-4" /> },
+            { href: '/command/copilot',   label: t('nav.copilot') || 'AI Copilot',  icon: <Cpu className="w-4 h-4" /> },
             {
-              href: '/command/alerts',
-              label: 'Alerts',
-              icon: <Bell className="w-4 h-4" />,
+              href: '/command/alerts',    label: t('nav.alerts') || 'Alerts',       icon: <Bell className="w-4 h-4" />,
               badge: badges.officerAlerts > 0 ? badges.officerAlerts : undefined,
               badgeVariant: 'critical',
             },
-            { href: '/command/analytics', label: 'Analytics', icon: <BarChart3 className="w-4 h-4" /> },
+            { href: '/command/analytics', label: t('nav.analytics') || 'Analytics',   icon: <BarChart3 className="w-4 h-4" /> },
           ],
         },
         {
-          title: '🟠 Relief Logistics',
+          title: 'Relief Logistics',
           items: [
-            { href: '/relief', label: 'Relief Dashboard', icon: <UtensilsCrossed className="w-4 h-4" /> },
-            { href: '/relief/food-sources', label: 'Food Sources', icon: <Package className="w-4 h-4" /> },
-            { href: '/relief/missions', label: 'Missions', icon: <Truck className="w-4 h-4" /> },
+            { href: '/relief',              label: 'Relief Dashboard', icon: <UtensilsCrossed className="w-4 h-4" /> },
+            { href: '/relief/food-sources', label: 'Food Sources',     icon: <Package className="w-4 h-4" /> },
+            { href: '/relief/missions',     label: 'Missions',         icon: <Truck className="w-4 h-4" /> },
           ],
         },
       ];
@@ -91,11 +88,11 @@ function getNavSections(role: UserRole, badges: BadgeCounts): NavSection[] {
       return [
         {
           items: [
-            { href: '/citizen', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
-            { href: '/citizen/report', label: 'Report Emergency', icon: <AlertTriangle className="w-4 h-4" /> },
-            { href: '/citizen/sos', label: 'SOS', icon: <Radio className="w-4 h-4" /> },
-            { href: '/citizen/reports', label: 'My Reports', icon: <ClipboardList className="w-4 h-4" /> },
-            { href: '/citizen/safety', label: 'Safety Guide', icon: <Shield className="w-4 h-4" /> },
+            { href: '/citizen',          label: t('nav.dashboard') || 'Dashboard',       icon: <LayoutDashboard className="w-4 h-4" /> },
+            { href: '/citizen/report',   label: t('btn.submit_report') || 'Report Emergency', icon: <AlertTriangle className="w-4 h-4" /> },
+            { href: '/citizen/sos',      label: t('nav.sos') || 'SOS',             icon: <Radio className="w-4 h-4" /> },
+            { href: '/citizen/reports',  label: t('nav.reports') || 'My Reports',      icon: <ClipboardList className="w-4 h-4" /> },
+            { href: '/citizen/safety',   label: t('nav.safety') || 'Safety Guide',    icon: <Shield className="w-4 h-4" /> },
           ],
         },
       ];
@@ -104,17 +101,15 @@ function getNavSections(role: UserRole, badges: BadgeCounts): NavSection[] {
       return [
         {
           items: [
-            { href: '/rescue', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+            { href: '/rescue',           label: t('nav.dashboard') || 'Dashboard',       icon: <LayoutDashboard className="w-4 h-4" /> },
             {
-              href: '/rescue/incidents',
-              label: 'Assigned Incidents',
-              icon: <AlertTriangle className="w-4 h-4" />,
+              href: '/rescue/incidents', label: t('heading.assigned_incidents') || 'Assigned Incidents', icon: <AlertTriangle className="w-4 h-4" />,
               badge: badges.rescueIncidents > 0 ? badges.rescueIncidents : undefined,
               badgeVariant: 'critical',
             },
-            { href: '/rescue/navigation', label: 'Navigation', icon: <Navigation className="w-4 h-4" /> },
-            { href: '/rescue/team', label: 'Team Status', icon: <Users className="w-4 h-4" /> },
-            { href: '/relief/missions', label: 'Relief Missions', icon: <Truck className="w-4 h-4" /> },
+            { href: '/rescue/navigation', label: t('nav.navigation') || 'Navigation',    icon: <Navigation className="w-4 h-4" /> },
+            { href: '/rescue/team',       label: t('nav.team_status') || 'Team Status',   icon: <Users className="w-4 h-4" /> },
+            { href: '/relief/missions',   label: 'Relief Missions', icon: <Truck className="w-4 h-4" /> },
           ],
         },
       ];
@@ -123,17 +118,15 @@ function getNavSections(role: UserRole, badges: BadgeCounts): NavSection[] {
       return [
         {
           items: [
-            { href: '/hospital', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
+            { href: '/hospital',              label: t('nav.dashboard') || 'Dashboard',     icon: <LayoutDashboard className="w-4 h-4" /> },
             {
-              href: '/hospital/emergencies',
-              label: 'Incoming',
-              icon: <AlertTriangle className="w-4 h-4" />,
+              href: '/hospital/emergencies',  label: t('nav.incoming') || 'Incoming',      icon: <AlertTriangle className="w-4 h-4" />,
               badge: badges.hospitalEmergencies > 0 ? badges.hospitalEmergencies : undefined,
               badgeVariant: 'critical',
             },
-            { href: '/hospital/triage', label: 'Triage Queue', icon: <ClipboardList className="w-4 h-4" /> },
-            { href: '/hospital/capacity', label: 'Capacity', icon: <Activity className="w-4 h-4" /> },
-            { href: '/hospital/ambulances', label: 'Ambulances', icon: <Truck className="w-4 h-4" /> },
+            { href: '/hospital/triage',      label: t('nav.triage') || 'Triage Queue',  icon: <ClipboardList className="w-4 h-4" /> },
+            { href: '/hospital/capacity',    label: t('nav.capacity') || 'Capacity',       icon: <Activity className="w-4 h-4" /> },
+            { href: '/hospital/ambulances',  label: t('nav.ambulances') || 'Ambulances',     icon: <Truck className="w-4 h-4" /> },
           ],
         },
       ];
@@ -141,20 +134,20 @@ function getNavSections(role: UserRole, badges: BadgeCounts): NavSection[] {
     case 'admin':
       return [
         {
-          title: 'System',
+          title: t('section.system') || 'System',
           items: [
-            { href: '/admin', label: 'Dashboard', icon: <LayoutDashboard className="w-4 h-4" /> },
-            { href: '/admin/users', label: 'Users', icon: <Users className="w-4 h-4" /> },
-            { href: '/admin/organizations', label: 'Organizations', icon: <Building2 className="w-4 h-4" /> },
+            { href: '/admin',               label: t('nav.dashboard') || 'Dashboard',    icon: <LayoutDashboard className="w-4 h-4" /> },
+            { href: '/admin/users',         label: t('nav.users') || 'Users',        icon: <Users className="w-4 h-4" /> },
+            { href: '/admin/organizations', label: t('nav.organizations') || 'Organizations', icon: <Building2 className="w-4 h-4" /> },
           ],
         },
         {
-          title: 'Configuration',
+          title: t('section.configuration') || 'Configuration',
           items: [
-            { href: '/admin/resources', label: 'Resources', icon: <Package className="w-4 h-4" /> },
-            { href: '/admin/ai-config', label: 'AI Config', icon: <Cpu className="w-4 h-4" /> },
-            { href: '/admin/monitoring', label: 'Monitoring', icon: <Activity className="w-4 h-4" /> },
-            { href: '/admin/audit-logs', label: 'Audit Logs', icon: <FileText className="w-4 h-4" /> },
+            { href: '/admin/resources',   label: t('nav.resources') || 'Resources',  icon: <Package className="w-4 h-4" /> },
+            { href: '/admin/ai-config',   label: t('nav.ai_config') || 'AI Config',  icon: <Cpu className="w-4 h-4" /> },
+            { href: '/admin/monitoring',  label: t('nav.monitoring') || 'Monitoring', icon: <Activity className="w-4 h-4" /> },
+            { href: '/admin/audit-logs',  label: t('nav.audit_logs') || 'Audit Logs', icon: <FileText className="w-4 h-4" /> },
           ],
         },
       ];
@@ -164,15 +157,101 @@ function getNavSections(role: UserRole, badges: BadgeCounts): NavSection[] {
   }
 }
 
-// ─── Sidebar Component ───────────────────────────────────────
+// ── Role display config ───────────────────────────────────────
+
+export interface RoleTheme {
+  icon: string;
+  badgeClass: string;
+  label: string;
+  accentHex: string;
+  activeBg: string;
+  activeText: string;
+  activeBorder: string;
+  activeIcon: string;
+  activeIndicator: string; // The side bar color
+}
+
+export const ROLE_THEME: Record<UserRole, RoleTheme> = {
+  citizen: {
+    icon: '👤',
+    badgeClass: 'text-er-blue bg-er-blue-light border-er-blue/30',
+    label: 'CITIZEN',
+    accentHex: '#1565C0',
+    activeBg: 'bg-blue-50',
+    activeText: 'text-blue-900',
+    activeBorder: 'border-blue-200',
+    activeIcon: 'text-blue-600',
+    activeIndicator: 'bg-blue-600',
+  },
+  officer: {
+    icon: '🛡️',
+    badgeClass: 'text-purple-700 bg-purple-50 border-purple-300',
+    label: 'OFFICER',
+    accentHex: '#7C3AED',
+    activeBg: 'bg-purple-50',
+    activeText: 'text-purple-900',
+    activeBorder: 'border-purple-200',
+    activeIcon: 'text-purple-600',
+    activeIndicator: 'bg-purple-600',
+  },
+  rescue_team: {
+    icon: '🚒',
+    badgeClass: 'text-er-orange bg-er-orange-light border-er-orange/30',
+    label: 'RESCUE',
+    accentHex: '#F57C00',
+    activeBg: 'bg-orange-50',
+    activeText: 'text-orange-900',
+    activeBorder: 'border-orange-200',
+    activeIcon: 'text-orange-600',
+    activeIndicator: 'bg-orange-500',
+  },
+  hospital: {
+    icon: '🏥',
+    badgeClass: 'text-pink-700 bg-pink-50 border-pink-300',
+    label: 'HOSPITAL',
+    accentHex: '#BE185D',
+    activeBg: 'bg-pink-50',
+    activeText: 'text-pink-900',
+    activeBorder: 'border-pink-200',
+    activeIcon: 'text-pink-600',
+    activeIndicator: 'bg-pink-600',
+  },
+  admin: {
+    icon: '⚙️',
+    badgeClass: 'text-er-red-dark bg-er-red-light border-er-red/30',
+    label: 'ADMIN',
+    accentHex: '#D32F2F',
+    activeBg: 'bg-red-50',
+    activeText: 'text-red-900',
+    activeBorder: 'border-red-200',
+    activeIcon: 'text-red-600',
+    activeIndicator: 'bg-red-600',
+  },
+};
+
+// Root dashboard paths that require exact match to prevent greedy prefix highlighting
+const ROOT_PATHS = new Set(['/command', '/citizen', '/rescue', '/hospital', '/admin', '/relief']);
+
+function isItemActive(pathname: string | null, itemHref: string): boolean {
+  if (!pathname) return false;
+  if (pathname === itemHref) return true;
+  // If item is a root section dashboard, only highlight if exactly matched
+  if (ROOT_PATHS.has(itemHref)) return false;
+  // For subroutes (e.g. /command/incidents), match child routes like /command/incidents/123
+  return pathname.startsWith(`${itemHref}/`) || pathname.startsWith(`${itemHref}?`);
+}
+
+// ── Sidebar Component ─────────────────────────────────────────
 
 interface SidebarProps {
   role: UserRole;
   collapsed?: boolean;
   onToggle?: () => void;
+  onNavigate?: () => void;
+  isMobileDrawer?: boolean;
 }
 
-export function Sidebar({ role, collapsed = false, onToggle }: SidebarProps) {
+export function Sidebar({ role, collapsed = false, onToggle, onNavigate, isMobileDrawer = false }: SidebarProps) {
   const pathname = usePathname();
   const { t } = useTranslation();
   const { incidents, notifications, unreadCount, rescueTeams, currentUser, isAuthenticated } = useNovaStore();
@@ -208,13 +287,12 @@ export function Sidebar({ role, collapsed = false, onToggle }: SidebarProps) {
     return { officerIncidents, officerAlerts, rescueIncidents, hospitalEmergencies };
   }, [incidents, notifications, unreadCount, rescueTeams]);
 
-  const rawSections = getNavSections(role, badges);
+  const sections = getNavSections(role, badges, t);
 
-  // If guest viewing citizen routes, annotate locked vs open items
-  if (isCitizenGuest && rawSections[0]?.items) {
-    rawSections[0].items = rawSections[0].items.map((it) => {
+  if (isCitizenGuest && sections[0]?.items) {
+    sections[0].items = sections[0].items.map((it) => {
       if (it.href === '/citizen' || it.href === '/citizen/reports') {
-        return { ...it, badge: '🔒 Sign In', badgeVariant: 'warning' as const };
+        return { ...it, badge: '🔒', badgeVariant: 'warning' as const };
       }
       if (it.href === '/citizen/sos') {
         return { ...it, badge: 'OPEN', badgeVariant: 'critical' as const };
@@ -223,150 +301,105 @@ export function Sidebar({ role, collapsed = false, onToggle }: SidebarProps) {
     });
   }
 
-  const getTranslationKey = (label: string) => {
-    const map: Record<string, string> = {
-      'Dashboard': 'nav.dashboard',
-      'Live Map': 'nav.map',
-      'Incidents': 'nav.incidents',
-      'Assigned Incidents': 'nav.incidents',
-      'AI Analysis': 'nav.ai_analysis',
-      'Prediction': 'nav.prediction',
-      'Rescue Ops': 'nav.rescue_ops',
-      'Resources': 'nav.resources',
-      'Hospitals': 'nav.hospitals',
-      'NOVA Copilot': 'nav.copilot',
-      'Alerts': 'nav.alerts',
-      'Analytics': 'nav.analytics',
-      'SOS': 'nav.sos',
-      'Report Emergency': 'btn.report',
-      'My Reports': 'nav.reports',
-      'Safety Guide': 'nav.safety',
-      'Team Status': 'nav.team_status',
-      'Navigation': 'nav.navigation',
-      'Triage Queue': 'nav.triage',
-      'Incoming': 'nav.incoming',
-      'Capacity': 'nav.capacity',
-      'Ambulances': 'nav.ambulances',
-      'Users': 'nav.users',
-      'Organizations': 'nav.organizations',
-      'Audit Logs': 'nav.audit_logs',
-      'AI Config': 'nav.ai_config',
-      'Monitoring': 'nav.monitoring',
-    };
-    return map[label] || label;
-  };
-
-  const getSectionTitleKey = (title?: string) => {
-    if (!title) return '';
-    const map: Record<string, string> = {
-      'Command Center': 'section.command_center',
-      'Operations': 'section.operations',
-      'Intelligence': 'section.intelligence',
-      'System': 'section.system',
-      'Configuration': 'section.configuration',
-    };
-    return map[title] || title;
-  };
-
-  const sections = rawSections.map((section) => ({
-    ...section,
-    title: section.title ? t(getSectionTitleKey(section.title)) : undefined,
-    items: section.items.map((item) => ({
-      ...item,
-      label: t(getTranslationKey(item.label)),
-    })),
-  }));
-
-  const roleColors: Record<UserRole, string> = {
-    citizen: 'text-nova-cyan border-nova-cyan/30 bg-nova-cyan/10',
-    officer: 'text-purple-400 border-purple-400/30 bg-purple-400/10',
-    rescue_team: 'text-orange-400 border-orange-400/30 bg-orange-400/10',
-    hospital: 'text-pink-400 border-pink-400/30 bg-pink-400/10',
-    admin: 'text-red-400 border-red-400/30 bg-red-400/10',
-  };
-
-  const roleLabels: Record<UserRole, string> = {
-    citizen: 'CITIZEN',
-    officer: 'OFFICER',
-    rescue_team: 'RESCUE',
-    hospital: 'HOSPITAL',
-    admin: 'ADMIN',
-  };
-
+  const roleMeta = ROLE_THEME[role] || ROLE_THEME.citizen;
   const userOriginalRole = currentUser?.role;
-  const isVisitingCommand = role === 'officer' && Boolean(userOriginalRole && ['hospital', 'rescue_team'].includes(userOriginalRole));
+  const isVisitingCommand = role === 'officer' && Boolean(
+    userOriginalRole && ['hospital', 'rescue_team'].includes(userOriginalRole)
+  );
 
   return (
-    <motion.aside
+    <aside
       className={cn(
-        'flex flex-col bg-nova-surface border-r border-nova-border h-full transition-all duration-300',
-        collapsed ? 'w-16' : 'w-56'
+        'flex flex-col bg-white border-r border-em-border h-full transition-all duration-300 shadow-em-sm',
+        isMobileDrawer ? 'w-full' : collapsed ? 'w-16' : 'w-60'
       )}
+      aria-label="Navigation sidebar"
     >
       {/* Role Badge */}
-      {!collapsed && (
-        <div className="px-4 py-3 border-b border-nova-border flex items-center justify-between">
-          <span className={cn('text-[10px] font-bold px-2 py-1 rounded border', isCitizenGuest ? 'text-orange-400 border-orange-500/30 bg-orange-500/10' : roleColors[role])}>
-            {isCitizenGuest ? 'GUEST REPORTING' : `${roleLabels[role]} PORTAL`}
+      {(!collapsed || isMobileDrawer) && (
+        <div className="px-4 py-3 border-b border-em-border">
+          <span className={cn(
+            'inline-flex items-center gap-1.5 text-[11px] font-black px-2.5 py-1.5 rounded-lg border',
+            isCitizenGuest ? 'text-er-orange bg-er-orange-light border-er-orange/30' : roleMeta.badgeClass
+          )}>
+            {!isCitizenGuest && <span>{roleMeta.icon}</span>}
+            {isCitizenGuest ? '👋 GUEST REPORTING' : `${roleMeta.label} PORTAL`}
           </span>
           {isCitizenGuest && (
-            <Link href="/login?portal=citizen" className="text-[10px] text-nova-cyan hover:underline font-bold">
-              Sign In →
+            <Link
+              href="/login?portal=citizen"
+              onClick={() => { if (onNavigate) onNavigate(); }}
+              className="block mt-2 text-xs text-er-blue hover:underline font-bold"
+            >
+              Sign in to save reports →
             </Link>
           )}
         </div>
       )}
 
-      {/* Return to original portal banner */}
-      {!collapsed && isVisitingCommand && (
-        <div className="px-3 py-2 bg-nova-cyan/10 border-b border-nova-cyan/25 flex items-center justify-between">
+      {/* Back to original portal banner */}
+      {(!collapsed || isMobileDrawer) && isVisitingCommand && (
+        <div className="px-3 py-2.5 bg-er-blue-light border-b border-er-blue/20 flex items-center justify-between">
           <Link
             href={userOriginalRole === 'hospital' ? '/hospital' : '/rescue'}
-            className="flex items-center gap-1 text-[11px] font-semibold text-nova-cyan hover:underline"
+            onClick={() => { if (onNavigate) onNavigate(); }}
+            className="flex items-center gap-1 text-xs font-bold text-er-blue hover:underline"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
-            <span>Back to {userOriginalRole === 'hospital' ? 'Hospital' : 'Rescue'}</span>
+            Back to {userOriginalRole === 'hospital' ? 'Hospital' : 'Rescue'}
           </Link>
         </div>
       )}
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-3 px-2">
+      <nav className="flex-1 overflow-y-auto py-3 px-2" aria-label="Portal navigation">
         {sections.map((section, sIdx) => (
-          <div key={sIdx} className="mb-4">
-            {section.title && !collapsed && (
-              <p className="text-[10px] font-bold text-nova-text-muted uppercase tracking-widest px-2 mb-1.5">
+          <div key={sIdx} className="mb-5">
+            {section.title && (!collapsed || isMobileDrawer) && (
+              <p className="text-[10px] font-black text-em-text-disabled uppercase tracking-widest px-3 mb-2">
                 {section.title}
               </p>
             )}
             <div className="space-y-0.5">
               {section.items.map((item) => {
-                const isRootPath = ['/command', '/citizen', '/rescue', '/hospital', '/admin'].includes(item.href);
-                const isActive = pathname === item.href || (!isRootPath && pathname?.startsWith(`${item.href}/`));
+                const isActive = isItemActive(pathname, item.href);
+                const isSOS = item.href === '/citizen/sos';
+
+                // Determine active styling based on portal role theme or emergency SOS
+                const activeClasses = isSOS
+                  ? 'bg-er-red-light text-er-red-dark border-er-red/30 font-bold shadow-xs'
+                  : cn(roleMeta.activeBg, roleMeta.activeText, roleMeta.activeBorder, 'border font-bold shadow-xs');
+                const iconActiveClass = isSOS ? 'text-er-red' : roleMeta.activeIcon;
+                const sideIndicatorColor = isSOS ? 'bg-er-red' : roleMeta.activeIndicator;
 
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
+                    onClick={() => { if (onNavigate) onNavigate(); }}
                     className={cn(
-                      'flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-sm transition-all duration-150 group relative',
+                      'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 group relative min-h-[44px]',
                       isActive
-                        ? 'bg-nova-cyan/10 text-nova-cyan border border-nova-cyan/20'
-                        : 'text-nova-text-dim hover:bg-nova-surface2 hover:text-nova-text border border-transparent'
+                        ? activeClasses
+                        : 'text-em-text-dim hover:bg-em-subtle hover:text-em-text border border-transparent'
                     )}
+                    aria-current={isActive ? 'page' : undefined}
                   >
-                    <span className={cn(isActive ? 'text-nova-cyan' : 'text-nova-text-muted group-hover:text-nova-text')}>
+                    <span className={cn(
+                      'flex-shrink-0 transition-colors',
+                      isActive ? iconActiveClass : 'text-em-text-muted group-hover:text-em-text'
+                    )}>
                       {item.icon}
                     </span>
-                    {!collapsed && (
+                    {(!collapsed || isMobileDrawer) && (
                       <>
-                        <span className="flex-1 font-medium text-xs">{item.label}</span>
+                        <span className="flex-1 text-[13px]">{item.label}</span>
                         {item.badge && (
                           <span className={cn(
-                            'text-[9px] font-bold px-1.5 py-0.5 rounded-full',
-                            item.badgeVariant === 'critical' ? 'bg-red-500 text-white' :
-                            item.badgeVariant === 'warning' ? 'bg-orange-500 text-white' :
-                            'bg-nova-cyan text-nova-bg'
+                            'text-[10px] font-black px-2 py-0.5 rounded-full flex-shrink-0',
+                            item.badgeVariant === 'critical' ? 'bg-er-red text-white' :
+                            item.badgeVariant === 'warning'  ? 'bg-er-orange text-white' :
+                            'bg-er-blue text-white'
                           )}>
                             {item.badge}
                           </span>
@@ -375,8 +408,12 @@ export function Sidebar({ role, collapsed = false, onToggle }: SidebarProps) {
                     )}
                     {isActive && (
                       <motion.div
-                        className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-nova-cyan rounded-full"
-                        layoutId={`active-indicator-${role}`}
+                        className={cn(
+                          'absolute left-0 top-1.5 bottom-1.5 w-1.5 rounded-r-full shadow-xs',
+                          sideIndicatorColor
+                        )}
+                        layoutId={`sidebar-indicator-${role}`}
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       />
                     )}
                   </Link>
@@ -387,21 +424,26 @@ export function Sidebar({ role, collapsed = false, onToggle }: SidebarProps) {
         ))}
       </nav>
 
-      {/* Bottom toggle */}
-      <div className="border-t border-nova-border p-2">
-        <button
-          onClick={onToggle}
-          className="w-full flex items-center justify-center h-8 rounded-lg hover:bg-nova-surface2 text-nova-text-muted hover:text-nova-text transition-colors"
-          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-        >
-          {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
-        </button>
-      </div>
-    </motion.aside>
+      {/* Collapse toggle — desktop only */}
+      {!isMobileDrawer && (
+        <div className="border-t border-em-border p-2">
+          <button
+            onClick={onToggle}
+            className="w-full flex items-center justify-center h-10 rounded-xl hover:bg-em-subtle text-em-text-muted hover:text-em-text transition-colors border border-transparent hover:border-em-border"
+            aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            {collapsed
+              ? <ChevronRight className="w-4 h-4" />
+              : <ChevronLeft className="w-4 h-4" />
+            }
+          </button>
+        </div>
+      )}
+    </aside>
   );
 }
 
-// ─── Dashboard Shell ─────────────────────────────────────────
+// ── Dashboard Shell ───────────────────────────────────────────
 
 interface DashboardShellProps {
   children: React.ReactNode;
@@ -410,13 +452,99 @@ interface DashboardShellProps {
 
 export function DashboardShell({ children, role }: DashboardShellProps) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
+  const pathname = usePathname();
+  const roleMeta = ROLE_THEME[role] || ROLE_THEME.citizen;
+
+  // Auto-close mobile drawer on route change
+  useEffect(() => {
+    setMobileDrawerOpen(false);
+  }, [pathname]);
 
   return (
-    <div className="flex h-[calc(100vh-116px)] overflow-hidden">
-      <Sidebar role={role} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
-      <main className="flex-1 overflow-y-auto">
-        {children}
-      </main>
+    <div className="flex flex-col lg:flex-row min-h-[calc(100vh-64px)] overflow-hidden relative">
+      {/* Desktop Persistent Sidebar */}
+      <div className="hidden lg:flex flex-shrink-0">
+        <Sidebar
+          role={role}
+          collapsed={sidebarCollapsed}
+          onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+        />
+      </div>
+
+      {/* Mobile Drawer (Slide from left) */}
+      <AnimatePresence>
+        {mobileDrawerOpen && (
+          <>
+            <motion.div
+              className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs lg:hidden"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileDrawerOpen(false)}
+              aria-hidden="true"
+            />
+            <motion.div
+              className="fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-white shadow-2xl flex flex-col lg:hidden border-r border-em-border"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 26, stiffness: 260 }}
+            >
+              <div className="flex items-center justify-between p-4 border-b border-em-border bg-em-subtle">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{roleMeta.icon}</span>
+                  <div>
+                    <span className="text-sm font-black text-em-text block">{roleMeta.label} PORTAL</span>
+                    <span className="text-[10px] text-em-text-muted font-semibold">Navigation Menu</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setMobileDrawerOpen(false)}
+                  className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-em-border text-em-text-dim hover:text-em-text transition-colors shadow-em-xs"
+                  aria-label="Close navigation"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto">
+                <Sidebar
+                  role={role}
+                  collapsed={false}
+                  onNavigate={() => setMobileDrawerOpen(false)}
+                  isMobileDrawer
+                />
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 w-full overflow-hidden">
+        {/* Mobile Portal Navigation Bar */}
+        <div className="lg:hidden flex items-center justify-between px-4 py-2.5 bg-white border-b border-em-border sticky top-0 z-20 shadow-em-xs">
+          <button
+            id="mobile-portal-menu-btn"
+            onClick={() => setMobileDrawerOpen(true)}
+            className="flex items-center gap-2 text-xs font-bold text-em-text bg-em-subtle border border-em-border px-3 py-2 rounded-xl hover:bg-em-muted transition-colors min-h-[40px] shadow-em-xs"
+            aria-label="Open portal navigation"
+            aria-expanded={mobileDrawerOpen}
+          >
+            <Menu className={cn('w-4 h-4', roleMeta.activeIcon)} />
+            <span>{roleMeta.label} MENU</span>
+          </button>
+          <div className="flex items-center gap-2">
+            <span className={cn('text-[11px] font-bold px-2.5 py-1 rounded-lg border', roleMeta.badgeClass)}>
+              {roleMeta.icon} {roleMeta.label}
+            </span>
+          </div>
+        </div>
+
+        <main className="flex-1 overflow-y-auto bg-em-bg" role="main">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

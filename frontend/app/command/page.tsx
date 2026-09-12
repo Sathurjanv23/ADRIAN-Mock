@@ -22,7 +22,7 @@ const LazyCommandTrendChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="h-24 flex items-center justify-center text-xs text-nova-text-dim animate-pulse">
+      <div className="h-24 flex items-center justify-center text-xs text-em-text-dim animate-pulse">
         Loading response telemetry...
       </div>
     ),
@@ -35,7 +35,7 @@ import { useTranslation } from '@/lib/i18n';
 function CopilotMini() {
   const { t } = useTranslation();
   return (
-    <div className="nova-card border border-nova-border rounded-xl p-4 h-full flex flex-col">
+    <div className="em-card border border-em-border rounded-xl p-4 h-full flex flex-col">
       <div className="flex items-center gap-2 mb-4">
         <div className="w-7 h-7 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center">
           <Cpu className="w-4 h-4 text-purple-400" />
@@ -46,20 +46,20 @@ function CopilotMini() {
         </div>
       </div>
       <div className="flex-1 space-y-3 overflow-y-auto">
-        <div className="p-3 rounded-lg bg-nova-surface/70 border border-nova-border/50 text-xs text-nova-text-dim">
+        <div className="p-3 rounded-lg bg-white/70 border border-em-border text-xs text-em-text-dim">
           <p className="font-semibold text-nova-text mb-1">{t('copilot.situation_summary')}</p>
           <p>{t('copilot.summary_text')}</p>
         </div>
         <div className="p-3 rounded-lg bg-orange-500/5 border border-orange-500/20 text-xs">
           <p className="font-semibold text-orange-300 mb-1">{t('copilot.risk_alert')}</p>
-          <p className="text-nova-text-dim">{t('copilot.risk_text')}</p>
+          <p className="text-em-text-dim">{t('copilot.risk_text')}</p>
         </div>
-        <div className="p-3 rounded-lg bg-nova-cyan/5 border border-nova-cyan/20 text-xs">
-          <p className="font-semibold text-nova-cyan mb-1">{t('copilot.recommendation')}</p>
-          <p className="text-nova-text-dim">{t('copilot.rec_text')}</p>
+        <div className="p-3 rounded-lg bg-er-blue-light border border-er-blue/20 text-xs">
+          <p className="font-semibold text-er-blue mb-1">{t('copilot.recommendation')}</p>
+          <p className="text-em-text-dim">{t('copilot.rec_text')}</p>
         </div>
       </div>
-      <Link href="/command/copilot" className="mt-3 text-xs text-center text-nova-cyan hover:underline block">
+      <Link href="/command/copilot" className="mt-3 text-xs text-center text-er-blue hover:underline block">
         {t('copilot.full_copilot')} →
       </Link>
     </div>
@@ -107,7 +107,7 @@ export default function CommandCenterPage() {
 
   return (
     <AuthGuard allowedRoles={['officer', 'hospital', 'rescue_team', 'admin', 'citizen']} allowGuestCommander={true}>
-      <div className="min-h-screen bg-nova-bg">
+      <div className="min-h-screen bg-em-bg">
         <TopNav role="officer" />
         <DashboardShell role="officer">
           <div className="p-6 space-y-6">
@@ -139,7 +139,7 @@ export default function CommandCenterPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-2xl font-bold font-display text-nova-text">{t('heading.command_center')}</h1>
-                <p className="text-sm text-nova-text-dim mt-0.5">{t('heading.authority_dashboard')} · {mounted ? new Date().toLocaleString('en-LK') : ''}</p>
+                <p className="text-sm text-em-text-dim mt-0.5">{t('heading.authority_dashboard')} · {mounted ? new Date().toLocaleString('en-LK') : ''}</p>
               </div>
               <div className="flex items-center gap-3">
                 <Link
@@ -169,37 +169,51 @@ export default function CommandCenterPage() {
               <StatCard label={t('stats.ai_predictions')} value={stats.aiPredictions} icon={<Brain className="w-4 h-4" />} variant="success" />
             </div>
 
-            {/* ADRN Relief Logistics Mini-Widget */}
+            {/* ADRN AI Relief Logistics 5-Metric Widget */}
             {reliefStats && (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center gap-3 p-4 rounded-xl nova-card border border-orange-500/20 hover:border-orange-500/40 transition-colors"
+                className="flex items-center gap-3 p-4 rounded-xl em-card border border-orange-500/30 bg-orange-500/5 hover:border-orange-500/50 transition-colors shadow-lg shadow-orange-950/10"
               >
-                <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center flex-shrink-0">
-                  <Truck className="w-4 h-4 text-orange-400" />
+                <div className="w-10 h-10 rounded-xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center flex-shrink-0">
+                  <Truck className="w-5 h-5 text-orange-400" />
                 </div>
                 <div className="flex items-center gap-6 flex-1 flex-wrap">
                   <div>
-                    <p className="text-[10px] text-nova-text-dim">Meals Available</p>
-                    <p className="text-sm font-bold text-orange-300">{(reliefStats.totalMealsAvailable || 0).toLocaleString()}</p>
+                    <p className="text-[10px] text-em-text-dim uppercase font-bold tracking-wider">Meals Available</p>
+                    <p className="text-sm font-black font-mono text-orange-300">{(reliefStats.totalMealsAvailable || 0).toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-nova-text-dim">Water Bottles</p>
-                    <p className="text-sm font-bold text-blue-300">{(reliefStats.totalWaterAvailable || 0).toLocaleString()}</p>
+                    <p className="text-[10px] text-em-text-dim uppercase font-bold tracking-wider">Water Available</p>
+                    <p className="text-sm font-black font-mono text-blue-300">{(reliefStats.totalWaterAvailable || 0).toLocaleString()}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] text-nova-text-dim">Active Missions</p>
-                    <p className="text-sm font-bold text-green-300">{reliefStats.activeMissions || 0}</p>
+                    <p className="text-[10px] text-em-text-dim uppercase font-bold tracking-wider">Active Deliveries</p>
+                    <p className="text-sm font-black font-mono text-amber-300 flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                      {reliefStats.activeMissions || 0}
+                    </p>
                   </div>
-                  {(reliefStats.criticalShortages || 0) > 0 && (
-                    <div className="px-2 py-1 rounded-lg bg-red-500/10 border border-red-500/30">
-                      <p className="text-[10px] text-red-400 font-semibold">⚠ {reliefStats.criticalShortages} Critical Shortage{reliefStats.criticalShortages > 1 ? 's' : ''}</p>
-                    </div>
-                  )}
+                  <div>
+                    <p className="text-[10px] text-em-text-dim uppercase font-bold tracking-wider">Completed Deliveries</p>
+                    <p className="text-sm font-black font-mono text-emerald-300">{reliefStats.completedMissions || 0}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-em-text-dim uppercase font-bold tracking-wider">Critical Shortages</p>
+                    {(reliefStats.criticalShortages || 0) > 0 ? (
+                      <span className="text-xs font-bold text-red-400 bg-red-500/15 border border-red-500/30 px-2 py-0.5 rounded-md flex items-center gap-1">
+                        ⚠ {reliefStats.criticalShortages} Shortage
+                      </span>
+                    ) : (
+                      <span className="text-xs font-bold text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-md">
+                        ✓ Optimal Stock
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <Link href="/relief" className="flex items-center gap-1 text-xs text-orange-400 hover:underline flex-shrink-0">
-                  Relief HQ <ChevronRight className="w-3 h-3" />
+                <Link href="/relief" className="flex items-center gap-1 text-xs text-orange-400 hover:text-orange-300 hover:underline flex-shrink-0 font-bold bg-orange-500/15 border border-orange-500/30 px-3 py-1.5 rounded-xl transition-all">
+                  Relief HQ <ChevronRight className="w-3.5 h-3.5" />
                 </Link>
               </motion.div>
             )}
@@ -219,7 +233,7 @@ export default function CommandCenterPage() {
                       {t('common.live')}
                     </motion.span>
                   </div>
-                  <Link href="/command/incidents" className="text-xs text-nova-cyan hover:underline">{t('heading.view_all')} →</Link>
+                  <Link href="/command/incidents" className="text-xs text-er-blue hover:underline">{t('heading.view_all')} →</Link>
                 </div>
 
                 {/* Priority legend */}
@@ -241,10 +255,10 @@ export default function CommandCenterPage() {
                       />
                     ))
                   ) : (
-                    <div className="p-8 rounded-xl bg-nova-surface/40 border border-nova-border/60 text-center space-y-2">
-                      <AlertTriangle className="w-8 h-8 text-nova-text-muted mx-auto opacity-40" />
+                    <div className="p-8 rounded-xl bg-white/40 border border-em-border/60 text-center space-y-2">
+                      <AlertTriangle className="w-8 h-8 text-em-text-muted mx-auto opacity-40" />
                       <p className="text-sm font-semibold text-nova-text">No active incidents currently reported</p>
-                      <p className="text-xs text-nova-text-dim max-w-sm mx-auto">
+                      <p className="text-xs text-em-text-dim max-w-sm mx-auto">
                         All monitored zones are currently clear of active emergency reports. Incoming citizen reports will appear here in real time.
                       </p>
                     </div>
@@ -258,9 +272,9 @@ export default function CommandCenterPage() {
                 <CopilotMini />
 
                 {/* Risk Overview */}
-                <div className="nova-card border border-nova-border rounded-xl p-4">
+                <div className="em-card border border-em-border rounded-xl p-4">
                   <div className="flex items-center gap-2 mb-4">
-                    <Activity className="w-4 h-4 text-nova-cyan" />
+                    <Activity className="w-4 h-4 text-er-blue" />
                     <p className="text-xs font-bold text-nova-text">{t('heading.risk_overview')}</p>
                   </div>
                   {riskPredictions.length > 0 ? (
@@ -268,16 +282,16 @@ export default function CommandCenterPage() {
                       {riskPredictions.slice(0, 3).map((rp) => (
                         <div key={rp.id} className="text-center">
                           <RiskGauge value={rp.floodRisk} size="sm" />
-                          <p className="text-[10px] text-nova-text-muted mt-1">{localize(rp.zone)}</p>
+                          <p className="text-[10px] text-em-text-muted mt-1">{localize(rp.zone)}</p>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-4 text-xs text-nova-text-dim">
+                    <div className="text-center py-4 text-xs text-em-text-dim">
                       No verified risk prediction available.
                     </div>
                   )}
-                  <Link href="/command/prediction" className="block text-center text-xs text-nova-cyan hover:underline mt-3">
+                  <Link href="/command/prediction" className="block text-center text-xs text-er-blue hover:underline mt-3">
                     {t('heading.full_prediction')} →
                   </Link>
                 </div>
@@ -287,13 +301,13 @@ export default function CommandCenterPage() {
             {/* Bottom Row */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* Response time trend */}
-              <div className="nova-card border border-nova-border rounded-xl p-4 md:col-span-2">
+              <div className="em-card border border-em-border rounded-xl p-4 md:col-span-2">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <Clock className="w-4 h-4 text-nova-cyan" />
+                    <Clock className="w-4 h-4 text-er-blue" />
                     <p className="text-xs font-bold text-nova-text">{t('stats.avg_response')}</p>
                   </div>
-                  <span className="text-[10px] font-mono text-nova-text-muted">Live telemetry</span>
+                  <span className="text-[10px] font-mono text-em-text-muted">Live telemetry</span>
                 </div>
                 <div className="h-24 flex items-center justify-center">
                   <LazyCommandTrendChart
@@ -305,18 +319,18 @@ export default function CommandCenterPage() {
               </div>
 
               {/* Active Deployments Summary */}
-              <div className="nova-card border border-nova-border rounded-xl p-4">
+              <div className="em-card border border-em-border rounded-xl p-4">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-nova-cyan" />
+                    <Activity className="w-4 h-4 text-er-blue" />
                     <p className="text-xs font-bold text-nova-text">{t('heading.team_status')}</p>
                   </div>
-                  <span className="text-[10px] font-mono text-nova-text-muted">{rescueTeams.length} {t('common.active')}</span>
+                  <span className="text-[10px] font-mono text-em-text-muted">{rescueTeams.length} {t('common.active')}</span>
                 </div>
                 <div className="space-y-2 max-h-24 overflow-y-auto pr-1">
                   {rescueTeams.length > 0 ? (
                     rescueTeams.map((team) => (
-                      <div key={team.id} className="flex items-center justify-between p-1.5 rounded bg-nova-surface/50 border border-nova-border/30 text-xs">
+                      <div key={team.id} className="flex items-center justify-between p-1.5 rounded bg-white/50 border border-em-border text-xs">
                         <div className="flex items-center gap-2">
                           <div className={cn('w-1.5 h-1.5 rounded-full', {
                             'bg-green-400': team.status === 'available',
@@ -333,7 +347,7 @@ export default function CommandCenterPage() {
                       </div>
                     ))
                   ) : (
-                    <div className="text-center py-3 text-xs text-nova-text-dim">
+                    <div className="text-center py-3 text-xs text-em-text-dim">
                       No rescue teams currently registered.
                     </div>
                   )}

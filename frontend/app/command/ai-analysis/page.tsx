@@ -158,7 +158,7 @@ function AIProcessingAnimation({ stage, modalities }: { stage: string; modalitie
         <motion.div
           key={s.id}
           className={`flex items-center gap-3 p-2.5 rounded-lg transition-colors ${
-            i === currentIdx ? 'bg-purple-500/10 border border-purple-500/30' : 'bg-nova-surface/40'
+            i === currentIdx ? 'bg-purple-500/10 border border-purple-500/30' : 'bg-white/40'
           }`}
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
@@ -167,14 +167,14 @@ function AIProcessingAnimation({ stage, modalities }: { stage: string; modalitie
           <div
             className={`w-6 h-6 rounded-full flex items-center justify-center text-xs flex-shrink-0 ${
               i < currentIdx
-                ? 'bg-nova-low/20 border border-nova-low text-nova-low'
+                ? 'bg-nova-low/20 border border-nova-low text-er-green'
                 : i === currentIdx
-                ? 'bg-nova-cyan/20 border border-nova-cyan text-nova-cyan'
-                : 'bg-nova-border border border-nova-border text-nova-text-muted'
+                ? 'bg-er-blue-light border border-nova-cyan text-er-blue'
+                : 'bg-nova-border border border-em-border text-em-text-muted'
             }`}
           >
             {i < currentIdx ? (
-              <CheckCircle className="w-3.5 h-3.5 text-nova-low" />
+              <CheckCircle className="w-3.5 h-3.5 text-er-green" />
             ) : i === currentIdx ? (
               <motion.div
                 className="w-2 h-2 rounded-full bg-nova-cyan"
@@ -185,7 +185,7 @@ function AIProcessingAnimation({ stage, modalities }: { stage: string; modalitie
               <span>{i + 1}</span>
             )}
           </div>
-          <span className={`text-xs ${i <= currentIdx ? 'text-nova-text font-medium' : 'text-nova-text-muted'}`}>
+          <span className={`text-xs ${i <= currentIdx ? 'text-nova-text font-medium' : 'text-em-text-muted'}`}>
             {s.icon} {s.label}
           </span>
           {i === currentIdx && (
@@ -264,7 +264,7 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
               <SeverityBadge severity={analysis.severity} pulse size="lg" />
             </div>
             <div className="flex items-center gap-2 mt-2 flex-wrap">
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-nova-surface border border-nova-border text-nova-cyan font-mono font-medium">
+              <span className="text-xs px-2.5 py-0.5 rounded-full bg-white border border-em-border text-er-blue font-mono font-medium">
                 🌐 {langNames[analysis.detectedLanguage] || analysis.detectedLanguage}
               </span>
               {analysis.inputModalities.map((mod) => (
@@ -280,21 +280,21 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
             </div>
           </div>
           <div className="text-right flex-shrink-0">
-            <div className="text-3xl font-black font-mono text-nova-cyan tracking-tight">
+            <div className="text-3xl font-black font-mono text-er-blue tracking-tight">
               {analysis.confidenceScore}%
             </div>
-            <div className="text-[11px] uppercase tracking-wider text-nova-text-muted font-bold">AI Confidence</div>
+            <div className="text-[11px] uppercase tracking-wider text-em-text-muted font-bold">AI Confidence</div>
           </div>
         </div>
 
         {/* Metrics Grid */}
         <div className="grid grid-cols-2 gap-3 text-sm mt-3">
-          <div className="p-3 rounded-xl bg-nova-surface/80 border border-nova-border/70 backdrop-blur-sm">
-            <p className="text-xs font-bold text-nova-text-muted uppercase tracking-wider mb-1">People Affected</p>
+          <div className="p-3 rounded-xl bg-white/80 border border-em-border/70 backdrop-blur-sm">
+            <p className="text-xs font-bold text-em-text-muted uppercase tracking-wider mb-1">People Affected</p>
             <p className="text-2xl font-black text-nova-text">{analysis.peopleAffected}</p>
           </div>
-          <div className="p-3 rounded-xl bg-nova-surface/80 border border-nova-border/70 backdrop-blur-sm">
-            <p className="text-xs font-bold text-nova-text-muted uppercase tracking-wider mb-1">Vulnerable Persons</p>
+          <div className="p-3 rounded-xl bg-white/80 border border-em-border/70 backdrop-blur-sm">
+            <p className="text-xs font-bold text-em-text-muted uppercase tracking-wider mb-1">Vulnerable Persons</p>
             <div className="space-y-0.5">
               {analysis.vulnerablePersons.length > 0 ? (
                 analysis.vulnerablePersons.map((vp) => (
@@ -306,7 +306,7 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
                   </span>
                 ))
               ) : (
-                <p className="text-sm text-nova-text-dim">None detected</p>
+                <p className="text-sm text-em-text-dim">None detected</p>
               )}
             </div>
           </div>
@@ -315,11 +315,11 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
 
       {/* Image Vision Analysis Preview (if image provided) */}
       {analysis.imageAnalysis && (
-        <div className="nova-card border border-nova-border rounded-xl p-4 space-y-3">
+        <div className="em-card border border-em-border rounded-xl p-4 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Eye className="w-4 h-4 text-nova-cyan" />
-              <p className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">
+              <Eye className="w-4 h-4 text-er-blue" />
+              <p className="text-xs font-bold text-em-text-muted uppercase tracking-wider">
                 Computer Vision Analysis
               </p>
             </div>
@@ -338,7 +338,7 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
 
           <div className="flex gap-4 items-start">
             {imagePreviewUrl && (
-              <div className="w-24 h-24 rounded-lg overflow-hidden border border-nova-border flex-shrink-0 bg-black">
+              <div className="w-24 h-24 rounded-lg overflow-hidden border border-em-border flex-shrink-0 bg-black">
                 <img src={imagePreviewUrl} alt="Visual Evidence" className="w-full h-full object-cover" />
               </div>
             )}
@@ -348,7 +348,7 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
                 {analysis.imageAnalysis.conditions.map((c, i) => (
                   <span
                     key={i}
-                    className="text-[11px] px-2 py-0.5 rounded bg-nova-cyan/10 border border-nova-cyan/25 text-nova-cyan"
+                    className="text-[11px] px-2 py-0.5 rounded bg-er-blue-light border border-er-blue/30 text-er-blue"
                   >
                     ✓ {c}
                   </span>
@@ -373,10 +373,10 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
 
       {/* Voice Transcript Preview (if voice provided) */}
       {analysis.voiceTranscript && (
-        <div className="nova-card border border-nova-border rounded-xl p-4">
+        <div className="em-card border border-em-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-2">
             <Mic className="w-4 h-4 text-purple-400" />
-            <p className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">
+            <p className="text-xs font-bold text-em-text-muted uppercase tracking-wider">
               Speech-to-Text Acoustic Record
             </p>
           </div>
@@ -385,22 +385,22 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
               <audio controls src={audioPreviewUrl} className="w-full h-9 rounded-lg" />
             </div>
           )}
-          <blockquote className="text-sm italic text-nova-text p-2.5 rounded-lg bg-nova-surface/60 border border-nova-border/50">
+          <blockquote className="text-sm italic text-nova-text p-2.5 rounded-lg bg-white/60 border border-em-border">
             "{analysis.voiceTranscript}"
           </blockquote>
         </div>
       )}
 
       {/* Required Resources */}
-      <div className="nova-card border border-nova-border rounded-xl p-4">
-        <p className="text-xs font-bold text-nova-text-muted uppercase tracking-wider mb-3">
+      <div className="em-card border border-em-border rounded-xl p-4">
+        <p className="text-xs font-bold text-em-text-muted uppercase tracking-wider mb-3">
           Triage Required Resources
         </p>
         <div className="space-y-2">
           {analysis.requiredResources.map((res, i) => (
             <div
               key={i}
-              className="flex items-center justify-between p-2.5 rounded-lg bg-nova-surface/60 border border-nova-border/60"
+              className="flex items-center justify-between p-2.5 rounded-lg bg-white/60 border border-em-border/60"
             >
               <span className="text-sm font-medium text-nova-text">
                 {res.quantity}× {res.type}
@@ -411,7 +411,7 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
                     ? 'bg-red-500/20 text-red-400 border border-red-500/30'
                     : res.priority === 'urgent'
                     ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                    : 'bg-nova-cyan/10 text-nova-cyan border border-nova-cyan/20'
+                    : 'bg-er-blue-light text-er-blue border border-er-blue/20'
                 }`}
               >
                 {res.priority.toUpperCase()}
@@ -423,8 +423,8 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
 
       {/* Risk Factors */}
       {analysis.riskFactors.length > 0 && (
-        <div className="nova-card border border-nova-border rounded-xl p-4">
-          <p className="text-xs font-bold text-nova-text-muted uppercase tracking-wider mb-2.5">
+        <div className="em-card border border-em-border rounded-xl p-4">
+          <p className="text-xs font-bold text-em-text-muted uppercase tracking-wider mb-2.5">
             Key Environmental & Life Risks
           </p>
           <div className="flex flex-wrap gap-2">
@@ -447,8 +447,8 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
           <p className="text-xs font-bold text-purple-300 uppercase tracking-wider">Tactical AI Recommendation</p>
         </div>
         <p className="text-sm text-nova-text font-medium leading-relaxed">"{analysis.recommendedAction}"</p>
-        <div className="flex items-center justify-between mt-3 text-xs text-nova-text-muted border-t border-purple-500/20 pt-2">
-          <span>Estimated Response Time: <strong className="text-nova-cyan">{analysis.estimatedResponseTime} mins</strong></span>
+        <div className="flex items-center justify-between mt-3 text-xs text-em-text-muted border-t border-purple-500/20 pt-2">
+          <span>Estimated Response Time: <strong className="text-er-blue">{analysis.estimatedResponseTime} mins</strong></span>
           <span>Processed: {new Date(analysis.processedAt).toLocaleTimeString()}</span>
         </div>
       </div>
@@ -500,7 +500,7 @@ Risk Factors: ${analysis.riskFactors.join(', ')}`;
         )}
         <button
           onClick={copyDiagnostic}
-          className="px-4 py-3 rounded-xl border border-nova-border bg-nova-surface hover:bg-nova-surface/80 text-nova-text text-sm font-semibold flex items-center justify-center gap-1.5 transition-all"
+          className="px-4 py-3 rounded-xl border border-em-border bg-white hover:bg-white/80 text-nova-text text-sm font-semibold flex items-center justify-center gap-1.5 transition-all"
           title="Copy Diagnostic Summary"
         >
           {copied ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
@@ -952,7 +952,7 @@ export default function AIAnalysisPage() {
   };
 
   return (
-    <div className="min-h-screen bg-nova-bg">
+    <div className="min-h-screen bg-em-bg">
       <TopNav role="officer" />
       <DashboardShell role="officer">
         <div className="p-6 max-w-7xl mx-auto">
@@ -965,14 +965,14 @@ export default function AIAnalysisPage() {
                 </div>
                 <h1 className="text-2xl font-bold font-display text-nova-text">AI Emergency Analysis</h1>
               </div>
-              <p className="text-sm text-nova-text-dim mt-1">
+              <p className="text-sm text-em-text-dim mt-1">
                 Multimodal AI triages and cross-references Text, Voice Audio, and Computer Vision reports
               </p>
             </div>
 
             {/* Quick Status Pill */}
-            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-nova-surface border border-nova-border text-xs text-nova-text-muted">
-              <Sparkles className="w-3.5 h-3.5 text-nova-cyan" />
+            <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-em-border text-xs text-em-text-muted">
+              <Sparkles className="w-3.5 h-3.5 text-er-blue" />
               <span>Tri-Lingual NLP (EN / தமிழ் / සිංහල)</span>
             </div>
           </div>
@@ -981,7 +981,7 @@ export default function AIAnalysisPage() {
             {/* ─── Left Column: Source Selection & Multimodal Inputs ─── */}
             <div className="space-y-4">
               {/* Source Mode Toggle */}
-              <div className="nova-card border border-nova-border rounded-xl p-1.5 flex gap-1 bg-nova-surface/60">
+              <div className="em-card border border-em-border rounded-xl p-1.5 flex gap-1 bg-white/60">
                 <button
                   type="button"
                   onClick={() => {
@@ -990,8 +990,8 @@ export default function AIAnalysisPage() {
                   }}
                   className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                     analysisSource === 'new'
-                      ? 'bg-nova-cyan/20 border border-nova-cyan/40 text-nova-cyan shadow-sm'
-                      : 'text-nova-text-dim hover:text-nova-text hover:bg-nova-surface'
+                      ? 'bg-er-blue-light border border-er-blue/40 text-er-blue shadow-sm'
+                      : 'text-em-text-dim hover:text-nova-text hover:bg-white'
                   }`}
                 >
                   <Sparkles className="w-3.5 h-3.5" />
@@ -1008,8 +1008,8 @@ export default function AIAnalysisPage() {
                   }}
                   className={`flex-1 py-2 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                     analysisSource === 'existing'
-                      ? 'bg-nova-cyan/20 border border-nova-cyan/40 text-nova-cyan shadow-sm'
-                      : 'text-nova-text-dim hover:text-nova-text hover:bg-nova-surface'
+                      ? 'bg-er-blue-light border border-er-blue/40 text-er-blue shadow-sm'
+                      : 'text-em-text-dim hover:text-nova-text hover:bg-white'
                   }`}
                 >
                   <Layers className="w-3.5 h-3.5" />
@@ -1019,8 +1019,8 @@ export default function AIAnalysisPage() {
 
               {/* If Existing Incident Mode */}
               {analysisSource === 'existing' && (
-                <div className="nova-card border border-nova-border rounded-xl p-4 space-y-3">
-                  <p className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">
+                <div className="em-card border border-em-border rounded-xl p-4 space-y-3">
+                  <p className="text-xs font-bold text-em-text-muted uppercase tracking-wider">
                     Select Incident from Registry
                   </p>
                   <select
@@ -1029,7 +1029,7 @@ export default function AIAnalysisPage() {
                       setSelectedIncidentId(e.target.value);
                       setResult(null);
                     }}
-                    className="w-full bg-nova-surface border border-nova-border rounded-xl px-3 py-2.5 text-sm text-nova-text focus:outline-none focus:border-nova-cyan/40"
+                    className="w-full bg-white border border-em-border rounded-xl px-3 py-2.5 text-sm text-nova-text focus:outline-none focus:border-er-blue/40"
                   >
                     {incidents.map((i) => (
                       <option key={i.id} value={i.id}>
@@ -1039,11 +1039,11 @@ export default function AIAnalysisPage() {
                   </select>
 
                   {selectedIncidentId && (
-                    <div className="p-3 rounded-lg bg-nova-surface/50 border border-nova-border/50 text-xs space-y-1">
+                    <div className="p-3 rounded-lg bg-white/50 border border-em-border text-xs space-y-1">
                       <p className="text-nova-text font-medium">
                         {incidents.find((i) => i.id === selectedIncidentId)?.description}
                       </p>
-                      <p className="text-nova-text-muted">
+                      <p className="text-em-text-muted">
                         Location: {incidents.find((i) => i.id === selectedIncidentId)?.location?.address || 'GPS Coordinates logged'}
                       </p>
                     </div>
@@ -1053,12 +1053,12 @@ export default function AIAnalysisPage() {
 
               {/* If New Multimodal Report Mode */}
               {analysisSource === 'new' && (
-                <div className="nova-card border border-nova-border rounded-xl p-4 space-y-4">
+                <div className="em-card border border-em-border rounded-xl p-4 space-y-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">
+                    <p className="text-xs font-bold text-em-text-muted uppercase tracking-wider">
                       Multimodal Evidence Inputs
                     </p>
-                    <span className="text-[11px] text-nova-cyan font-mono font-medium">
+                    <span className="text-[11px] text-er-blue font-mono font-medium">
                       Select tab to provide or edit input
                     </span>
                   </div>
@@ -1091,8 +1091,8 @@ export default function AIAnalysisPage() {
                         onClick={() => setInputMode(m.mode as 'text' | 'voice' | 'image')}
                         className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold border transition-all ${
                           inputMode === m.mode
-                            ? 'bg-nova-cyan/15 border-nova-cyan/50 text-nova-cyan shadow-sm'
-                            : 'border-nova-border text-nova-text-dim hover:border-nova-border2 hover:text-nova-text'
+                            ? 'bg-er-blue-light border-er-blue/30 text-er-blue shadow-sm'
+                            : 'border-em-border text-em-text-dim hover:border-em-border-strong hover:text-nova-text'
                         }`}
                       >
                         {m.icon}
@@ -1120,10 +1120,10 @@ export default function AIAnalysisPage() {
                           value={inputText}
                           onChange={(e) => setInputText(e.target.value)}
                           rows={4}
-                          className="w-full bg-nova-surface border border-nova-border rounded-xl px-4 py-3 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/50 resize-none transition-all leading-relaxed"
+                          className="w-full bg-white border border-em-border rounded-xl px-4 py-3 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/30 resize-none transition-all leading-relaxed"
                           placeholder="Type or paste emergency situation report in English, Tamil, or Sinhala..."
                         />
-                        <div className="flex items-center justify-between text-[11px] text-nova-text-muted mt-1 px-1">
+                        <div className="flex items-center justify-between text-[11px] text-em-text-muted mt-1 px-1">
                           <span>Tri-lingual auto-detection enabled</span>
                           <span>{inputText.length} characters</span>
                         </div>
@@ -1131,7 +1131,7 @@ export default function AIAnalysisPage() {
 
                       {/* Quick Text Preset Chips */}
                       <div>
-                        <p className="text-[11px] font-bold text-nova-text-muted uppercase tracking-wider mb-1.5">
+                        <p className="text-[11px] font-bold text-em-text-muted uppercase tracking-wider mb-1.5">
                           Quick Scenario Presets (Click to Test):
                         </p>
                         <div className="grid grid-cols-2 gap-1.5">
@@ -1143,7 +1143,7 @@ export default function AIAnalysisPage() {
                                 setInputText(p.text);
                                 toast.info(`Loaded scenario: ${p.label}`);
                               }}
-                              className="text-left text-xs p-2 rounded-lg bg-nova-surface/70 border border-nova-border/70 hover:border-nova-cyan/40 hover:bg-nova-surface text-nova-text-dim hover:text-nova-text transition-all truncate"
+                              className="text-left text-xs p-2 rounded-lg bg-white/70 border border-em-border/70 hover:border-er-blue/40 hover:bg-white text-em-text-dim hover:text-nova-text transition-all truncate"
                             >
                               {p.label}
                             </button>
@@ -1157,7 +1157,7 @@ export default function AIAnalysisPage() {
                   {inputMode === 'voice' && (
                     <div className="space-y-4 py-2">
                       {/* Interactive Mic Recorder */}
-                      <div className="flex flex-col items-center gap-3 p-4 rounded-xl bg-nova-surface/50 border border-nova-border">
+                      <div className="flex flex-col items-center gap-3 p-4 rounded-xl bg-white/50 border border-em-border">
                         <div className="relative">
                           <motion.button
                             type="button"
@@ -1223,7 +1223,7 @@ export default function AIAnalysisPage() {
                               <p className="text-sm font-medium text-nova-text">
                                 Click red button to record voice note
                               </p>
-                              <p className="text-xs text-nova-text-muted">
+                              <p className="text-xs text-em-text-muted">
                                 Live speech-to-text with language recognition
                               </p>
                             </div>
@@ -1237,7 +1237,7 @@ export default function AIAnalysisPage() {
                             <button
                               type="button"
                               onClick={() => audio.resetRecording()}
-                              className="p-2 rounded-lg border border-nova-border bg-nova-surface hover:bg-nova-surface/80 text-nova-text-muted hover:text-red-400 text-xs"
+                              className="p-2 rounded-lg border border-em-border bg-white hover:bg-white/80 text-em-text-muted hover:text-red-400 text-xs"
                               title="Delete Audio"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -1249,14 +1249,14 @@ export default function AIAnalysisPage() {
                       {/* Transcribed Speech Box */}
                       <div>
                         <div className="flex items-center justify-between mb-1.5">
-                          <label className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">
+                          <label className="text-xs font-bold text-em-text-muted uppercase tracking-wider">
                             Speech-to-Text Transcript (Editable):
                           </label>
                           {voiceTranscript && (
                             <button
                               type="button"
                               onClick={() => setVoiceTranscript('')}
-                              className="text-[11px] text-nova-text-muted hover:text-nova-text"
+                              className="text-[11px] text-em-text-muted hover:text-nova-text"
                             >
                               Clear
                             </button>
@@ -1266,14 +1266,14 @@ export default function AIAnalysisPage() {
                           value={voiceTranscript}
                           onChange={(e) => setVoiceTranscript(e.target.value)}
                           rows={3}
-                          className="w-full bg-nova-surface border border-nova-border rounded-xl px-4 py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/50 resize-none"
+                          className="w-full bg-white border border-em-border rounded-xl px-4 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/30 resize-none"
                           placeholder="Transcribed words appear here automatically, or you can use simulated audio samples below..."
                         />
                       </div>
 
                       {/* Simulated Audio Presets */}
                       <div>
-                        <p className="text-[11px] font-bold text-nova-text-muted uppercase tracking-wider mb-1.5">
+                        <p className="text-[11px] font-bold text-em-text-muted uppercase tracking-wider mb-1.5">
                           Simulate Voice Samples (No mic required):
                         </p>
                         <div className="space-y-1.5">
@@ -1285,7 +1285,7 @@ export default function AIAnalysisPage() {
                                 setVoiceTranscript(sample.transcript);
                                 toast.info(`Loaded audio transcript: ${sample.title}`);
                               }}
-                              className="w-full text-left text-xs p-2.5 rounded-lg bg-nova-surface/70 border border-nova-border/70 hover:border-purple-500/40 hover:bg-nova-surface text-nova-text-dim hover:text-nova-text transition-all flex items-center justify-between"
+                              className="w-full text-left text-xs p-2.5 rounded-lg bg-white/70 border border-em-border/70 hover:border-purple-500/40 hover:bg-white text-em-text-dim hover:text-nova-text transition-all flex items-center justify-between"
                             >
                               <span className="font-medium text-nova-text">{sample.title}</span>
                               <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">
@@ -1316,7 +1316,7 @@ export default function AIAnalysisPage() {
 
                       {/* Upload / Preview Area */}
                       {activeImagePreview ? (
-                        <div className="relative rounded-xl overflow-hidden border border-nova-cyan/40 bg-black/60 group">
+                        <div className="relative rounded-xl overflow-hidden border border-er-blue/40 bg-black/60 group">
                           <div className="aspect-video w-full max-h-52 overflow-hidden flex items-center justify-center bg-black">
                             <img
                               src={activeImagePreview}
@@ -1324,12 +1324,12 @@ export default function AIAnalysisPage() {
                               className="w-full h-full object-contain"
                             />
                           </div>
-                          <div className="p-3 bg-nova-surface/90 border-t border-nova-border flex items-center justify-between">
+                          <div className="p-3 bg-white/90 border-t border-em-border flex items-center justify-between">
                             <div>
                               <p className="text-xs font-bold text-nova-text">
                                 {selectedPresetImage ? selectedPresetImage.title : uploadedImageFile?.name || 'Uploaded Image'}
                               </p>
-                              <p className="text-[11px] text-nova-cyan">
+                              <p className="text-[11px] text-er-blue">
                                 {selectedPresetImage
                                   ? `Preset: ${selectedPresetImage.tag}`
                                   : `${((uploadedImageFile?.size || 0) / 1024).toFixed(1)} KB — Ready for CV`}
@@ -1354,15 +1354,15 @@ export default function AIAnalysisPage() {
                               handleImageUpload(e.dataTransfer.files[0]);
                             }
                           }}
-                          className="border-2 border-dashed border-nova-border rounded-xl p-6 text-center hover:border-nova-cyan/50 hover:bg-nova-cyan/5 transition-all cursor-pointer"
+                          className="border-2 border-dashed border-em-border rounded-xl p-6 text-center hover:border-er-blue/30 hover:bg-er-blue-light transition-all cursor-pointer"
                         >
-                          <div className="w-12 h-12 rounded-xl bg-nova-surface border border-nova-border mx-auto mb-2.5 flex items-center justify-center text-nova-text-muted group-hover:text-nova-cyan">
-                            <Upload className="w-6 h-6 text-nova-cyan" />
+                          <div className="w-12 h-12 rounded-xl bg-white border border-em-border mx-auto mb-2.5 flex items-center justify-center text-em-text-muted group-hover:text-er-blue">
+                            <Upload className="w-6 h-6 text-er-blue" />
                           </div>
                           <p className="text-sm font-semibold text-nova-text">
                             Drop incident image or click to upload
                           </p>
-                          <p className="text-xs text-nova-text-muted mt-1">
+                          <p className="text-xs text-em-text-muted mt-1">
                             Supports PNG, JPG, WEBP. AI detects flood water level, fire plumes, rubble & crowds.
                           </p>
                         </div>
@@ -1370,7 +1370,7 @@ export default function AIAnalysisPage() {
 
                       {/* Preset Visual Disaster Presets */}
                       <div>
-                        <p className="text-[11px] font-bold text-nova-text-muted uppercase tracking-wider mb-2">
+                        <p className="text-[11px] font-bold text-em-text-muted uppercase tracking-wider mb-2">
                           Or Select an Incident Visual Preset:
                         </p>
                         <div className="grid grid-cols-2 gap-2">
@@ -1386,15 +1386,15 @@ export default function AIAnalysisPage() {
                               }}
                               className={`text-left p-2.5 rounded-xl border transition-all ${
                                 selectedPresetImage?.id === preset.id
-                                  ? 'bg-nova-cyan/15 border-nova-cyan text-nova-text shadow-sm'
-                                  : 'bg-nova-surface/70 border-nova-border/70 hover:border-nova-border2 text-nova-text-dim'
+                                  ? 'bg-er-blue-light border-nova-cyan text-nova-text shadow-sm'
+                                  : 'bg-white/70 border-em-border/70 hover:border-em-border-strong text-em-text-dim'
                               }`}
                             >
                               <div className="flex items-center gap-1.5 mb-1">
                                 <span className="text-base">{getEmergencyTypeIcon(preset.type)}</span>
                                 <span className="text-xs font-bold text-nova-text">{preset.title}</span>
                               </div>
-                              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-nova-surface border border-nova-border text-nova-cyan">
+                              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white border border-em-border text-er-blue">
                                 {preset.tag}
                               </span>
                             </button>
@@ -1404,7 +1404,7 @@ export default function AIAnalysisPage() {
 
                       {/* Optional Context Notes */}
                       <div>
-                        <label className="text-[11px] font-bold text-nova-text-muted uppercase tracking-wider block mb-1">
+                        <label className="text-[11px] font-bold text-em-text-muted uppercase tracking-wider block mb-1">
                           Field Notes for Visual (Optional):
                         </label>
                         <input
@@ -1412,19 +1412,19 @@ export default function AIAnalysisPage() {
                           value={imageNotes}
                           onChange={(e) => setImageNotes(e.target.value)}
                           placeholder="e.g., Flood reaching rooftop level, power lines sparking..."
-                          className="w-full bg-nova-surface border border-nova-border rounded-xl px-3 py-2 text-xs text-nova-text focus:outline-none focus:border-nova-cyan/40"
+                          className="w-full bg-white border border-em-border rounded-xl px-3 py-2 text-xs text-nova-text focus:outline-none focus:border-er-blue/40"
                         />
                       </div>
                     </div>
                   )}
 
                   {/* Multimodal Active Status Summary */}
-                  <div className="p-3 rounded-xl bg-nova-surface/40 border border-nova-border text-xs flex items-center justify-between">
-                    <span className="text-nova-text-muted">Active Modalities for Synthesis:</span>
+                  <div className="p-3 rounded-xl bg-white/40 border border-em-border text-xs flex items-center justify-between">
+                    <span className="text-em-text-muted">Active Modalities for Synthesis:</span>
                     <div className="flex gap-1.5">
                       <span
                         className={`px-2 py-0.5 rounded-md font-mono text-[10px] ${
-                          inputText.trim() ? 'bg-nova-cyan/20 text-nova-cyan font-bold' : 'text-nova-text-muted opacity-40'
+                          inputText.trim() ? 'bg-er-blue-light text-er-blue font-bold' : 'text-em-text-muted opacity-40'
                         }`}
                       >
                         📄 Text
@@ -1433,14 +1433,14 @@ export default function AIAnalysisPage() {
                         className={`px-2 py-0.5 rounded-md font-mono text-[10px] ${
                           voiceTranscript.trim() || audio.audioBlob
                             ? 'bg-purple-500/20 text-purple-300 font-bold'
-                            : 'text-nova-text-muted opacity-40'
+                            : 'text-em-text-muted opacity-40'
                         }`}
                       >
                         🎙️ Voice
                       </span>
                       <span
                         className={`px-2 py-0.5 rounded-md font-mono text-[10px] ${
-                          activeImagePreview ? 'bg-orange-500/20 text-orange-300 font-bold' : 'text-nova-text-muted opacity-40'
+                          activeImagePreview ? 'bg-orange-500/20 text-orange-300 font-bold' : 'text-em-text-muted opacity-40'
                         }`}
                       >
                         👁️ Vision
@@ -1480,7 +1480,7 @@ export default function AIAnalysisPage() {
               <AnimatePresence>
                 {analyzing && (
                   <motion.div
-                    className="nova-card border border-purple-500/30 rounded-xl p-4 scan-line"
+                    className="em-card border border-purple-500/30 rounded-xl p-4 scan-line"
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
@@ -1520,26 +1520,26 @@ export default function AIAnalysisPage() {
                   targetTeam={targetTeam}
                 />
               ) : (
-                <div className="nova-card border border-nova-border rounded-xl p-8 h-full min-h-[420px] flex flex-col items-center justify-center text-center">
+                <div className="em-card border border-em-border rounded-xl p-8 h-full min-h-[420px] flex flex-col items-center justify-center text-center">
                   <div className="w-16 h-16 rounded-2xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center mb-4">
                     <Brain className="w-8 h-8 text-purple-400" />
                   </div>
                   <h3 className="text-base font-bold text-nova-text mb-2">Multimodal AI Ready</h3>
-                  <p className="text-sm text-nova-text-dim max-w-sm">
+                  <p className="text-sm text-em-text-dim max-w-sm">
                     Enter text in English, Tamil, or Sinhala, record voice, or attach an image. Then click{' '}
                     <strong className="text-purple-300">"Run AI Multimodal Analysis"</strong> to generate life-safety triage.
                   </p>
-                  <div className="mt-6 grid grid-cols-3 gap-3 text-xs text-nova-text-muted w-full max-w-md">
-                    <div className="p-2.5 rounded-lg bg-nova-surface border border-nova-border">
-                      <div className="font-bold text-nova-cyan">&lt; 3 sec</div>
+                  <div className="mt-6 grid grid-cols-3 gap-3 text-xs text-em-text-muted w-full max-w-md">
+                    <div className="p-2.5 rounded-lg bg-white border border-em-border">
+                      <div className="font-bold text-er-blue">&lt; 3 sec</div>
                       <div className="text-[10px] mt-0.5">Pipeline Latency</div>
                     </div>
-                    <div className="p-2.5 rounded-lg bg-nova-surface border border-nova-border">
-                      <div className="font-bold text-nova-cyan">3 Languages</div>
+                    <div className="p-2.5 rounded-lg bg-white border border-em-border">
+                      <div className="font-bold text-er-blue">3 Languages</div>
                       <div className="text-[10px] mt-0.5">EN / தமிழ் / සිංහල</div>
                     </div>
-                    <div className="p-2.5 rounded-lg bg-nova-surface border border-nova-border">
-                      <div className="font-bold text-nova-cyan">3 Modalities</div>
+                    <div className="p-2.5 rounded-lg bg-white border border-em-border">
+                      <div className="font-bold text-er-blue">3 Modalities</div>
                       <div className="text-[10px] mt-0.5">Text, Voice, Vision</div>
                     </div>
                   </div>

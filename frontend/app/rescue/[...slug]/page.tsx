@@ -25,8 +25,8 @@ const LazyEmergencyMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-full bg-[#070b14] flex flex-col items-center justify-center text-xs text-nova-cyan space-y-2 animate-pulse">
-        <div className="w-8 h-8 rounded-xl bg-nova-cyan/20 border border-nova-cyan/40 animate-spin" />
+      <div className="w-full h-full bg-[#070b14] flex flex-col items-center justify-center text-xs text-er-blue space-y-2 animate-pulse">
+        <div className="w-8 h-8 rounded-xl bg-er-blue-light border border-er-blue/40 animate-spin" />
         <p className="font-semibold tracking-wider">LOADING MISSION GPS ROUTING...</p>
       </div>
     ),
@@ -261,7 +261,7 @@ export default function RescueOperationsCatchAll() {
             <h2 className="text-xl font-bold text-nova-text flex items-center gap-2">
               <AlertTriangle className="w-5 h-5 text-orange-400" /> {t('heading.assigned_incidents')}
             </h2>
-            <p className="text-xs text-nova-text-dim mt-0.5">
+            <p className="text-xs text-em-text-dim mt-0.5">
               Live multi-agency emergency queue routed to {myTeam.name}
             </p>
           </div>
@@ -290,17 +290,17 @@ export default function RescueOperationsCatchAll() {
                 <div
                   key={inc.id}
                   className={cn(
-                    'nova-card border rounded-2xl p-5 space-y-4 flex flex-col justify-between transition-all',
+                    'em-card border rounded-2xl p-5 space-y-4 flex flex-col justify-between transition-all',
                     isAcceptedByMe
-                      ? 'border-nova-cyan/50 bg-nova-cyan/5 shadow-lg'
-                      : 'border-nova-border hover:border-nova-border2'
+                      ? 'border-er-blue/30 bg-er-blue-light shadow-lg'
+                      : 'border-em-border hover:border-em-border-strong'
                   )}
                 >
                   <div className="space-y-3">
                     <div className="flex justify-between items-start">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-nova-surface border border-nova-border text-nova-text-muted">
+                          <span className="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-white border border-em-border text-em-text-muted">
                             {inc.trackingCode || inc.id}
                           </span>
                           {inc.isSilentSos && (
@@ -316,35 +316,35 @@ export default function RescueOperationsCatchAll() {
                       <SeverityBadge severity={inc.severity} size="sm" pulse={inc.severity === 'critical'} />
                     </div>
 
-                    <p className="text-xs text-nova-text-dim line-clamp-2 leading-relaxed">
+                    <p className="text-xs text-em-text-dim line-clamp-2 leading-relaxed">
                       {inc.description}
                     </p>
 
                     {/* Media attachments indicators */}
                     <div className="flex items-center gap-2 flex-wrap">
                       {inc.audioUrl && (
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-nova-surface border border-nova-cyan/30 text-nova-cyan flex items-center gap-1">
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-white border border-er-blue/30 text-er-blue flex items-center gap-1">
                           <Volume2 className="w-3 h-3" /> Voice Note
                         </span>
                       )}
                       {inc.photoUrls && inc.photoUrls.length > 0 && (
-                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-nova-surface border border-purple-500/30 text-purple-400 flex items-center gap-1">
+                        <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-white border border-purple-500/30 text-purple-400 flex items-center gap-1">
                           <Camera className="w-3 h-3" /> Photo Attached
                         </span>
                       )}
-                      <span className="text-[10px] font-mono text-nova-text-muted">
+                      <span className="text-[10px] font-mono text-em-text-muted">
                         ⏱ {timeAgo(inc.reportedAt)}
                       </span>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 pt-3 border-t border-nova-border/60 text-xs text-nova-text-muted">
+                    <div className="grid grid-cols-2 gap-2 pt-3 border-t border-em-border/60 text-xs text-em-text-muted">
                       <div className="flex items-center gap-1 truncate">
-                        <MapPin className="w-3.5 h-3.5 text-nova-cyan flex-shrink-0" />
+                        <MapPin className="w-3.5 h-3.5 text-er-blue flex-shrink-0" />
                         <span className="truncate">{inc.location?.address || 'Colombo District'}</span>
                       </div>
                       <div className="flex items-center justify-end gap-1.5 font-mono">
-                        <Clock className="w-3.5 h-3.5 text-nova-high flex-shrink-0" />
-                        <span className="text-nova-high font-bold">~{etaMins}m ({distanceKm} km)</span>
+                        <Clock className="w-3.5 h-3.5 text-er-orange flex-shrink-0" />
+                        <span className="text-er-orange font-bold">~{etaMins}m ({distanceKm} km)</span>
                       </div>
                     </div>
                   </div>
@@ -362,7 +362,7 @@ export default function RescueOperationsCatchAll() {
                       <button
                         type="button"
                         disabled
-                        className="w-full bg-nova-surface text-nova-text-muted font-semibold py-2.5 rounded-xl text-xs border border-nova-border cursor-not-allowed"
+                        className="w-full bg-white text-em-text-muted font-semibold py-2.5 rounded-xl text-xs border border-em-border cursor-not-allowed"
                       >
                         Assigned to {inc.assignedTeamName || 'Other Team'}
                       </button>
@@ -396,10 +396,10 @@ export default function RescueOperationsCatchAll() {
             })}
           </div>
         ) : (
-          <div className="nova-card border border-nova-border rounded-2xl p-12 text-center max-w-md mx-auto space-y-3">
+          <div className="em-card border border-em-border rounded-2xl p-12 text-center max-w-md mx-auto space-y-3">
             <CheckCircle className="w-12 h-12 text-green-400 mx-auto opacity-70" />
             <h3 className="text-base font-bold text-nova-text">No Pending Rescue Incidents</h3>
-            <p className="text-xs text-nova-text-muted leading-relaxed">
+            <p className="text-xs text-em-text-muted leading-relaxed">
               Your squad is on standby with zero pending alerts. Newly dispatched citizen SOS reports will appear here automatically.
             </p>
           </div>
@@ -413,12 +413,12 @@ export default function RescueOperationsCatchAll() {
     if (!myTeam) return null;
     if (!activeMission) {
       return (
-        <div className="nova-card border border-nova-border rounded-2xl p-12 text-center max-w-lg mx-auto space-y-4 my-8">
-          <div className="w-16 h-16 rounded-2xl bg-nova-surface2 border border-nova-border flex items-center justify-center mx-auto text-nova-text-muted">
+        <div className="em-card border border-em-border rounded-2xl p-12 text-center max-w-lg mx-auto space-y-4 my-8">
+          <div className="w-16 h-16 rounded-2xl bg-em-subtle border border-em-border flex items-center justify-center mx-auto text-em-text-muted">
             <Compass className="w-8 h-8" />
           </div>
           <h3 className="text-lg font-bold text-nova-text">No Active Mission</h3>
-          <p className="text-xs text-nova-text-muted leading-relaxed max-w-sm mx-auto">
+          <p className="text-xs text-em-text-muted leading-relaxed max-w-sm mx-auto">
             No active mission. Accept an assigned incident to begin navigation.
           </p>
           <button
@@ -444,22 +444,22 @@ export default function RescueOperationsCatchAll() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl font-bold text-nova-text flex items-center gap-2">
-              <Compass className="w-5 h-5 text-nova-cyan" /> {t('heading.mission_navigation')}
+              <Compass className="w-5 h-5 text-er-blue" /> {t('heading.mission_navigation')}
             </h2>
-            <p className="text-xs text-nova-text-dim mt-0.5">
-              Active Mission: <span className="font-mono font-bold text-nova-cyan">{activeMission.trackingCode || activeMission.id}</span>
+            <p className="text-xs text-em-text-dim mt-0.5">
+              Active Mission: <span className="font-mono font-bold text-er-blue">{activeMission.trackingCode || activeMission.id}</span>
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold px-3 py-1 rounded-lg bg-nova-surface border border-nova-border text-nova-text">
-              Status: <span className="text-nova-cyan capitalize">{statusLabel(activeMission.status)}</span>
+            <span className="text-xs font-bold px-3 py-1 rounded-lg bg-white border border-em-border text-nova-text">
+              Status: <span className="text-er-blue capitalize">{statusLabel(activeMission.status)}</span>
             </span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           {/* Tactical Map Container */}
-          <div className="lg:col-span-2 nova-card border border-nova-border rounded-2xl h-[420px] relative overflow-hidden flex flex-col bg-[#070b14]">
+          <div className="lg:col-span-2 em-card border border-em-border rounded-2xl h-[420px] relative overflow-hidden flex flex-col bg-[#070b14]">
             <LazyEmergencyMap
               incidents={[activeMission]}
               rescueTeams={[myTeam]}
@@ -470,19 +470,19 @@ export default function RescueOperationsCatchAll() {
             />
 
             {/* Tactical GPS Overlay */}
-            <div className="absolute top-4 left-4 z-[999] bg-nova-surface/90 backdrop-blur-md border border-nova-border rounded-xl p-3 shadow-xl space-y-1">
+            <div className="absolute top-4 left-4 z-[999] bg-white/90 backdrop-blur-md border border-em-border rounded-xl p-3 shadow-xl space-y-1">
               <div className="flex items-center gap-2">
-                <Navigation className="w-4 h-4 text-nova-cyan animate-pulse" />
+                <Navigation className="w-4 h-4 text-er-blue animate-pulse" />
                 <span className="text-xs font-bold text-nova-text">TACTICAL ROUTE ACTIVE</span>
               </div>
-              <p className="text-[11px] text-nova-text-dim">
+              <p className="text-[11px] text-em-text-dim">
                 Destination: <span className="font-semibold text-nova-text">{activeMission.location?.address || 'Colombo District'}</span>
               </p>
               <div className="flex gap-2 pt-1 font-mono text-[10px]">
-                <span className="px-2 py-0.5 rounded bg-nova-surface2 border border-nova-border text-nova-text-muted">
+                <span className="px-2 py-0.5 rounded bg-em-subtle border border-em-border text-em-text-muted">
                   Dist: {distanceKm} km (Haversine)
                 </span>
-                <span className="px-2 py-0.5 rounded bg-nova-surface2 border border-nova-border text-nova-high font-bold">
+                <span className="px-2 py-0.5 rounded bg-em-subtle border border-em-border text-er-orange font-bold">
                   ETA: ~{etaMins} mins (Est.)
                 </span>
               </div>
@@ -492,9 +492,9 @@ export default function RescueOperationsCatchAll() {
           {/* Mission Details & Action Stepper */}
           <div className="space-y-4">
             {/* Mission Summary Card */}
-            <div className="nova-card border border-nova-border rounded-2xl p-5 space-y-3">
+            <div className="em-card border border-em-border rounded-2xl p-5 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">
+                <span className="text-xs font-bold text-em-text-muted uppercase tracking-wider">
                   Emergency Details
                 </span>
                 <SeverityBadge severity={activeMission.severity} size="sm" pulse={activeMission.severity === 'critical'} />
@@ -503,16 +503,16 @@ export default function RescueOperationsCatchAll() {
               <h3 className="text-sm font-bold text-nova-text">
                 {getEmergencyTypeIcon(activeMission.type)} {activeMission.title}
               </h3>
-              <p className="text-xs text-nova-text-dim leading-relaxed">
+              <p className="text-xs text-em-text-dim leading-relaxed">
                 {activeMission.description}
               </p>
 
-              <div className="p-3 rounded-xl bg-nova-surface2/60 border border-nova-border text-xs space-y-1">
-                <div className="flex justify-between text-nova-text-muted">
+              <div className="p-3 rounded-xl bg-em-subtle/60 border border-em-border text-xs space-y-1">
+                <div className="flex justify-between text-em-text-muted">
                   <span>Destination GPS:</span>
-                  <span className="font-mono text-nova-cyan">{incLat.toFixed(4)}° N, {incLng.toFixed(4)}° E</span>
+                  <span className="font-mono text-er-blue">{incLat.toFixed(4)}° N, {incLng.toFixed(4)}° E</span>
                 </div>
-                <div className="flex justify-between text-nova-text-muted">
+                <div className="flex justify-between text-em-text-muted">
                   <span>Reporter:</span>
                   <span className="font-medium text-nova-text">{activeMission.reporterName}</span>
                 </div>
@@ -552,32 +552,32 @@ export default function RescueOperationsCatchAll() {
                         <span className="font-bold text-green-400 flex items-center gap-1">
                           <MapPin className="w-3.5 h-3.5" /> Citizen Live Location
                         </span>
-                        <p className="font-mono text-nova-text-dim">
+                        <p className="font-mono text-em-text-dim">
                           {liveLat.toFixed(5)}° N, {liveLng.toFixed(5)}° E
                           {liveAccuracy ? ` (±${Math.round(liveAccuracy)}m accuracy)` : ''}
                         </p>
-                        {liveAddress && <p className="text-nova-text-dim truncate">{liveAddress}</p>}
+                        {liveAddress && <p className="text-em-text-dim truncate">{liveAddress}</p>}
                       </div>
                     )}
 
                     {fetchingLiveIncident && !hasPhoto && !hasAudio && (
-                      <div className="p-3 rounded-xl bg-nova-surface/40 border border-nova-border/50 text-[11px] text-nova-text-muted text-center flex items-center justify-center gap-2">
+                      <div className="p-3 rounded-xl bg-white/40 border border-em-border text-[11px] text-em-text-muted text-center flex items-center justify-center gap-2">
                         <RefreshCw className="w-3 h-3 animate-spin" /> Loading citizen evidence...
                       </div>
                     )}
 
                     {!fetchingLiveIncident && !hasPhoto && !hasAudio && (
-                      <div className="p-3 rounded-xl bg-nova-surface/40 border border-nova-border/50 text-[11px] text-nova-text-muted text-center italic">
+                      <div className="p-3 rounded-xl bg-white/40 border border-em-border text-[11px] text-em-text-muted text-center italic">
                         No photo or voice evidence uploaded for this incident.
                       </div>
                     )}
 
                     {hasPhoto && (
                       <div className="space-y-1.5">
-                        <span className="text-[11px] font-bold text-nova-text-muted flex items-center gap-1">
+                        <span className="text-[11px] font-bold text-em-text-muted flex items-center gap-1">
                           <Camera className="w-3.5 h-3.5 text-purple-400" /> Citizen Evidence Photo
                         </span>
-                        <div className="relative rounded-xl overflow-hidden border border-nova-border h-36 bg-black/40">
+                        <div className="relative rounded-xl overflow-hidden border border-em-border h-36 bg-black/40">
                           <Image
                             src={resolvedPhoto}
                             alt="Incident Evidence"
@@ -592,8 +592,8 @@ export default function RescueOperationsCatchAll() {
 
                     {hasAudio && (
                       <div className="space-y-1.5">
-                        <span className="text-[11px] font-bold text-nova-text-muted flex items-center gap-1">
-                          <Volume2 className="w-3.5 h-3.5 text-nova-cyan" /> Citizen Voice Recording
+                        <span className="text-[11px] font-bold text-em-text-muted flex items-center gap-1">
+                          <Volume2 className="w-3.5 h-3.5 text-er-blue" /> Citizen Voice Recording
                         </span>
                         <audio
                           key={resolvedAudio}
@@ -610,8 +610,8 @@ export default function RescueOperationsCatchAll() {
             </div>
 
             {/* Tactical Responder Lifecycle Actions */}
-            <div className="nova-card border border-nova-border rounded-2xl p-5 space-y-3">
-              <span className="text-xs font-bold text-nova-text-muted uppercase tracking-wider block">
+            <div className="em-card border border-em-border rounded-2xl p-5 space-y-3">
+              <span className="text-xs font-bold text-em-text-muted uppercase tracking-wider block">
                 Mission Execution Actions
               </span>
 
@@ -681,13 +681,13 @@ export default function RescueOperationsCatchAll() {
     return (
       <div className="space-y-4">
         <h2 className="text-xl font-bold text-nova-text flex items-center gap-2">
-          <Users className="w-5 h-5 text-nova-cyan" /> {t('heading.roster')}
+          <Users className="w-5 h-5 text-er-blue" /> {t('heading.roster')}
         </h2>
-        <div className="nova-card border border-nova-border rounded-2xl p-5 space-y-4">
-          <div className="flex items-center justify-between pb-2 border-b border-nova-border/60">
+        <div className="em-card border border-em-border rounded-2xl p-5 space-y-4">
+          <div className="flex items-center justify-between pb-2 border-b border-em-border/60">
             <div>
               <h3 className="text-sm font-bold text-nova-text">{myTeam.name}</h3>
-              <p className="text-xs text-nova-text-dim">{myTeam.district} Operational Base</p>
+              <p className="text-xs text-em-text-dim">{myTeam.district} Operational Base</p>
             </div>
             <span className="text-xs font-mono font-bold px-3 py-1 rounded-full bg-green-500/10 text-green-400 border border-green-500/20 uppercase">
               {myTeam.status}
@@ -696,14 +696,14 @@ export default function RescueOperationsCatchAll() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {myTeam.members.map((member) => (
-              <div key={member.id} className="p-3.5 rounded-xl bg-nova-surface border border-nova-border flex items-center justify-between">
+              <div key={member.id} className="p-3.5 rounded-xl bg-white border border-em-border flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-nova-cyan/20 to-nova-blue/20 border border-nova-cyan/30 flex items-center justify-center text-xs font-bold text-nova-cyan">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-nova-cyan/20 to-nova-blue/20 border border-er-blue/30 flex items-center justify-center text-xs font-bold text-er-blue">
                     {member.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
                   </div>
                   <div>
                     <p className="text-xs font-semibold text-nova-text">{member.name}</p>
-                    <p className="text-[10px] text-nova-text-muted">{member.role}</p>
+                    <p className="text-[10px] text-em-text-muted">{member.role}</p>
                   </div>
                 </div>
                 <span className={cn('text-[9px] font-bold px-2 py-0.5 rounded-full border uppercase', {
@@ -723,13 +723,13 @@ export default function RescueOperationsCatchAll() {
   // Do not interpret an empty response as an unlinked account until all required requests finish.
   if (!currentUser || loading.teams || (Boolean(currentUser.rescueTeamId) && loading.incidents)) {
     return (
-      <div className="min-h-screen bg-nova-bg">
+      <div className="min-h-screen bg-em-bg">
         <TopNav role="rescue_team" />
         <DashboardShell role="rescue_team">
           <div className="p-12 text-center flex flex-col items-center justify-center space-y-3">
-            <RefreshCw className="w-8 h-8 text-nova-cyan animate-spin" />
+            <RefreshCw className="w-8 h-8 text-er-blue animate-spin" />
             <h3 className="text-base font-bold text-nova-text">Loading Rescue Operations...</h3>
-            <p className="text-xs text-nova-text-muted">Fetching rescue teams and live dispatch queues...</p>
+            <p className="text-xs text-em-text-muted">Fetching rescue teams and live dispatch queues...</p>
           </div>
         </DashboardShell>
       </div>
@@ -739,14 +739,14 @@ export default function RescueOperationsCatchAll() {
   if (errors.teams || (myTeam && errors.incidents)) {
     const message = errors.teams || errors.incidents;
     return (
-      <div className="min-h-screen bg-nova-bg">
+      <div className="min-h-screen bg-em-bg">
         <TopNav role="rescue_team" />
         <DashboardShell role="rescue_team">
           <div className="p-12 text-center flex flex-col items-center justify-center space-y-3">
             <ShieldAlert className="w-8 h-8 text-red-400" />
             <h3 className="text-base font-bold text-nova-text">Unable to load rescue operations</h3>
             <p className="text-xs text-red-300 max-w-md">{message}</p>
-            <button type="button" onClick={() => { fetchTeams(); fetchIncidents(); }} className="px-4 py-2 bg-nova-surface text-nova-text border border-nova-border font-semibold rounded-xl text-xs">
+            <button type="button" onClick={() => { fetchTeams(); fetchIncidents(); }} className="px-4 py-2 bg-white text-nova-text border border-em-border font-semibold rounded-xl text-xs">
               <RefreshCw className="w-3.5 h-3.5 inline mr-1.5" /> Retry
             </button>
           </div>
@@ -757,13 +757,13 @@ export default function RescueOperationsCatchAll() {
 
   if (currentUser.approvalStatus !== 'APPROVED') {
     return (
-      <div className="min-h-screen bg-nova-bg">
+      <div className="min-h-screen bg-em-bg">
         <TopNav role="rescue_team" />
         <DashboardShell role="rescue_team">
           <div className="p-12 text-center flex flex-col items-center justify-center space-y-3">
             <ShieldAlert className="w-8 h-8 text-amber-400" />
             <h3 className="text-base font-bold text-nova-text">Approval Pending</h3>
-            <p className="text-xs text-nova-text-muted">Your rescue role is awaiting administrator approval.</p>
+            <p className="text-xs text-em-text-muted">Your rescue role is awaiting administrator approval.</p>
           </div>
         </DashboardShell>
       </div>
@@ -772,14 +772,14 @@ export default function RescueOperationsCatchAll() {
 
   if (currentUser.rescueTeamId && !myTeam) {
     return (
-      <div className="min-h-screen bg-nova-bg">
+      <div className="min-h-screen bg-em-bg">
         <TopNav role="rescue_team" />
         <DashboardShell role="rescue_team">
           <div className="p-12 text-center flex flex-col items-center justify-center space-y-3">
             <ShieldAlert className="w-8 h-8 text-red-400" />
             <h3 className="text-base font-bold text-nova-text">Linked rescue team unavailable</h3>
             <p className="text-xs text-red-300">The assigned team {currentUser.rescueTeamId} could not be loaded from the backend.</p>
-            <button type="button" onClick={() => fetchTeams()} className="px-4 py-2 bg-nova-surface text-nova-text border border-nova-border font-semibold rounded-xl text-xs"><RefreshCw className="w-3.5 h-3.5 inline mr-1.5" /> Retry</button>
+            <button type="button" onClick={() => fetchTeams()} className="px-4 py-2 bg-white text-nova-text border border-em-border font-semibold rounded-xl text-xs"><RefreshCw className="w-3.5 h-3.5 inline mr-1.5" /> Retry</button>
           </div>
         </DashboardShell>
       </div>
@@ -789,25 +789,25 @@ export default function RescueOperationsCatchAll() {
   // Guard: if authenticated rescue user has no linked team
   if (!myTeam) {
     return (
-      <div className="min-h-screen bg-nova-bg">
+      <div className="min-h-screen bg-em-bg">
         <TopNav role="rescue_team" />
         <DashboardShell role="rescue_team">
           <div className="p-6">
-            <div className="nova-card border border-amber-500/30 bg-amber-500/5 rounded-2xl p-8 text-center max-w-lg mx-auto space-y-4 my-8">
+            <div className="em-card border border-amber-500/30 bg-amber-500/5 rounded-2xl p-8 text-center max-w-lg mx-auto space-y-4 my-8">
               <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto text-amber-400">
                 <ShieldAlert className="w-7 h-7" />
               </div>
               <h3 className="text-lg font-bold text-nova-text">
                 No Rescue Team Linked
               </h3>
-              <p className="text-xs text-nova-text-dim leading-relaxed">
+              <p className="text-xs text-em-text-dim leading-relaxed">
                 {`No rescue team is linked to this account (${currentUser.email}). Please contact your dispatch administrator to link your responder credentials to an active squad.`}
               </p>
               <div className="flex justify-center gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => fetchTeams()}
-                  className="px-4 py-2 bg-nova-surface hover:bg-nova-surface2 text-nova-text border border-nova-border font-semibold rounded-xl text-xs transition-all flex items-center gap-1.5"
+                  className="px-4 py-2 bg-white hover:bg-em-subtle text-nova-text border border-em-border font-semibold rounded-xl text-xs transition-all flex items-center gap-1.5"
                 >
                   <RefreshCw className="w-3.5 h-3.5" /> Retry Connection
                 </button>
@@ -827,7 +827,7 @@ export default function RescueOperationsCatchAll() {
   }
 
   return (
-    <div className="min-h-screen bg-nova-bg">
+    <div className="min-h-screen bg-em-bg">
       <TopNav role="rescue_team" />
       <DashboardShell role="rescue_team">
         <div className="p-6 space-y-6">

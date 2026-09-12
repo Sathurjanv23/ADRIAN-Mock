@@ -78,24 +78,24 @@ export default function PreparednessPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-nova-bg text-nova-text flex flex-col">
+    <div className="min-h-screen bg-em-bg text-nova-text flex flex-col">
       {/* ─ Top Nav ─ */}
-      <nav className="sticky top-0 z-50 bg-nova-bg/90 backdrop-blur-xl border-b border-nova-border/50">
+      <nav className="sticky top-0 z-50 bg-em-bg/90 backdrop-blur-xl border-b border-em-border">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-lg bg-nova-cyan/10 border border-nova-cyan/30 flex items-center justify-center group-hover:border-nova-cyan transition-colors">
-              <ShieldAlert className="w-5 h-5 text-nova-cyan" />
+            <div className="w-8 h-8 rounded-lg bg-er-blue-light border border-er-blue/30 flex items-center justify-center group-hover:border-nova-cyan transition-colors">
+              <ShieldAlert className="w-5 h-5 text-er-blue" />
             </div>
             <div>
               <span className="font-mono font-black tracking-widest text-nova-text">PROJECT NOVA</span>
-              <span className="text-[10px] block text-nova-cyan font-mono leading-none">PREPAREDNESS HUB</span>
+              <span className="text-[10px] block text-er-blue font-mono leading-none">PREPAREDNESS HUB</span>
             </div>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6 text-sm text-nova-text-dim">
+          <div className="hidden md:flex items-center gap-6 text-sm text-em-text-dim">
             <Link href="/" className="hover:text-nova-text transition-colors">Home</Link>
             <Link href="/about" className="hover:text-nova-text transition-colors">About</Link>
-            <Link href="/preparedness" className="text-nova-cyan font-medium">Preparedness</Link>
+            <Link href="/preparedness" className="text-er-blue font-medium">Preparedness</Link>
             <Link href="/command" className="hover:text-nova-text transition-colors">Command Center</Link>
           </div>
 
@@ -108,8 +108,8 @@ export default function PreparednessPage() {
       </nav>
 
       {/* ─ Hero Section ─ */}
-      <section className="relative py-16 px-6 overflow-hidden border-b border-nova-border/40">
-        <div className="absolute inset-0 hero-grid-bg opacity-25 pointer-events-none" />
+      <section className="relative py-16 px-6 overflow-hidden border-b border-em-border/40">
+        <div className="absolute inset-0 opacity-10 opacity-25 pointer-events-none" />
         <div className="max-w-5xl mx-auto text-center space-y-4 relative z-10">
           <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
             <Shield className="w-3.5 h-3.5" />
@@ -118,7 +118,7 @@ export default function PreparednessPage() {
           <h1 className="text-3xl md:text-5xl font-black tracking-tight">
             Emergency Preparedness Guide
           </h1>
-          <p className="text-sm md:text-base text-nova-text-dim max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-em-text-dim max-w-2xl mx-auto">
             Essential protocols, evacuation instructions, Sri Lanka emergency hotlines, and checklists to safeguard your family before, during, and after disasters.
           </p>
 
@@ -131,7 +131,7 @@ export default function PreparednessPage() {
             </Link>
             <Link
               href="/citizen/report"
-              className="bg-nova-surface hover:bg-nova-surface/80 border border-nova-border text-xs font-bold px-5 py-2.5 rounded-xl transition-all inline-flex items-center gap-2"
+              className="bg-white hover:bg-white/80 border border-em-border text-xs font-bold px-5 py-2.5 rounded-xl transition-all inline-flex items-center gap-2"
             >
               <FileText className="w-4 h-4" /> File Emergency Report
             </Link>
@@ -142,15 +142,15 @@ export default function PreparednessPage() {
       {/* ─ Emergency Hotlines ─ */}
       <section className="py-12 px-6 max-w-7xl mx-auto w-full">
         <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-          <PhoneCall className="w-5 h-5 text-nova-cyan" /> 24/7 National Emergency Hotlines
+          <PhoneCall className="w-5 h-5 text-er-blue" /> 24/7 National Emergency Hotlines
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {hotlines.map((h, i) => (
-            <div key={i} className="nova-card border border-nova-border rounded-2xl p-5 space-y-2 hover:border-nova-cyan/40 transition-all">
-              <span className="text-2xl font-mono font-black text-nova-cyan block">{h.number}</span>
+            <div key={i} className="em-card border border-em-border rounded-2xl p-5 space-y-2 hover:border-er-blue/40 transition-all">
+              <span className="text-2xl font-mono font-black text-er-blue block">{h.number}</span>
               <h3 className="text-sm font-bold text-nova-text">{h.name}</h3>
-              <p className="text-xs text-nova-text-dim leading-relaxed">{h.desc}</p>
+              <p className="text-xs text-em-text-dim leading-relaxed">{h.desc}</p>
             </div>
           ))}
         </div>
@@ -164,12 +164,12 @@ export default function PreparednessPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {guides.map((g, i) => (
-            <div key={i} className={`nova-card border ${g.color} rounded-2xl p-6 space-y-4`}>
+            <div key={i} className={`em-card border ${g.color} rounded-2xl p-6 space-y-4`}>
               <div className="flex justify-between items-start">
-                <div className="p-3 rounded-xl bg-nova-surface border border-nova-border">
+                <div className="p-3 rounded-xl bg-white border border-em-border">
                   {g.icon}
                 </div>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-nova-surface border border-nova-border text-nova-text-muted">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white border border-em-border text-em-text-muted">
                   {g.badge}
                 </span>
               </div>
@@ -178,8 +178,8 @@ export default function PreparednessPage() {
 
               <ul className="space-y-2.5">
                 {g.tips.map((tip, idx) => (
-                  <li key={idx} className="text-xs text-nova-text-dim flex items-start gap-2 leading-relaxed">
-                    <span className="text-nova-cyan font-bold mt-0.5">•</span>
+                  <li key={idx} className="text-xs text-em-text-dim flex items-start gap-2 leading-relaxed">
+                    <span className="text-er-blue font-bold mt-0.5">•</span>
                     <span>{tip}</span>
                   </li>
                 ))}
@@ -191,17 +191,17 @@ export default function PreparednessPage() {
 
       {/* ─ Go-Bag Checklist ─ */}
       <section className="py-12 px-6 max-w-7xl mx-auto w-full mb-12">
-        <div className="nova-card border border-nova-border rounded-2xl p-8 space-y-6">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-nova-border/50 pb-6">
+        <div className="em-card border border-em-border rounded-2xl p-8 space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-em-border pb-6">
             <div>
               <h2 className="text-xl font-bold flex items-center gap-2">
                 <CheckSquare className="w-5 h-5 text-emerald-400" /> 72-Hour Survival Go-Bag Checklist
               </h2>
-              <p className="text-xs text-nova-text-dim mt-1">Pack these essential items in an easy-to-carry waterproof backpack.</p>
+              <p className="text-xs text-em-text-dim mt-1">Pack these essential items in an easy-to-carry waterproof backpack.</p>
             </div>
             <Link
               href="/citizen/safety"
-              className="text-xs text-nova-cyan font-bold hover:underline inline-flex items-center gap-1 shrink-0"
+              className="text-xs text-er-blue font-bold hover:underline inline-flex items-center gap-1 shrink-0"
             >
               View Interactive Safety Center <ArrowRight className="w-3.5 h-3.5" />
             </Link>
@@ -209,7 +209,7 @@ export default function PreparednessPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {kitItems.map((item, idx) => (
-              <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-nova-surface/50 border border-nova-border/40 text-xs text-nova-text">
+              <div key={idx} className="flex items-center gap-3 p-3 rounded-xl bg-white/50 border border-em-border/40 text-xs text-nova-text">
                 <div className="w-4 h-4 rounded border border-emerald-400/50 bg-emerald-400/10 flex items-center justify-center text-emerald-400 text-[10px] font-bold">
                   ✓
                 </div>
@@ -221,10 +221,10 @@ export default function PreparednessPage() {
       </section>
 
       {/* ─ Footer ─ */}
-      <footer className="mt-auto border-t border-nova-border/50 py-8 px-6 bg-nova-surface/20">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-nova-text-dim">
+      <footer className="mt-auto border-t border-em-border py-8 px-6 bg-white/20">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-em-text-dim">
           <div className="flex items-center gap-2">
-            <LifeBuoy className="w-4 h-4 text-nova-cyan" />
+            <LifeBuoy className="w-4 h-4 text-er-blue" />
             <span>Sri Lanka Disaster Management Network — Public Safety Service</span>
           </div>
           <div className="flex items-center gap-6">

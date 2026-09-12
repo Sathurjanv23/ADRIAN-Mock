@@ -26,8 +26,8 @@ export default function IncidentDetailPage() {
 
   if (!incident) {
     return (
-      <div className="min-h-screen bg-nova-bg flex items-center justify-center">
-        <p className="text-nova-text-dim">Incident not found.</p>
+      <div className="min-h-screen bg-em-bg flex items-center justify-center">
+        <p className="text-em-text-dim">Incident not found.</p>
       </div>
     );
   }
@@ -95,29 +95,29 @@ export default function IncidentDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-nova-bg">
+    <div className="min-h-screen bg-em-bg">
       <TopNav role="officer" />
       <DashboardShell role="officer">
         <div className="p-6 space-y-6">
           {/* Back Navigation */}
-          <Link href="/command/incidents" className="flex items-center gap-2 text-xs text-nova-text-muted hover:text-nova-text w-max transition-colors">
+          <Link href="/command/incidents" className="flex items-center gap-2 text-xs text-em-text-muted hover:text-nova-text w-max transition-colors">
             <ChevronLeft className="w-4 h-4" />
             Back to Priority Queue
           </Link>
 
           {/* Title Area */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-nova-border/60 pb-6">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-em-border/60 pb-6">
             <div className="space-y-1">
               <div className="flex items-center gap-3">
-                <span className="text-xs font-mono font-bold text-nova-cyan">{incident.id}</span>
+                <span className="text-xs font-mono font-bold text-er-blue">{incident.id}</span>
                 <SeverityBadge severity={incident.severity} size="sm" pulse={incident.severity === 'critical'} />
               </div>
               <h1 className="text-xl lg:text-2xl font-bold font-display text-nova-text flex items-center gap-2">
                 <span>{getEmergencyTypeIcon(incident.type)}</span>
                 <span>{incident.title}</span>
               </h1>
-              <p className="text-xs text-nova-text-dim flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-nova-cyan" />
+              <p className="text-xs text-em-text-dim flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-er-blue" />
                 <span>{incident.location.address || incident.location.district}</span>
               </p>
             </div>
@@ -166,16 +166,16 @@ export default function IncidentDetailPage() {
             {/* LEFT 2 COLUMNS — Incident specifics & AI insights */}
             <div className="xl:col-span-2 space-y-6">
               {/* Description card */}
-              <div className="nova-card border border-nova-border rounded-xl p-5 space-y-3">
-                <h3 className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">Report Description</h3>
+              <div className="em-card border border-em-border rounded-xl p-5 space-y-3">
+                <h3 className="text-xs font-bold text-em-text-muted uppercase tracking-wider">Report Description</h3>
                 <p className="text-sm text-nova-text leading-relaxed">{incident.description}</p>
-                <div className="flex items-center gap-4 text-xs text-nova-text-dim pt-3 border-t border-nova-border/50">
+                <div className="flex items-center gap-4 text-xs text-em-text-dim pt-3 border-t border-em-border">
                   <div className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-nova-cyan" />
+                    <Clock className="w-3.5 h-3.5 text-er-blue" />
                     <span>Reported: {formatDateTime(incident.reportedAt)}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <Users className="w-3.5 h-3.5 text-nova-cyan" />
+                    <Users className="w-3.5 h-3.5 text-er-blue" />
                     <span>{incident.peopleAffected} civilians affected</span>
                   </div>
                 </div>
@@ -183,7 +183,7 @@ export default function IncidentDetailPage() {
 
               {/* AI Analysis and Triage */}
               {incident.aiAnalysis && (
-                <div className="nova-card border border-purple-500/25 bg-purple-500/3 rounded-xl p-5 space-y-4">
+                <div className="em-card border border-purple-500/25 bg-purple-500/3 rounded-xl p-5 space-y-4">
                   <div className="flex items-center gap-2 border-b border-purple-500/20 pb-3">
                     <Cpu className="w-5 h-5 text-purple-400" />
                     <h3 className="text-sm font-bold text-nova-text">NOVA AI Incident Triage</h3>
@@ -191,16 +191,16 @@ export default function IncidentDetailPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-3 rounded-lg bg-nova-surface/60 border border-nova-border">
-                      <p className="text-[10px] text-nova-text-muted uppercase font-semibold">Severity recommendation</p>
+                    <div className="p-3 rounded-lg bg-white/60 border border-em-border">
+                      <p className="text-[10px] text-em-text-muted uppercase font-semibold">Severity recommendation</p>
                       <p className="text-sm font-bold text-nova-text mt-1 capitalize">{incident.aiAnalysis.severity}</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-nova-surface/60 border border-nova-border">
-                      <p className="text-[10px] text-nova-text-muted uppercase font-semibold">Detected Language</p>
+                    <div className="p-3 rounded-lg bg-white/60 border border-em-border">
+                      <p className="text-[10px] text-em-text-muted uppercase font-semibold">Detected Language</p>
                       <p className="text-sm font-bold text-nova-text mt-1 uppercase">{incident.aiAnalysis.detectedLanguage}</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-nova-surface/60 border border-nova-border">
-                      <p className="text-[10px] text-nova-text-muted uppercase font-semibold">Vulnerable Persons</p>
+                    <div className="p-3 rounded-lg bg-white/60 border border-em-border">
+                      <p className="text-[10px] text-em-text-muted uppercase font-semibold">Vulnerable Persons</p>
                       <p className="text-sm font-bold text-red-400 mt-1">
                         {incident.aiAnalysis.vulnerablePersons?.map((v) => `${v.count} ${v.type}`).join(', ') || 'None'}
                       </p>
@@ -209,28 +209,28 @@ export default function IncidentDetailPage() {
 
                   <div className="p-3.5 rounded-lg bg-purple-500/5 border border-purple-500/15">
                     <p className="text-xs font-semibold text-purple-300">Recommended Action Plan</p>
-                    <p className="text-xs text-nova-text-dim mt-1.5">{incident.aiAnalysis.recommendedAction}</p>
+                    <p className="text-xs text-em-text-dim mt-1.5">{incident.aiAnalysis.recommendedAction}</p>
                   </div>
                 </div>
               )}
 
               {/* Resource Requirements */}
-              <div className="nova-card border border-nova-border rounded-xl p-5 space-y-4">
-                <h3 className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">Required Resources</h3>
+              <div className="em-card border border-em-border rounded-xl p-5 space-y-4">
+                <h3 className="text-xs font-bold text-em-text-muted uppercase tracking-wider">Required Resources</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {incident.aiAnalysis?.requiredResources.map((res, idx) => (
-                    <div key={idx} className="p-3 rounded-lg bg-nova-surface border border-nova-border flex items-center justify-between">
+                    <div key={idx} className="p-3 rounded-lg bg-white border border-em-border flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Package className="w-4 h-4 text-nova-cyan" />
+                        <Package className="w-4 h-4 text-er-blue" />
                         <div>
                           <p className="text-xs font-bold text-nova-text">{res.type}</p>
-                          <p className="text-[10px] text-nova-text-muted">Quantity: {res.quantity}</p>
+                          <p className="text-[10px] text-em-text-muted">Quantity: {res.quantity}</p>
                         </div>
                       </div>
                       <span className={cn('text-[9px] font-bold px-2 py-0.5 rounded-full border uppercase', {
                         'text-red-400 border-red-500/20 bg-red-500/5': res.priority === 'immediate',
                         'text-yellow-400 border-yellow-500/20 bg-yellow-500/5': res.priority === 'urgent',
-                        'text-nova-text-muted border-nova-border bg-nova-surface2': res.priority === 'normal',
+                        'text-em-text-muted border-em-border bg-em-subtle': res.priority === 'normal',
                       })}>
                         {res.priority}
                       </span>
@@ -243,14 +243,14 @@ export default function IncidentDetailPage() {
             {/* RIGHT COLUMN — Active Ops, Timeline, Team assignments */}
             <div className="space-y-6">
               {/* Assigned Team */}
-              <div className="nova-card border border-nova-border rounded-xl p-5 space-y-4">
-                <h3 className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">Assigned Rescue Team</h3>
+              <div className="em-card border border-em-border rounded-xl p-5 space-y-4">
+                <h3 className="text-xs font-bold text-em-text-muted uppercase tracking-wider">Assigned Rescue Team</h3>
                 {assignedTeam ? (
                   <div className="space-y-4">
                     <div className="flex items-start justify-between">
                       <div>
                         <p className="text-sm font-bold text-nova-text">{assignedTeam.name}</p>
-                        <p className="text-xs text-nova-text-dim mt-0.5">{assignedTeam.district} · {assignedTeam.capabilities.join(', ')}</p>
+                        <p className="text-xs text-em-text-dim mt-0.5">{assignedTeam.district} · {assignedTeam.capabilities.join(', ')}</p>
                       </div>
                       <span className={cn('text-[10px] font-bold px-2 py-0.5 rounded-full border', {
                         'bg-green-500/10 border-green-500/30 text-green-400': assignedTeam.status === 'available',
@@ -263,20 +263,20 @@ export default function IncidentDetailPage() {
                     </div>
 
                     <div className="flex gap-2">
-                      <button className="flex-1 flex items-center justify-center gap-1.5 border border-nova-border text-nova-text-dim hover:text-nova-text py-2 rounded-xl text-xs font-semibold hover:border-nova-border2 transition-all">
+                      <button className="flex-1 flex items-center justify-center gap-1.5 border border-em-border text-em-text-dim hover:text-nova-text py-2 rounded-xl text-xs font-semibold hover:border-em-border-strong transition-all">
                         <Phone className="w-3.5 h-3.5" /> Call Squad
                       </button>
-                      <button className="flex-1 flex items-center justify-center gap-1.5 bg-nova-cyan/15 text-nova-cyan hover:bg-nova-cyan/25 py-2 rounded-xl text-xs font-semibold transition-all">
+                      <button className="flex-1 flex items-center justify-center gap-1.5 bg-er-blue-light text-er-blue hover:bg-er-blue/25 py-2 rounded-xl text-xs font-semibold transition-all">
                         <Navigation className="w-3.5 h-3.5" /> Locate GPS
                       </button>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-center py-4 text-xs text-nova-text-dim space-y-3">
+                  <div className="text-center py-4 text-xs text-em-text-dim space-y-3">
                     <p>No rescue team assigned to this incident yet.</p>
                     <button
                       onClick={handleAutoAssign}
-                      className="border border-nova-cyan/35 text-nova-cyan px-4 py-2 rounded-lg font-semibold hover:bg-nova-cyan/10 transition-colors"
+                      className="border border-er-blue/30 text-er-blue px-4 py-2 rounded-lg font-semibold hover:bg-er-blue-light transition-colors"
                     >
                       Assign Nearest Team
                     </button>
@@ -285,13 +285,13 @@ export default function IncidentDetailPage() {
               </div>
 
               {/* Hospital Capacity & Ambulance Routing */}
-              <div className="nova-card border border-nova-border rounded-xl p-5 space-y-4">
-                <h3 className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">Hospital Triage Routing</h3>
+              <div className="em-card border border-em-border rounded-xl p-5 space-y-4">
+                <h3 className="text-xs font-bold text-em-text-muted uppercase tracking-wider">Hospital Triage Routing</h3>
                 <div className="space-y-2">
                   {hospitals.slice(0, 2).map((hosp) => {
                     const icuOccupiedPercent = Math.round(((hosp.icuTotal - hosp.icuAvailable) / hosp.icuTotal) * 100);
                     return (
-                      <div key={hosp.id} className="p-3 rounded-lg bg-nova-surface/50 border border-nova-border/50 flex flex-col gap-2">
+                      <div key={hosp.id} className="p-3 rounded-lg bg-white/50 border border-em-border flex flex-col gap-2">
                         <div className="flex items-center justify-between">
                           <p className="text-xs font-bold text-nova-text">{hosp.name}</p>
                           <span className={cn('text-[9px] font-bold px-2 py-0.5 rounded-full border', {
@@ -311,8 +311,8 @@ export default function IncidentDetailPage() {
               </div>
 
               {/* Real-time Timeline */}
-              <div className="nova-card border border-nova-border rounded-xl p-5 space-y-4">
-                <h3 className="text-xs font-bold text-nova-text-muted uppercase tracking-wider">Real-time Response Log</h3>
+              <div className="em-card border border-em-border rounded-xl p-5 space-y-4">
+                <h3 className="text-xs font-bold text-em-text-muted uppercase tracking-wider">Real-time Response Log</h3>
                 <IncidentTimeline currentStatus={incident.status} updates={incident.updates} />
               </div>
             </div>

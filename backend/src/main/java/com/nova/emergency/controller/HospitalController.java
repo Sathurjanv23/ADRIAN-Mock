@@ -70,4 +70,30 @@ public class HospitalController {
         hospital.setLastUpdated(Instant.now().toString());
         return ResponseEntity.ok(ApiResponse.ok(hospitalRepository.save(hospital), "Ambulance dispatched"));
     }
+
+    @PostMapping("/{id}/admit")
+    public ResponseEntity<ApiResponse<Hospital>> admitPatient(
+            @PathVariable String id,
+            @RequestBody Map<String, Object> data) {
+        Hospital hospital = hospitalRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Hospital not found: " + id));
+
+        int patientCount = data.containsKey("patientCount") ? ((Number) data.get("patientCount")).intValue() : 1;
+        boolean requiresIcu = Boolean.TRUE.equals(data.get("requiresIcu"));
+        String incomingCaseId = (String) data.get("incomingCaseId");
+
+        if (requiresIcu) {
+            hospital.setIcuAvailable(Math.max(0, hospital.getIcuAvailable() - patientCount));
+        } else {
+            hospital.setAvailableBeds(Math.max(0, hospital.getAvailableBeds() - patientCount));
+        }
+
+        if (incomingCaseId != null && hospital.getIncomingCases() != null) {
+            hospital.getIncomingCases().removeIf(c -> incomingCaseId.equals(c.getId()) || incomingCaseId.equals(c.getIncidentId()));
+        }
+
+        hospital.setLastUpdated(Instant.now().toString());
+        Hospital saved = hospitalRepository.save(hospital);
+        return ResponseEntity.ok(ApiResponse.ok(saved, "Patient admitted and hospital capacity updated in real time"));
+    }
 }

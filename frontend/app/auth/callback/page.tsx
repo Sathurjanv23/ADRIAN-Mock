@@ -31,7 +31,7 @@ const ROLE_OPTIONS: {
     badge: 'Immediate Access',
     desc: 'Report emergencies, receive district disaster alerts, and request immediate rescue assistance.',
     icon: <Shield className="w-5 h-5" />,
-    color: 'border-nova-cyan/50 text-nova-cyan bg-nova-cyan/10 hover:border-nova-cyan',
+    color: 'border-er-blue/30 text-er-blue bg-er-blue-light hover:border-nova-cyan',
   },
   {
     value: 'officer',
@@ -209,9 +209,9 @@ function AuthCallbackContent() {
   if (loading) {
     return (
       <div className="flex flex-col items-center gap-4 text-center p-8">
-        <Loader2 className="w-12 h-12 text-nova-cyan animate-spin" />
+        <Loader2 className="w-12 h-12 text-er-blue animate-spin" />
         <h2 className="text-xl font-bold text-nova-text">Authenticating with Google…</h2>
-        <p className="text-xs text-nova-text-dim max-w-sm">
+        <p className="text-xs text-em-text-dim max-w-sm">
           Verifying security credentials and retrieving command clearance from PROJECT NOVA.
         </p>
       </div>
@@ -227,7 +227,7 @@ function AuthCallbackContent() {
         </div>
         <h2 className="text-xl font-bold text-nova-text">Authentication Error</h2>
         <p className="text-sm text-red-400">{errorMessage}</p>
-        <p className="text-xs text-nova-text-muted">Redirecting back to login screen…</p>
+        <p className="text-xs text-em-text-muted">Redirecting back to login screen…</p>
       </div>
     );
   }
@@ -241,23 +241,23 @@ function AuthCallbackContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <div className="nova-card border border-nova-border rounded-2xl p-7 shadow-nova">
+        <div className="em-card border border-em-border rounded-2xl p-7 shadow-nova">
           {/* Header */}
           <div className="text-center mb-6">
             <div className="flex justify-center mb-3">
               <NovaLogo size="md" />
             </div>
             <h1 className="text-2xl font-bold text-nova-text">Select Your Operational Role</h1>
-            <p className="text-xs text-nova-text-dim mt-1">
+            <p className="text-xs text-em-text-dim mt-1">
               Google Account Verified:{' '}
-              <span className="text-nova-cyan font-semibold">{googleEmail}</span>
+              <span className="text-er-blue font-semibold">{googleEmail}</span>
             </p>
           </div>
 
           <form onSubmit={handleCompleteRegistration} className="space-y-5">
             {/* Role List */}
             <div>
-              <label className="text-xs font-semibold text-nova-text-muted uppercase tracking-wider block mb-3">
+              <label className="text-xs font-semibold text-em-text-muted uppercase tracking-wider block mb-3">
                 Choose Your Role in the Network <span className="text-red-400">*</span>
               </label>
 
@@ -271,21 +271,21 @@ function AuthCallbackContent() {
                       'w-full flex items-start gap-3.5 p-3.5 rounded-xl border text-left transition-all',
                       selectedRole === opt.value
                         ? opt.color
-                        : 'border-nova-border text-nova-text-dim hover:border-nova-border2 hover:text-nova-text bg-nova-surface'
+                        : 'border-em-border text-em-text-dim hover:border-em-border-strong hover:text-nova-text bg-white'
                     )}
                   >
                     <div className="mt-0.5">{opt.icon}</div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-bold text-nova-text">{opt.label}</span>
-                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-nova-surface2 border border-nova-border font-medium">
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-em-subtle border border-em-border font-medium">
                           {opt.badge}
                         </span>
                       </div>
                       <p className="text-[11px] opacity-75 mt-1 leading-snug">{opt.desc}</p>
                     </div>
                     {selectedRole === opt.value && (
-                      <CheckCircle className="w-4 h-4 text-nova-cyan flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-4 h-4 text-er-blue flex-shrink-0 mt-0.5" />
                     )}
                   </button>
                 ))}
@@ -295,38 +295,38 @@ function AuthCallbackContent() {
             {/* Optional Fields: Phone & District */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="text-xs font-medium text-nova-text-dim block mb-1.5">
+                <label className="text-xs font-medium text-em-text-dim block mb-1.5">
                   Phone Number (optional)
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-nova-text-muted pointer-events-none" />
+                  <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-em-text-muted pointer-events-none" />
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+94 77 123 4567"
-                    className="w-full bg-nova-surface border border-nova-border rounded-xl pl-10 pr-4 py-2 text-xs text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/50 transition-all"
+                    className="w-full bg-white border border-em-border rounded-xl pl-10 pr-4 py-2 text-xs text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/30 transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-medium text-nova-text-dim block mb-1.5">
+                <label className="text-xs font-medium text-em-text-dim block mb-1.5">
                   District (optional)
                 </label>
                 <div className="relative">
-                  <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-nova-text-muted pointer-events-none" />
+                  <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-em-text-muted pointer-events-none" />
                   <select
                     value={district}
                     onChange={(e) => setDistrict(e.target.value)}
-                    className="w-full bg-nova-surface border border-nova-border rounded-xl pl-10 pr-8 py-2 text-xs text-nova-text focus:outline-none focus:border-nova-cyan/50 transition-all appearance-none"
+                    className="w-full bg-white border border-em-border rounded-xl pl-10 pr-8 py-2 text-xs text-nova-text focus:outline-none focus:border-er-blue/30 transition-all appearance-none"
                   >
                     <option value="">Select district…</option>
                     {SL_DISTRICTS.map((d) => (
                       <option key={d} value={d}>{d}</option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-nova-text-muted pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-em-text-muted pointer-events-none" />
                 </div>
               </div>
             </div>
@@ -376,11 +376,11 @@ function AuthCallbackContent() {
 
 export default function AuthCallbackPage() {
   return (
-    <div className="min-h-screen bg-nova-bg flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 hero-grid-bg opacity-20 pointer-events-none" />
+    <div className="min-h-screen bg-em-bg flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10 opacity-20 pointer-events-none" />
       <Suspense fallback={
         <div className="flex flex-col items-center gap-3 text-center p-6">
-          <Loader2 className="w-10 h-10 text-nova-cyan animate-spin" />
+          <Loader2 className="w-10 h-10 text-er-blue animate-spin" />
           <h2 className="text-lg font-bold text-nova-text">Authenticating…</h2>
         </div>
       }>

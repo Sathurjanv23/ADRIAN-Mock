@@ -55,9 +55,9 @@ public enum IncidentStatus {
             case "prioritized", "verified" -> PRIORITIZED;
             case "dispatched", "assigned" -> DISPATCHED;
             case "acknowledged" -> ACKNOWLEDGED;
-            case "en_route", "enroute" -> EN_ROUTE;
-            case "on_scene", "onscene", "responding", "arrived", "arrival" -> ON_SCENE;
-            case "transporting", "transport" -> TRANSPORTING;
+            case "en_route", "enroute", "on_the_way" -> EN_ROUTE;
+            case "on_scene", "onscene", "responding", "arrived", "arrival", "rescued" -> ON_SCENE;
+            case "transporting", "transport", "delivered_to_hospital", "delivered" -> TRANSPORTING;
             case "resolved", "closed", "completed" -> RESOLVED;
             case "cancelled", "canceled" -> CANCELLED;
             default -> throw new InvalidStatusException("Invalid incident status: '" + raw

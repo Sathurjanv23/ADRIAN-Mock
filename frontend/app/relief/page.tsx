@@ -56,20 +56,20 @@ function ReliefStatCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="nova-card border border-nova-border rounded-xl p-5 flex items-center gap-4"
+      className="em-card border border-em-border rounded-xl p-5 flex items-center gap-4"
     >
       <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0', color)}>
         <Icon className="w-6 h-6" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs text-nova-text-dim truncate">{label}</p>
+        <p className="text-xs text-em-text-dim truncate">{label}</p>
         <div className="flex items-baseline gap-1 mt-0.5">
           <span className="text-2xl font-bold text-nova-text">
             {typeof value === 'number' ? value.toLocaleString() : value}
           </span>
-          {unit && <span className="text-xs text-nova-text-dim">{unit}</span>}
+          {unit && <span className="text-xs text-em-text-dim">{unit}</span>}
         </div>
-        {sub && <p className="text-[10px] text-nova-text-dim mt-0.5">{sub}</p>}
+        {sub && <p className="text-[10px] text-em-text-dim mt-0.5">{sub}</p>}
       </div>
     </motion.div>
   );
@@ -164,7 +164,7 @@ export default function ReliefPage() {
   return (
     <AuthGuard allowedRoles={['officer', 'admin']}>
       <DashboardShell role="officer">
-        <TopNav title="Relief Logistics" subtitle="AI-Powered Food & Water Distribution" />
+        <TopNav role="officer" title="Relief Logistics" subtitle="AI-Powered Food & Water Distribution" />
 
         <div className="p-6 space-y-6">
 
@@ -176,7 +176,7 @@ export default function ReliefPage() {
               </div>
               <div>
                 <h1 className="text-xl font-bold text-nova-text">AI Relief Logistics</h1>
-                <p className="text-xs text-nova-text-dim">Real-time food & water supply management</p>
+                <p className="text-xs text-em-text-dim">Real-time food & water supply management</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -194,9 +194,9 @@ export default function ReliefPage() {
               )}
               <button
                 onClick={handleRefresh}
-                className="p-2 rounded-lg bg-nova-surface border border-nova-border hover:border-orange-500/50 transition-colors"
+                className="p-2 rounded-lg bg-white border border-em-border hover:border-orange-500/50 transition-colors"
               >
-                <RefreshCw className={cn('w-4 h-4 text-nova-text-dim', refreshing && 'animate-spin')} />
+                <RefreshCw className={cn('w-4 h-4 text-em-text-dim', refreshing && 'animate-spin')} />
               </button>
             </div>
           </div>
@@ -233,7 +233,7 @@ export default function ReliefPage() {
           {loading ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="nova-card border border-nova-border rounded-xl p-5 h-24 animate-pulse" />
+                <div key={i} className="em-card border border-em-border rounded-xl p-5 h-24 animate-pulse" />
               ))}
             </div>
           ) : (
@@ -271,31 +271,31 @@ export default function ReliefPage() {
 
           {/* Secondary stats */}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="nova-card border border-nova-border rounded-xl p-4 flex items-center gap-3">
+            <div className="em-card border border-em-border rounded-xl p-4 flex items-center gap-3">
               <CheckCircle2 className="w-8 h-8 text-emerald-400" />
               <div>
                 <p className="text-2xl font-bold text-nova-text">{stats?.completedMissions ?? 0}</p>
-                <p className="text-xs text-nova-text-dim">Completed Deliveries</p>
+                <p className="text-xs text-em-text-dim">Completed Deliveries</p>
               </div>
             </div>
-            <div className="nova-card border border-nova-border rounded-xl p-4 flex items-center gap-3">
+            <div className="em-card border border-em-border rounded-xl p-4 flex items-center gap-3">
               <Clock className="w-8 h-8 text-yellow-400" />
               <div>
                 <p className="text-2xl font-bold text-nova-text">{stats?.pendingRequests ?? pendingRequests.length}</p>
-                <p className="text-xs text-nova-text-dim">Pending Requests</p>
+                <p className="text-xs text-em-text-dim">Pending Requests</p>
               </div>
             </div>
-            <div className="nova-card border border-nova-border rounded-xl p-4 flex items-center gap-3">
+            <div className="em-card border border-em-border rounded-xl p-4 flex items-center gap-3">
               <Package className="w-8 h-8 text-purple-400" />
               <div>
                 <p className="text-2xl font-bold text-nova-text">{stats?.activeFoodSources ?? foodSources.length}</p>
-                <p className="text-xs text-nova-text-dim">Food Sources Active</p>
+                <p className="text-xs text-em-text-dim">Food Sources Active</p>
               </div>
             </div>
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex gap-1 p-1 bg-nova-surface border border-nova-border rounded-xl w-fit">
+          <div className="flex gap-1 p-1 bg-white border border-em-border rounded-xl w-fit">
             {(['overview', 'sources', 'requests', 'missions'] as const).map(tab => (
               <button
                 key={tab}
@@ -304,7 +304,7 @@ export default function ReliefPage() {
                   'px-4 py-2 rounded-lg text-xs font-medium capitalize transition-all',
                   activeTab === tab
                     ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
-                    : 'text-nova-text-dim hover:text-nova-text'
+                    : 'text-em-text-dim hover:text-nova-text'
                 )}
               >
                 {tab}
@@ -325,7 +325,7 @@ export default function ReliefPage() {
                 className="grid grid-cols-1 lg:grid-cols-2 gap-6"
               >
                 {/* Active Missions */}
-                <div className="nova-card border border-nova-border rounded-xl p-5">
+                <div className="em-card border border-em-border rounded-xl p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold text-nova-text flex items-center gap-2">
                       <Truck className="w-4 h-4 text-orange-400" />
@@ -336,11 +336,11 @@ export default function ReliefPage() {
                     </Link>
                   </div>
                   {activeMissions.length === 0 ? (
-                    <p className="text-sm text-nova-text-dim text-center py-6">No active missions</p>
+                    <p className="text-sm text-em-text-dim text-center py-6">No active missions</p>
                   ) : (
                     <div className="space-y-3">
                       {activeMissions.slice(0, 4).map(mission => (
-                        <div key={mission.id} className="flex items-center gap-3 p-3 rounded-lg bg-nova-surface/60 border border-nova-border/50">
+                        <div key={mission.id} className="flex items-center gap-3 p-3 rounded-lg bg-white/60 border border-em-border">
                           <div className="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center flex-shrink-0">
                             <Truck className="w-4 h-4 text-orange-400" />
                           </div>
@@ -348,7 +348,7 @@ export default function ReliefPage() {
                             <p className="text-xs font-medium text-nova-text truncate">
                               {mission.vehicleName || mission.id}
                             </p>
-                            <p className="text-[10px] text-nova-text-dim">
+                            <p className="text-[10px] text-em-text-dim">
                               {mission.meals > 0 && `${mission.meals.toLocaleString()} meals`}
                               {mission.meals > 0 && mission.waterBottles > 0 && ' + '}
                               {mission.waterBottles > 0 && `${mission.waterBottles.toLocaleString()} water`}
@@ -362,7 +362,7 @@ export default function ReliefPage() {
                               {mission.status.replace('_', ' ')}
                             </span>
                             {mission.eta > 0 && (
-                              <span className="text-[10px] text-nova-text-dim flex items-center gap-0.5">
+                              <span className="text-[10px] text-em-text-dim flex items-center gap-0.5">
                                 <Clock className="w-2.5 h-2.5" />
                                 {mission.eta}m
                               </span>
@@ -375,7 +375,7 @@ export default function ReliefPage() {
                 </div>
 
                 {/* Pending Requests */}
-                <div className="nova-card border border-nova-border rounded-xl p-5">
+                <div className="em-card border border-em-border rounded-xl p-5">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-sm font-semibold text-nova-text flex items-center gap-2">
                       <AlertTriangle className="w-4 h-4 text-yellow-400" />
@@ -391,12 +391,12 @@ export default function ReliefPage() {
                   {pendingRequests.length === 0 ? (
                     <div className="text-center py-6">
                       <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
-                      <p className="text-sm text-nova-text-dim">All requests assigned</p>
+                      <p className="text-sm text-em-text-dim">All requests assigned</p>
                     </div>
                   ) : (
                     <div className="space-y-3">
                       {pendingRequests.slice(0, 4).map(req => (
-                        <div key={req.id} className="flex items-center gap-3 p-3 rounded-lg bg-nova-surface/60 border border-nova-border/50">
+                        <div key={req.id} className="flex items-center gap-3 p-3 rounded-lg bg-white/60 border border-em-border">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 mb-0.5">
                               <span className={cn(
@@ -405,11 +405,11 @@ export default function ReliefPage() {
                               )}>
                                 {req.priority}
                               </span>
-                              <span className="text-xs text-nova-text-dim">
+                              <span className="text-xs text-em-text-dim">
                                 {req.peopleAffected} people
                               </span>
                             </div>
-                            <p className="text-[10px] text-nova-text-dim">
+                            <p className="text-[10px] text-em-text-dim">
                               {req.requiredMeals.toLocaleString()} meals • {req.requiredWater.toLocaleString()} water
                               {req.disasterLocation?.district && ` • ${req.disasterLocation.district}`}
                             </p>
@@ -441,7 +441,7 @@ export default function ReliefPage() {
                 className="space-y-4"
               >
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-nova-text-dim">{foodSources.length} active food sources</p>
+                  <p className="text-sm text-em-text-dim">{foodSources.length} active food sources</p>
                   <Link
                     href="/relief/food-sources"
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/30 text-xs text-orange-400 hover:bg-orange-500/20 transition-colors"
@@ -456,14 +456,14 @@ export default function ReliefPage() {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.05 }}
-                      className="nova-card border border-nova-border rounded-xl p-4 hover:border-orange-500/40 transition-colors"
+                      className="em-card border border-em-border rounded-xl p-4 hover:border-orange-500/40 transition-colors"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-2">
                           <span className="text-xl">{SOURCE_TYPE_ICONS[source.type] || '📦'}</span>
                           <div>
                             <p className="text-xs font-semibold text-nova-text">{source.name}</p>
-                            <p className="text-[10px] text-nova-text-dim">{source.type}</p>
+                            <p className="text-[10px] text-em-text-dim">{source.type}</p>
                           </div>
                         </div>
                         <span className={cn(
@@ -485,8 +485,8 @@ export default function ReliefPage() {
                       </div>
                       {source.location?.district && (
                         <div className="flex items-center gap-1 mt-2">
-                          <MapPin className="w-2.5 h-2.5 text-nova-text-dim" />
-                          <p className="text-[10px] text-nova-text-dim truncate">
+                          <MapPin className="w-2.5 h-2.5 text-em-text-dim" />
+                          <p className="text-[10px] text-em-text-dim truncate">
                             {source.location.address || source.location.district}
                           </p>
                         </div>
@@ -507,7 +507,7 @@ export default function ReliefPage() {
                 className="space-y-4"
               >
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-nova-text-dim">{reliefRequests.length} total requests</p>
+                  <p className="text-sm text-em-text-dim">{reliefRequests.length} total requests</p>
                 </div>
 
                 {/* Assign Mission Modal */}
@@ -523,17 +523,17 @@ export default function ReliefPage() {
                         <h3 className="text-sm font-semibold text-orange-300">
                           Assign Mission — {selectedRequest.peopleAffected} people
                         </h3>
-                        <button onClick={() => setSelectedRequest(null)} className="text-nova-text-dim hover:text-nova-text text-xs">
+                        <button onClick={() => setSelectedRequest(null)} className="text-em-text-dim hover:text-nova-text text-xs">
                           ✕ Cancel
                         </button>
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="text-xs text-nova-text-dim mb-1 block">Food Source *</label>
+                          <label className="text-xs text-em-text-dim mb-1 block">Food Source *</label>
                           <select
                             value={assignSourceId}
                             onChange={e => setAssignSourceId(e.target.value)}
-                            className="w-full bg-nova-surface border border-nova-border rounded-lg px-3 py-2 text-xs text-nova-text focus:border-orange-500/50 outline-none"
+                            className="w-full bg-white border border-em-border rounded-lg px-3 py-2 text-xs text-nova-text focus:border-orange-500/50 outline-none"
                           >
                             <option value="">Select source…</option>
                             {foodSources.filter(s => s.availableMeals >= selectedRequest.requiredMeals * 0.5).map(s => (
@@ -544,23 +544,23 @@ export default function ReliefPage() {
                           </select>
                         </div>
                         <div>
-                          <label className="text-xs text-nova-text-dim mb-1 block">Vehicle Name</label>
+                          <label className="text-xs text-em-text-dim mb-1 block">Vehicle Name</label>
                           <input
                             type="text"
                             placeholder="Relief Truck Alpha"
                             value={vehicleName}
                             onChange={e => setVehicleName(e.target.value)}
-                            className="w-full bg-nova-surface border border-nova-border rounded-lg px-3 py-2 text-xs text-nova-text focus:border-orange-500/50 outline-none"
+                            className="w-full bg-white border border-em-border rounded-lg px-3 py-2 text-xs text-nova-text focus:border-orange-500/50 outline-none"
                           />
                         </div>
                         <div>
-                          <label className="text-xs text-nova-text-dim mb-1 block">Driver Name</label>
+                          <label className="text-xs text-em-text-dim mb-1 block">Driver Name</label>
                           <input
                             type="text"
                             placeholder="Driver name"
                             value={driverName}
                             onChange={e => setDriverName(e.target.value)}
-                            className="w-full bg-nova-surface border border-nova-border rounded-lg px-3 py-2 text-xs text-nova-text focus:border-orange-500/50 outline-none"
+                            className="w-full bg-white border border-em-border rounded-lg px-3 py-2 text-xs text-nova-text focus:border-orange-500/50 outline-none"
                           />
                         </div>
                       </div>
@@ -576,27 +576,27 @@ export default function ReliefPage() {
                   )}
                 </AnimatePresence>
 
-                <div className="nova-card border border-nova-border rounded-xl overflow-hidden">
+                <div className="em-card border border-em-border rounded-xl overflow-hidden">
                   <table className="w-full text-xs">
                     <thead>
-                      <tr className="border-b border-nova-border bg-nova-surface/50">
-                        <th className="text-left p-3 text-nova-text-dim font-medium">Priority</th>
-                        <th className="text-left p-3 text-nova-text-dim font-medium">People</th>
-                        <th className="text-left p-3 text-nova-text-dim font-medium hidden md:table-cell">Required</th>
-                        <th className="text-left p-3 text-nova-text-dim font-medium">Status</th>
-                        <th className="text-left p-3 text-nova-text-dim font-medium">Action</th>
+                      <tr className="border-b border-em-border bg-white/50">
+                        <th className="text-left p-3 text-em-text-dim font-medium">Priority</th>
+                        <th className="text-left p-3 text-em-text-dim font-medium">People</th>
+                        <th className="text-left p-3 text-em-text-dim font-medium hidden md:table-cell">Required</th>
+                        <th className="text-left p-3 text-em-text-dim font-medium">Status</th>
+                        <th className="text-left p-3 text-em-text-dim font-medium">Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       {reliefRequests.map(req => (
-                        <tr key={req.id} className="border-b border-nova-border/50 hover:bg-nova-surface/30 transition-colors">
+                        <tr key={req.id} className="border-b border-em-border hover:bg-white/30 transition-colors">
                           <td className="p-3">
                             <span className={cn('px-2 py-0.5 rounded-full text-[10px] border font-medium', PRIORITY_COLORS[req.priority])}>
                               {req.priority}
                             </span>
                           </td>
                           <td className="p-3 text-nova-text">{req.peopleAffected.toLocaleString()}</td>
-                          <td className="p-3 text-nova-text-dim hidden md:table-cell">
+                          <td className="p-3 text-em-text-dim hidden md:table-cell">
                             {req.requiredMeals.toLocaleString()} meals
                             <br />
                             {req.requiredWater.toLocaleString()} water
@@ -622,14 +622,14 @@ export default function ReliefPage() {
                               </button>
                             )}
                             {req.status !== 'PENDING' && (
-                              <span className="text-nova-text-dim text-[10px]">—</span>
+                              <span className="text-em-text-dim text-[10px]">—</span>
                             )}
                           </td>
                         </tr>
                       ))}
                       {reliefRequests.length === 0 && (
                         <tr>
-                          <td colSpan={5} className="text-center p-8 text-nova-text-dim">
+                          <td colSpan={5} className="text-center p-8 text-em-text-dim">
                             No relief requests found
                           </td>
                         </tr>
@@ -650,21 +650,21 @@ export default function ReliefPage() {
               >
                 <Link
                   href="/relief/missions"
-                  className="flex items-center justify-between p-5 rounded-xl nova-card border border-nova-border hover:border-orange-500/40 transition-colors group"
+                  className="flex items-center justify-between p-5 rounded-xl em-card border border-em-border hover:border-orange-500/40 transition-colors group"
                 >
                   <div className="flex items-center gap-3">
                     <Truck className="w-8 h-8 text-orange-400" />
                     <div>
                       <p className="text-sm font-semibold text-nova-text">Full Mission Dashboard</p>
-                      <p className="text-xs text-nova-text-dim">Track all relief deliveries with live GPS</p>
+                      <p className="text-xs text-em-text-dim">Track all relief deliveries with live GPS</p>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-nova-text-dim group-hover:text-orange-400 transition-colors" />
+                  <ChevronRight className="w-5 h-5 text-em-text-dim group-hover:text-orange-400 transition-colors" />
                 </Link>
 
                 <div className="mt-4 grid grid-cols-1 gap-3">
                   {activeMissions.map(mission => (
-                    <div key={mission.id} className="nova-card border border-nova-border rounded-xl p-4">
+                    <div key={mission.id} className="em-card border border-em-border rounded-xl p-4">
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2">
                           <Truck className="w-4 h-4 text-orange-400" />
@@ -681,15 +681,15 @@ export default function ReliefPage() {
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-xs">
                         <div>
-                          <p className="text-nova-text-dim">Meals</p>
+                          <p className="text-em-text-dim">Meals</p>
                           <p className="text-nova-text font-medium">{mission.meals.toLocaleString()}</p>
                         </div>
                         <div>
-                          <p className="text-nova-text-dim">Water</p>
+                          <p className="text-em-text-dim">Water</p>
                           <p className="text-nova-text font-medium">{mission.waterBottles.toLocaleString()}</p>
                         </div>
                         <div>
-                          <p className="text-nova-text-dim">ETA</p>
+                          <p className="text-em-text-dim">ETA</p>
                           <p className="text-nova-text font-medium flex items-center gap-1">
                             <Clock className="w-3 h-3 text-orange-400" />
                             {mission.eta > 0 ? `${mission.eta} min` : 'Arrived'}
@@ -697,7 +697,7 @@ export default function ReliefPage() {
                         </div>
                       </div>
                       {mission.destination && (
-                        <div className="flex items-center gap-1 mt-2 text-[10px] text-nova-text-dim">
+                        <div className="flex items-center gap-1 mt-2 text-[10px] text-em-text-dim">
                           <MapPin className="w-2.5 h-2.5" />
                           {mission.destination.address || mission.destination.district || 'Disaster Zone'}
                         </div>
@@ -705,9 +705,9 @@ export default function ReliefPage() {
                     </div>
                   ))}
                   {activeMissions.length === 0 && (
-                    <div className="nova-card border border-nova-border rounded-xl p-8 text-center">
-                      <Truck className="w-10 h-10 text-nova-text-dim mx-auto mb-3 opacity-50" />
-                      <p className="text-sm text-nova-text-dim">No active relief missions</p>
+                    <div className="em-card border border-em-border rounded-xl p-8 text-center">
+                      <Truck className="w-10 h-10 text-em-text-dim mx-auto mb-3 opacity-50" />
+                      <p className="text-sm text-em-text-dim">No active relief missions</p>
                     </div>
                   )}
                 </div>
