@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  # ─── MongoDB Database ──────────────────────────────────────────
+  mongodb:
+    image: mongo:7.0
+    container_name: adrn-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: nova_db
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - adrn-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── Redis Cache & Pub/Sub ─────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: adrn-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - adrn-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ─── LocalStack (AWS Local Emulator) ───────────────────────────
+  localstack:
+    image: localstack/localstack:latest
+    container_name: adrn-localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=s3,sns,sqs
+      - DEFAULT_REGION=us-east-1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - localstack_data:/var/lib/localstack
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - adrn-network
+
+  # ─── ADRN Spring Boot Backend ──────────────────────────────────
+  backend:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+    container_name: adrn-backend
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - MONGODB_URI=mongodb://mongodb:27017/nova_db
+      - JWT_SECRET=adrn-super-secure-production-ready-jwt-token-key-minimum-32-chars-2026
+      - ADRN_AI_PROVIDER=mock
+      - AWS_REGION=us-east-1
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000
+    networks:
+      - adrn-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  # ─── ADRN Next.js Frontend ─────────────────────────────────────
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+    container_name: adrn-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://backend:8080/api/v1
+      - NEXT_PUBLIC_WS_URL=ws://backend:8080/ws
+    networks:
+      - adrn-network
+
+networks:
+  adrn-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  redis_data:
+  localstack_data:
