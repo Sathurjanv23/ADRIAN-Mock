@@ -9,7 +9,7 @@ interface UserCountDataProps {
 
 export const UserRoleDistributionChart = memo(function UserRoleDistributionChart({ data }: UserCountDataProps) {
   if (!data || data.length === 0) {
-    return <div className="text-xs text-nova-text-dim text-center py-4">No user distribution data available.</div>;
+    return <div className="text-xs text-em-text-dim text-center py-4">No user distribution data available.</div>;
   }
 
   return (
@@ -19,11 +19,11 @@ export const UserRoleDistributionChart = memo(function UserRoleDistributionChart
         <YAxis tick={{ fill: '#4a5a7a', fontSize: 10 }} />
         <Tooltip
           contentStyle={{
-            background: '#0d1629',
-            border: '1px solid #1a2744',
+            background: '#FFFFFF',
+            border: '1px solid #D1D5DB',
             borderRadius: '8px',
             fontSize: '10px',
-            color: '#e8f0fe',
+            color: '#0D1B2A',
           }}
         />
         <Bar dataKey="count" fill="#00d4ff" radius={[4, 4, 0, 0]} name="Users" isAnimationActive={false} />

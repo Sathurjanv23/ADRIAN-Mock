@@ -75,7 +75,9 @@ public class ReliefService {
         Incident incident = incidentRepository.findById(incidentId)
             .orElseThrow(() -> new ResourceNotFoundException("Incident not found: " + incidentId));
 
-        int people = Math.max(1, incident.getPeopleAffected());
+        int people = incident.getPeopleAffected() > 0 ? incident.getPeopleAffected() :
+            ("flood".equalsIgnoreCase(incident.getType()) || "earthquake".equalsIgnoreCase(incident.getType()) || "landslide".equalsIgnoreCase(incident.getType())) ? 25 :
+            ("fire".equalsIgnoreCase(incident.getType()) || "building_collapse".equalsIgnoreCase(incident.getType())) ? 15 : 5;
         int requiredMeals = (int) Math.ceil(people * MEALS_PER_PERSON);
         int requiredWater = (int) Math.ceil(people * WATER_PER_PERSON);
 
@@ -109,6 +111,61 @@ public class ReliefService {
         log.info("Created relief request {} for incident {} (people={}, meals={}, water={})",
             saved.getId(), incidentId, people, requiredMeals, requiredWater);
         return saved;
+    }
+
+    /**
+     * Automatically triggers AI detection and relief logistics for a disaster incident.
+     * 1. Detects affected population and creates ReliefRequest.
+     * 2. AI calculates meals & water needed.
+     * 3. AI searches and chooses nearest optimal excess food source.
+     * 4. Dispatches government rescue vehicle delivery mission.
+     * 5. Enables live tracking until supplies arrive.
+     */
+    public Optional<ReliefMission> autoTriggerReliefForIncident(Incident incident) {
+        if (incident == null || incident.getId() == null) {
+            return Optional.empty();
+        }
+
+        try {
+            // 1. Create or retrieve relief request
+            ReliefRequest reliefReq = createReliefRequestFromIncident(incident.getId(), incident.getReportedBy());
+
+            // 2. Check if active mission already exists
+            Optional<ReliefMission> existingMission = reliefMissionRepository.findByReliefRequestId(reliefReq.getId());
+            if (existingMission.isPresent() && !Set.of("CANCELLED", "COMPLETED").contains(existingMission.get().getStatus())) {
+                return existingMission;
+            }
+
+            // 3. AI searches and chooses best food source based on distance, stock quantity, freshness, and travel time
+            AIService.ReliefRecommendation rec = getAIReliefRecommendation(reliefReq.getId());
+            if (rec == null || rec.bestSourceId() == null) {
+                log.warn("No suitable food source found for disaster incident {}", incident.getId());
+                return Optional.empty();
+            }
+
+            // 4. Create relief mission with government rescue vehicle
+            String vehicleCode = "GOV-RELIEF-" + (100 + (int)(Math.random() * 900));
+            String vehicleName = "Emergency Relief Vehicle " + vehicleCode;
+            String driverName = "Gov. Disaster Response Logistics Unit";
+            String driverContact = "+94 11 269 1111";
+
+            ReliefMission mission = createReliefMission(
+                reliefReq.getId(),
+                rec.bestSourceId(),
+                vehicleCode,
+                vehicleName,
+                driverName,
+                driverContact
+            );
+
+            log.info("Auto-dispatched relief mission {} for disaster incident {} from food source {}",
+                mission.getId(), incident.getId(), mission.getFoodSourceName());
+
+            return Optional.of(mission);
+        } catch (Exception ex) {
+            log.error("Failed to auto-trigger relief logistics for incident {}: {}", incident.getId(), ex.getMessage());
+            return Optional.empty();
+        }
     }
 
     /**
@@ -242,6 +299,18 @@ public class ReliefService {
 
     public Optional<ReliefMission> getReliefMissionById(String id) {
         return reliefMissionRepository.findById(id);
+    }
+
+    public Optional<ReliefMission> getMissionByReliefRequestId(String reliefRequestId) {
+        return reliefMissionRepository.findByReliefRequestId(reliefRequestId);
+    }
+
+    public Optional<ReliefMission> getMissionByIncidentId(String incidentId) {
+        Optional<ReliefRequest> req = reliefRequestRepository.findByIncidentId(incidentId);
+        if (req.isPresent()) {
+            return reliefMissionRepository.findByReliefRequestId(req.get().getId());
+        }
+        return Optional.empty();
     }
 
     /**

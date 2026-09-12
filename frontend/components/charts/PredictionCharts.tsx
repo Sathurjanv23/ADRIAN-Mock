@@ -11,7 +11,7 @@ interface RiverTrendProps {
 
 export const RiverLevelTrendChart = memo(function RiverLevelTrendChart({ data }: RiverTrendProps) {
   if (!data || data.length === 0) {
-    return <div className="text-xs text-nova-text-dim text-center py-6">No river level trend data available.</div>;
+    return <div className="text-xs text-em-text-dim text-center py-6">No river level trend data available.</div>;
   }
 
   return (
@@ -22,11 +22,11 @@ export const RiverLevelTrendChart = memo(function RiverLevelTrendChart({ data }:
         <YAxis domain={[3, 8]} tick={{ fill: '#4a5a7a', fontSize: 10 }} unit="m" />
         <Tooltip
           contentStyle={{
-            background: '#0d1629',
-            border: '1px solid #1a2744',
+            background: '#FFFFFF',
+            border: '1px solid #D1D5DB',
             borderRadius: '8px',
             fontSize: '10px',
-            color: '#e8f0fe',
+            color: '#0D1B2A',
           }}
         />
         <Area
@@ -59,7 +59,7 @@ interface ZoneRiskProps {
 
 export const ZoneRiskBreakdownChart = memo(function ZoneRiskBreakdownChart({ data }: ZoneRiskProps) {
   if (!data || data.length === 0) {
-    return <div className="text-xs text-nova-text-dim text-center py-6">No verified zone risk data available.</div>;
+    return <div className="text-xs text-em-text-dim text-center py-6">No verified zone risk data available.</div>;
   }
 
   return (
@@ -70,11 +70,11 @@ export const ZoneRiskBreakdownChart = memo(function ZoneRiskBreakdownChart({ dat
         <YAxis tick={{ fill: '#4a5a7a', fontSize: 10 }} />
         <Tooltip
           contentStyle={{
-            background: '#0d1629',
-            border: '1px solid #1a2744',
+            background: '#FFFFFF',
+            border: '1px solid #D1D5DB',
             borderRadius: '8px',
             fontSize: '10px',
-            color: '#e8f0fe',
+            color: '#0D1B2A',
           }}
         />
         <Legend wrapperStyle={{ fontSize: '10px' }} />

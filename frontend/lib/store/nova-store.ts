@@ -401,7 +401,14 @@ export const useNovaStore = create<AppState>()(
 
     // Language
     language: 'en',
-    setLanguage: (lang) => set({ language: lang }),
+    setLanguage: (lang) => {
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('adrian_lang', lang);
+        } catch {}
+      }
+      set({ language: lang });
+    },
 
     // Loading states
     loading: {

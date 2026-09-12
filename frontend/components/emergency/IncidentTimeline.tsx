@@ -53,8 +53,8 @@ export function IncidentTimeline({ currentStatus, updates = [], compact = false 
                 className={cn(
                   'w-7 h-7 rounded-full flex items-center justify-center border-2 flex-shrink-0 transition-all',
                   isCompleted && 'bg-nova-low border-nova-low text-nova-bg',
-                  isCurrent && 'bg-nova-cyan/20 border-nova-cyan text-nova-cyan animate-pulse-slow',
-                  isPending && 'bg-nova-surface border-nova-border text-nova-text-muted'
+                  isCurrent && 'bg-er-blue-light border-nova-cyan text-er-blue animate-pulse-slow',
+                  isPending && 'bg-white border-em-border text-em-text-muted'
                 )}
               >
                 {isCompleted ? (
@@ -82,14 +82,14 @@ export function IncidentTimeline({ currentStatus, updates = [], compact = false 
               <p
                 className={cn(
                   'text-sm font-medium',
-                  isCompleted && 'text-nova-low',
-                  isCurrent && 'text-nova-cyan',
-                  isPending && 'text-nova-text-muted'
+                  isCompleted && 'text-er-green',
+                  isCurrent && 'text-er-blue',
+                  isPending && 'text-em-text-muted'
                 )}
               >
                 {statusItem.label}
                 {isCurrent && (
-                  <span className="ml-2 text-[10px] font-bold text-nova-cyan bg-nova-cyan/10 px-1.5 py-0.5 rounded-full border border-nova-cyan/30">
+                  <span className="ml-2 text-[10px] font-bold text-er-blue bg-er-blue-light px-1.5 py-0.5 rounded-full border border-er-blue/30">
                     {t('common.current')}
                   </span>
                 )}
@@ -100,7 +100,7 @@ export function IncidentTimeline({ currentStatus, updates = [], compact = false 
                 )}
               </p>
               {!compact && update && (
-                <p className="text-xs text-nova-text-dim mt-0.5">{localize(update.message)}</p>
+                <p className="text-xs text-em-text-dim mt-0.5">{localize(update.message)}</p>
               )}
             </div>
           </motion.div>

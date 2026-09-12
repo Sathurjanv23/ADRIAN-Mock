@@ -80,6 +80,18 @@ public class ReliefMissionController {
             .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/by-incident/{incidentId}")
+    public ResponseEntity<ApiResponse<ReliefMission>> getByIncident(@PathVariable String incidentId) {
+        return reliefService.getMissionByIncidentId(incidentId)
+            .map(m -> ResponseEntity.ok(ApiResponse.ok(m)))
+            .orElse(ResponseEntity.ok(ApiResponse.ok(null, "No active relief mission for incident")));
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getStats() {
+        return ResponseEntity.ok(ApiResponse.ok(reliefService.getReliefStats()));
+    }
+
     @PutMapping("/{id}/status")
     public ResponseEntity<ApiResponse<ReliefMission>> updateStatus(
             @PathVariable String id,

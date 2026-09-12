@@ -21,11 +21,10 @@ export function EmergencyCard({ incident, onClick, variant = 'feed', href }: Eme
   const content = (
     <motion.div
       className={cn(
-        'nova-card rounded-xl border p-4 cursor-pointer transition-all duration-200',
+        'bg-white rounded-2xl border p-4 cursor-pointer transition-all duration-200 shadow-em-sm',
         isCritical
-          ? 'border-red-500/30 hover:border-red-500/60 hover:shadow-nova-critical'
-          : 'border-nova-border hover:border-nova-border2',
-        'hover:bg-nova-surface2',
+          ? 'border-er-red/30 hover:border-er-red/60 hover:shadow-em-red'
+          : 'border-em-border hover:border-em-border-strong hover:shadow-em-md',
         variant === 'compact' && 'p-3'
       )}
       onClick={onClick}
@@ -40,14 +39,14 @@ export function EmergencyCard({ incident, onClick, variant = 'feed', href }: Eme
           <div
             className={cn(
               'w-8 h-8 rounded-lg flex items-center justify-center text-base flex-shrink-0',
-              isCritical ? 'bg-red-500/15' : 'bg-nova-surface2'
+              isCritical ? 'bg-red-500/15' : 'bg-em-subtle'
             )}
           >
             {getEmergencyTypeIcon(incident.type)}
           </div>
           <div>
-            <p className="text-xs font-mono text-nova-text-muted">{incident.id}</p>
-            <p className={cn('text-sm font-semibold leading-tight mt-0.5', isCritical ? 'text-red-300' : 'text-nova-text')}>
+            <p className="text-xs font-mono text-em-text-muted">{incident.id}</p>
+            <p className={cn('text-sm font-semibold leading-tight mt-0.5', isCritical ? 'text-er-red-dark' : 'text-em-text')}>
               {localize(incident.title)}
             </p>
           </div>
@@ -66,10 +65,10 @@ export function EmergencyCard({ incident, onClick, variant = 'feed', href }: Eme
       </div>
 
       {/* Location, Time & Evidence Badges */}
-      <div className="flex items-center justify-between gap-2 mb-2.5 text-xs text-nova-text-dim">
+      <div className="flex items-center justify-between gap-2 mb-2.5 text-xs text-em-text-dim">
         <div className="flex items-center gap-2 truncate">
           <span className="flex items-center gap-1">
-            <svg className="w-3 h-3 text-nova-cyan flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-3 h-3 text-er-blue flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
@@ -82,7 +81,7 @@ export function EmergencyCard({ incident, onClick, variant = 'feed', href }: Eme
         {/* Evidence Badges */}
         <div className="flex items-center gap-1 flex-shrink-0">
           {incident.audioUrl && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-nova-cyan/15 text-nova-cyan font-mono" title="Voice recording attached">
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-er-blue-light text-er-blue font-mono" title="Voice recording attached">
               🎙️ Voice
             </span>
           )}
@@ -101,21 +100,21 @@ export function EmergencyCard({ incident, onClick, variant = 'feed', href }: Eme
 
       {/* AI Analysis Row */}
       {incident.aiAnalysis && variant !== 'compact' && (
-        <div className="flex items-center gap-2 mb-3 p-2 rounded-lg bg-purple-500/5 border border-purple-500/15">
-          <div className="w-5 h-5 rounded bg-purple-500/20 flex items-center justify-center flex-shrink-0">
-            <svg className="w-3 h-3 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+        <div className="flex items-center gap-2 mb-3 p-2.5 rounded-xl bg-purple-50 border border-purple-200">
+          <div className="w-5 h-5 rounded-lg bg-purple-100 flex items-center justify-center flex-shrink-0">
+            <svg className="w-3 h-3 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zM8 10a2 2 0 104 0 2 2 0 00-4 0z"/>
             </svg>
           </div>
-          <p className="text-xs text-purple-300 font-medium">
-            AI: {incident.aiAnalysis.confidenceScore}% {t('common.confidence')} — {localize(incident.aiAnalysis.recommendedAction).slice(0, 60)}...
+          <p className="text-xs text-purple-700 font-semibold">
+            AI: {incident.aiAnalysis.confidenceScore}% confidence — {localize(incident.aiAnalysis.recommendedAction).slice(0, 60)}...
           </p>
         </div>
       )}
 
       {/* Footer */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3 text-xs text-nova-text-dim">
+        <div className="flex items-center gap-3 text-xs text-em-text-dim">
           <span className="flex items-center gap-1">
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -123,14 +122,14 @@ export function EmergencyCard({ incident, onClick, variant = 'feed', href }: Eme
             {incident.peopleAffected} {t('common.affected')}
           </span>
           {incident.assignedTeamName && (
-            <span className="flex items-center gap-1 text-nova-cyan">
-              <span className="w-1.5 h-1.5 rounded-full bg-nova-cyan inline-block" />
+            <span className="flex items-center gap-1 text-er-blue font-semibold">
+              <span className="w-2 h-2 rounded-full bg-er-blue inline-block" />
               {localize(incident.assignedTeamName)}
             </span>
           )}
         </div>
         {incident.eta !== undefined && incident.status === 'en_route' && (
-          <span className="text-xs font-semibold text-nova-high bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
+          <span className="text-xs font-semibold text-er-orange bg-orange-500/10 px-2 py-0.5 rounded-full border border-orange-500/20">
             {t('common.eta')} {incident.eta}{t('common.min')}
           </span>
         )}

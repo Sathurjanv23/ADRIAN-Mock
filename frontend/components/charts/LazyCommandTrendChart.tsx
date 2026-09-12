@@ -16,7 +16,7 @@ function CommandTrendChartComponent({
 }: LazyCommandTrendChartProps) {
   if (!data || data.length === 0) {
     return (
-      <div className="text-xs text-nova-text-dim text-center py-4">
+      <div className="text-xs text-em-text-dim text-center py-4">
         No response time trend data available.
       </div>
     );
@@ -27,18 +27,18 @@ function CommandTrendChartComponent({
       <LineChart data={data}>
         <Tooltip
           contentStyle={{
-            background: '#0d1629',
-            border: '1px solid #1a2744',
+            background: '#FFFFFF',
+            border: '1px solid #D1D5DB',
             borderRadius: '8px',
             fontSize: '10px',
-            color: '#e8f0fe',
+            color: '#0D1B2A',
           }}
           formatter={(v: any) => [`${parseFloat(v).toFixed(1)} ${minLabel}`, responseLabel]}
         />
         <Line
           type="monotone"
           dataKey="avgTime"
-          stroke="#00d4ff"
+          stroke="#1565C0"
           strokeWidth={2}
           dot={false}
           isAnimationActive={false}

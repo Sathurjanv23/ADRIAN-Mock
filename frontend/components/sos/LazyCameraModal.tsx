@@ -18,7 +18,7 @@ export default function LazyCameraModal({ camera }: LazyCameraModalProps) {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="nova-card border border-nova-border w-full max-w-lg rounded-3xl p-5 shadow-2xl space-y-4"
+          className="em-card border border-em-border w-full max-w-lg rounded-3xl p-5 shadow-2xl space-y-4"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -28,14 +28,14 @@ export default function LazyCameraModal({ camera }: LazyCameraModalProps) {
             <button
               type="button"
               onClick={camera.closeCamera}
-              className="p-1.5 rounded-lg text-nova-text-muted hover:text-nova-text hover:bg-nova-surface2"
+              className="p-1.5 rounded-lg text-em-text-muted hover:text-nova-text hover:bg-em-subtle"
             >
               <XCircle className="w-5 h-5" />
             </button>
           </div>
 
           {/* Live Video Feed with Grid Overlay */}
-          <div className="relative aspect-video rounded-2xl overflow-hidden bg-black border border-nova-border flex items-center justify-center">
+          <div className="relative aspect-video rounded-2xl overflow-hidden bg-black border border-em-border flex items-center justify-center">
             <video
               ref={camera.videoRef as any}
               autoPlay
@@ -57,13 +57,13 @@ export default function LazyCameraModal({ camera }: LazyCameraModalProps) {
               <button
                 type="button"
                 onClick={camera.switchCamera}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-nova-surface border border-nova-border text-xs font-semibold text-nova-text hover:bg-nova-surface2"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-em-border text-xs font-semibold text-nova-text hover:bg-em-subtle"
               >
                 <SwitchCamera className="w-4 h-4 text-purple-400" /> Switch
               </button>
             ) : (
-              <label className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-nova-surface border border-nova-border text-xs font-semibold text-nova-text hover:bg-nova-surface2 cursor-pointer">
-                <Upload className="w-4 h-4 text-nova-cyan" /> Upload File
+              <label className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-em-border text-xs font-semibold text-nova-text hover:bg-em-subtle cursor-pointer">
+                <Upload className="w-4 h-4 text-er-blue" /> Upload File
                 <input
                   type="file"
                   accept="image/*"
@@ -89,7 +89,7 @@ export default function LazyCameraModal({ camera }: LazyCameraModalProps) {
             <button
               type="button"
               onClick={camera.closeCamera}
-              className="px-4 py-3 rounded-xl border border-nova-border text-nova-text-dim text-xs font-semibold hover:text-nova-text"
+              className="px-4 py-3 rounded-xl border border-em-border text-em-text-dim text-xs font-semibold hover:text-nova-text"
             >
               Cancel
             </button>

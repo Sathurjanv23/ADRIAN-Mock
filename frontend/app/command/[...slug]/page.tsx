@@ -58,11 +58,11 @@ export default function CommandOperationsCatchAll() {
   if (operationalLoading) {
     return (
       <AuthGuard allowedRoles={['officer', 'hospital', 'rescue_team', 'admin', 'citizen']} allowGuestCommander={true}>
-        <div className="min-h-screen bg-nova-bg">
+        <div className="min-h-screen bg-em-bg">
           <TopNav role="officer" />
           <DashboardShell role="officer">
-            <div className="p-12 text-center text-nova-text-muted flex items-center justify-center gap-2">
-              <RefreshCw className="w-4 h-4 animate-spin text-nova-cyan" />
+            <div className="p-12 text-center text-em-text-muted flex items-center justify-center gap-2">
+              <RefreshCw className="w-4 h-4 animate-spin text-er-blue" />
               <span>Loading operational data...</span>
             </div>
           </DashboardShell>
@@ -74,7 +74,7 @@ export default function CommandOperationsCatchAll() {
   if (operationalError) {
     return (
       <AuthGuard allowedRoles={['officer', 'hospital', 'rescue_team', 'admin', 'citizen']} allowGuestCommander={true}>
-        <div className="min-h-screen bg-nova-bg">
+        <div className="min-h-screen bg-em-bg">
           <TopNav role="officer" />
           <DashboardShell role="officer">
             <div className="p-12 text-center space-y-4">
@@ -103,13 +103,13 @@ export default function CommandOperationsCatchAll() {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-            <Truck className="w-5 h-5 text-nova-cyan" /> {t('heading.rescue_deployments')}
+            <Truck className="w-5 h-5 text-er-blue" /> {t('heading.rescue_deployments')}
           </h2>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-nova-text-muted">{rescueTeams.length} {t('common.active')}</span>
+            <span className="text-xs text-em-text-muted">{rescueTeams.length} {t('common.active')}</span>
             <button
               onClick={fetchTeams}
-              className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md bg-nova-surface border border-nova-border text-nova-text hover:border-nova-cyan/40 hover:text-nova-cyan transition-colors"
+              className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md bg-white border border-em-border text-nova-text hover:border-er-blue/40 hover:text-er-blue transition-colors"
               title="Refresh Rescue Operations"
             >
               <RefreshCw className="w-3 h-3" /> Refresh
@@ -118,11 +118,11 @@ export default function CommandOperationsCatchAll() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredTeams.map((team) => (
-            <div key={team.id} className="nova-card border border-nova-border rounded-xl p-4 space-y-3">
+            <div key={team.id} className="em-card border border-em-border rounded-xl p-4 space-y-3">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-sm font-bold text-nova-text">{localize(team.name)}</p>
-                  <p className="text-xs text-nova-text-dim mt-0.5">{localize(team.district)} · {team.capabilities.join(', ')}</p>
+                  <p className="text-xs text-em-text-dim mt-0.5">{localize(team.district)} · {team.capabilities.join(', ')}</p>
                 </div>
                 <span className={cn('text-[10px] font-bold px-2.5 py-1 rounded-full border uppercase', {
                   'bg-green-500/10 border-green-500/30 text-green-400': team.status === 'available',
@@ -133,13 +133,13 @@ export default function CommandOperationsCatchAll() {
                   {statusLabel(team.status)}
                 </span>
               </div>
-              <div className="text-xs text-nova-text-muted flex justify-between pt-2.5 border-t border-nova-border/50">
+              <div className="text-xs text-em-text-muted flex justify-between pt-2.5 border-t border-em-border">
                 <span>{t('common.eta')}: {team.eta !== undefined ? `${team.eta}${t('common.min')}` : 'N/A'}</span>
                 <span>Incident: {team.currentIncident || 'None'}</span>
               </div>
             </div>
           ))}
-          {filteredTeams.length === 0 && <p className="text-sm text-nova-text-muted py-8 text-center">No rescue deployments returned by the backend.</p>}
+          {filteredTeams.length === 0 && <p className="text-sm text-em-text-muted py-8 text-center">No rescue deployments returned by the backend.</p>}
         </div>
       </div>
     );
@@ -151,24 +151,24 @@ export default function CommandOperationsCatchAll() {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-            <Package className="w-5 h-5 text-nova-cyan" /> {t('heading.resources_inventory')}
+            <Package className="w-5 h-5 text-er-blue" /> {t('heading.resources_inventory')}
           </h2>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-nova-text-muted">{resources.length} {t('nav.resources')}</span>
+            <span className="text-xs text-em-text-muted">{resources.length} {t('nav.resources')}</span>
             <button
               onClick={fetchResources}
-              className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md bg-nova-surface border border-nova-border text-nova-text hover:border-nova-cyan/40 hover:text-nova-cyan transition-colors"
+              className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md bg-white border border-em-border text-nova-text hover:border-er-blue/40 hover:text-er-blue transition-colors"
               title="Refresh Resources"
             >
               <RefreshCw className="w-3 h-3" /> Refresh
             </button>
           </div>
         </div>
-        <div className="nova-card border border-nova-border rounded-xl overflow-hidden">
+        <div className="em-card border border-em-border rounded-xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-nova-border bg-nova-surface/40 text-[10px] font-bold text-nova-text-muted uppercase tracking-wider">
+                <tr className="border-b border-em-border bg-white/40 text-[10px] font-bold text-em-text-muted uppercase tracking-wider">
                   <th className="p-4">{t('nav.resources')}</th>
                   <th className="p-4">Category</th>
                   <th className="p-4">{t('status.available')}</th>
@@ -178,9 +178,9 @@ export default function CommandOperationsCatchAll() {
               </thead>
               <tbody className="divide-y divide-nova-border/50 text-sm">
                 {resources.map((res) => (
-                  <tr key={res.id} className="hover:bg-nova-surface/10 transition-colors">
+                  <tr key={res.id} className="hover:bg-white/10 transition-colors">
                     <td className="p-4 font-semibold text-nova-text">{localize(res.name)}</td>
-                    <td className="p-4 text-xs text-nova-text-muted capitalize">{res.category}</td>
+                    <td className="p-4 text-xs text-em-text-muted capitalize">{res.category}</td>
                     <td className="p-4 font-mono text-nova-text">{res.available} {res.unit}</td>
                     <td className="p-4">
                       <span className={cn('text-[9px] font-bold px-2 py-0.5 rounded-full border', {
@@ -191,10 +191,10 @@ export default function CommandOperationsCatchAll() {
                         {statusLabel(res.status)}
                       </span>
                     </td>
-                    <td className="p-4 font-mono text-xs text-nova-text-muted">{res.lowStockThreshold} {res.unit}</td>
+                    <td className="p-4 font-mono text-xs text-em-text-muted">{res.lowStockThreshold} {res.unit}</td>
                   </tr>
                 ))}
-                {resources.length === 0 && <tr><td colSpan={5} className="p-8 text-center text-sm text-nova-text-muted">No resources returned by the backend.</td></tr>}
+                {resources.length === 0 && <tr><td colSpan={5} className="p-8 text-center text-sm text-em-text-muted">No resources returned by the backend.</td></tr>}
               </tbody>
             </table>
           </div>
@@ -209,13 +209,13 @@ export default function CommandOperationsCatchAll() {
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-            <HeartPulse className="w-5 h-5 text-nova-cyan" /> {t('heading.hospital_capacity')}
+            <HeartPulse className="w-5 h-5 text-er-blue" /> {t('heading.hospital_capacity')}
           </h2>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-nova-text-muted">{hospitals.length} {t('nav.hospitals')}</span>
+            <span className="text-xs text-em-text-muted">{hospitals.length} {t('nav.hospitals')}</span>
             <button
               onClick={fetchHospitals}
-              className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md bg-nova-surface border border-nova-border text-nova-text hover:border-nova-cyan/40 hover:text-nova-cyan transition-colors"
+              className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md bg-white border border-em-border text-nova-text hover:border-er-blue/40 hover:text-er-blue transition-colors"
               title="Refresh Hospital Capacity"
             >
               <RefreshCw className="w-3 h-3" /> Refresh
@@ -226,11 +226,11 @@ export default function CommandOperationsCatchAll() {
           {hospitals.map((hosp) => {
             const occupiedPercent = Math.round(((hosp.totalBeds - hosp.availableBeds) / hosp.totalBeds) * 100);
             return (
-              <div key={hosp.id} className="nova-card border border-nova-border rounded-xl p-4 space-y-3">
+              <div key={hosp.id} className="em-card border border-em-border rounded-xl p-4 space-y-3">
                 <div className="flex justify-between items-start">
                   <div>
                     <p className="text-sm font-bold text-nova-text">{localize(hosp.name)}</p>
-                    <p className="text-xs text-nova-text-muted mt-0.5">{localize(hosp.district)}</p>
+                    <p className="text-xs text-em-text-muted mt-0.5">{localize(hosp.district)}</p>
                   </div>
                   <span className={cn('text-[10px] font-bold px-2 py-0.5 rounded-full border', {
                     'bg-red-500/10 border-red-500/30 text-red-400': hosp.availableBeds < 30,
@@ -240,7 +240,7 @@ export default function CommandOperationsCatchAll() {
                   </span>
                 </div>
                 <div className="space-y-1.5">
-                  <div className="flex justify-between text-xs text-nova-text-muted">
+                  <div className="flex justify-between text-xs text-em-text-muted">
                     <span>Bed Occupancy</span>
                     <span>{occupiedPercent}% ({hosp.totalBeds - hosp.availableBeds}/{hosp.totalBeds})</span>
                   </div>
@@ -248,14 +248,14 @@ export default function CommandOperationsCatchAll() {
                     <div className={cn('h-full', occupiedPercent > 90 ? 'bg-red-500' : 'bg-nova-cyan')} style={{ width: `${occupiedPercent}%` }} />
                   </div>
                 </div>
-                <div className="flex justify-between text-xs pt-2.5 border-t border-nova-border/50 text-nova-text-muted">
+                <div className="flex justify-between text-xs pt-2.5 border-t border-em-border text-em-text-muted">
                   <span>{t('stats.icu_available')}: <strong className="text-nova-text">{hosp.icuAvailable}/{hosp.icuTotal}</strong></span>
                   <span>Ambulance Status: <strong className="text-nova-text">{t('common.ready')}</strong></span>
                 </div>
               </div>
             );
           })}
-          {hospitals.length === 0 && <p className="text-sm text-nova-text-muted py-8 text-center">No hospitals returned by the backend.</p>}
+          {hospitals.length === 0 && <p className="text-sm text-em-text-muted py-8 text-center">No hospitals returned by the backend.</p>}
         </div>
       </div>
     );
@@ -353,9 +353,9 @@ export default function CommandOperationsCatchAll() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-              <Bell className="w-5 h-5 text-nova-cyan" /> {t('heading.alert_logs')}
+              <Bell className="w-5 h-5 text-er-blue" /> {t('heading.alert_logs')}
             </h2>
-            <p className="text-xs text-nova-text-muted mt-0.5">
+            <p className="text-xs text-em-text-muted mt-0.5">
               Live operational dispatches and emergency notifications from field teams
             </p>
           </div>
@@ -363,7 +363,7 @@ export default function CommandOperationsCatchAll() {
             {unreadAlertsCount > 0 && (
               <button
                 onClick={markAllRead}
-                className="text-[11px] px-2.5 py-1 rounded-md bg-nova-cyan/10 border border-nova-cyan/30 text-nova-cyan hover:bg-nova-cyan/20 transition-colors font-medium"
+                className="text-[11px] px-2.5 py-1 rounded-md bg-er-blue-light border border-er-blue/30 text-er-blue hover:bg-er-blue-light transition-colors font-medium"
               >
                 Mark all as read
               </button>
@@ -373,7 +373,7 @@ export default function CommandOperationsCatchAll() {
                 fetchAlerts();
                 fetchNotifications();
               }}
-              className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md bg-nova-surface border border-nova-border text-nova-text hover:border-nova-cyan/40 hover:text-nova-cyan transition-colors"
+              className="flex items-center gap-1 text-[11px] px-2.5 py-1 rounded-md bg-white border border-em-border text-nova-text hover:border-er-blue/40 hover:text-er-blue transition-colors"
               title="Refresh Live Alerts"
             >
               <RefreshCw className="w-3 h-3" /> Refresh
@@ -383,22 +383,22 @@ export default function CommandOperationsCatchAll() {
 
         {/* Real Metrics Cards */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="nova-card border border-nova-border rounded-xl p-3 bg-nova-surface/30">
-            <p className="text-[11px] text-nova-text-muted">Total Alerts</p>
+          <div className="em-card border border-em-border rounded-xl p-3 bg-white/30">
+            <p className="text-[11px] text-em-text-muted">Total Alerts</p>
             <p className="text-xl font-mono font-bold text-nova-text mt-0.5">{totalAlertsCount}</p>
           </div>
-          <div className="nova-card border border-nova-border rounded-xl p-3 bg-nova-surface/30">
-            <p className="text-[11px] text-nova-text-muted">Unread Active</p>
-            <p className="text-xl font-mono font-bold text-nova-cyan mt-0.5">{unreadAlertsCount}</p>
+          <div className="em-card border border-em-border rounded-xl p-3 bg-white/30">
+            <p className="text-[11px] text-em-text-muted">Unread Active</p>
+            <p className="text-xl font-mono font-bold text-er-blue mt-0.5">{unreadAlertsCount}</p>
           </div>
-          <div className="nova-card border border-nova-border rounded-xl p-3 bg-nova-surface/30">
-            <p className="text-[11px] text-nova-text-muted">Critical Priority</p>
+          <div className="em-card border border-em-border rounded-xl p-3 bg-white/30">
+            <p className="text-[11px] text-em-text-muted">Critical Priority</p>
             <p className="text-xl font-mono font-bold text-red-400 mt-0.5">{criticalCount}</p>
           </div>
         </div>
 
         {/* Alerts List */}
-        <div className="nova-card border border-nova-border rounded-xl divide-y divide-nova-border/50 overflow-hidden">
+        <div className="em-card border border-em-border rounded-xl divide-y divide-nova-border/50 overflow-hidden">
           {combinedList.map((item) => {
             const cleanTitle = getCleanAlertTitle(item);
             return (
@@ -409,7 +409,7 @@ export default function CommandOperationsCatchAll() {
                 }}
                 className={cn(
                   'p-4 flex items-start gap-3.5 transition-colors cursor-pointer',
-                  !item.read ? 'bg-nova-cyan/[0.03] hover:bg-nova-cyan/[0.06]' : 'hover:bg-nova-surface/20 opacity-80 hover:opacity-100'
+                  !item.read ? 'bg-er-blue-light[0.03] hover:bg-er-blue-light[0.06]' : 'hover:bg-white/20 opacity-80 hover:opacity-100'
                 )}
               >
                 <div className="mt-1 flex-shrink-0">
@@ -430,7 +430,7 @@ export default function CommandOperationsCatchAll() {
                     <p className="text-sm font-bold text-nova-text flex items-center gap-2">
                       {localize(cleanTitle)}
                       {item.relatedId && (
-                        <span className="font-mono text-[10px] font-normal px-1.5 py-0.5 rounded bg-nova-surface2 border border-nova-border text-nova-cyan">
+                        <span className="font-mono text-[10px] font-normal px-1.5 py-0.5 rounded bg-em-subtle border border-em-border text-er-blue">
                           {item.relatedId}
                         </span>
                       )}
@@ -454,11 +454,11 @@ export default function CommandOperationsCatchAll() {
                     </div>
                   </div>
 
-                  <p className="text-xs text-nova-text-dim mt-1 leading-relaxed">
+                  <p className="text-xs text-em-text-dim mt-1 leading-relaxed">
                     {localize(item.message)}
                   </p>
 
-                  <div className="flex items-center gap-3 mt-2 text-[10px] text-nova-text-muted">
+                  <div className="flex items-center gap-3 mt-2 text-[10px] text-em-text-muted">
                     <span>{timeAgo(item.timestamp)}</span>
                     <span>•</span>
                     <span className="capitalize">{item.type?.replace(/_/g, ' ')}</span>
@@ -468,7 +468,7 @@ export default function CommandOperationsCatchAll() {
             );
           })}
           {combinedList.length === 0 && (
-            <p className="p-8 text-center text-sm text-nova-text-muted">
+            <p className="p-8 text-center text-sm text-em-text-muted">
               No live alerts or notifications currently in system.
             </p>
           )}
@@ -479,7 +479,7 @@ export default function CommandOperationsCatchAll() {
 
   return (
     <AuthGuard allowedRoles={['officer', 'hospital', 'rescue_team', 'admin', 'citizen']} allowGuestCommander={true}>
-      <div className="min-h-screen bg-nova-bg">
+      <div className="min-h-screen bg-em-bg">
         <TopNav role="officer" />
         <DashboardShell role="officer">
           <div className="p-6 space-y-6">
@@ -489,9 +489,9 @@ export default function CommandOperationsCatchAll() {
             {slug === 'alerts' && renderAlerts()}
             {!['rescue', 'resources', 'hospitals', 'alerts'].includes(slug) && (
               <div className="text-center py-12">
-                <AlertTriangle className="w-12 h-12 text-nova-cyan mx-auto mb-3" />
+                <AlertTriangle className="w-12 h-12 text-er-blue mx-auto mb-3" />
                 <p className="text-lg font-bold text-nova-text">Operational View Not Found</p>
-                <p className="text-sm text-nova-text-muted mt-1">This module is under development or has been relocated.</p>
+                <p className="text-sm text-em-text-muted mt-1">This module is under development or has been relocated.</p>
                 <button onClick={() => router.push('/command')} className="mt-4 px-4 py-2 bg-nova-cyan text-nova-bg font-bold rounded-lg hover:bg-nova-cyan-dim transition-colors text-sm">
                   Return to Dashboard
                 </button>

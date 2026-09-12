@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import { Toaster } from "sonner";
@@ -9,12 +9,7 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space",
-  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -25,22 +20,23 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "PROJECT NOVA — AI Emergency Response Network",
-    template: "%s | PROJECT NOVA",
+    default: "ADRIAN — AI Disaster Response & Intelligent Assistance Network",
+    template: "%s | ADRIAN Emergency Response",
   },
   description:
-    "An intelligent emergency response network that transforms real-time citizen reports into coordinated rescue decisions. From Emergency Reports to Intelligent Action — in Seconds.",
+    "ADRIAN is an AI-powered disaster management platform transforming citizen emergency reports into coordinated rescue and relief operations in real-time.",
   keywords: [
     "emergency response",
     "AI disaster management",
     "Sri Lanka",
     "flood monitoring",
     "rescue coordination",
-    "PROJECT NOVA",
+    "ADRIAN",
+    "disaster relief",
   ],
   openGraph: {
-    title: "PROJECT NOVA — AI Emergency Response Network",
-    description: "From Emergency Reports to Intelligent Action — in Seconds.",
+    title: "ADRIAN — AI Disaster Response & Intelligent Assistance Network",
+    description: "From Emergency Reports to Coordinated Action — in Seconds.",
     type: "website",
   },
 };
@@ -53,19 +49,29 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="antialiased bg-nova-bg text-nova-text font-sans">
+      <body className="antialiased bg-em-bg text-em-text font-sans">
         <AuthProvider>
           {children}
         </AuthProvider>
         <Toaster
-          theme="dark"
+          theme="light"
           toastOptions={{
             style: {
-              background: '#0d1629',
-              border: '1px solid #1a2744',
-              color: '#e8f0fe',
+              background: '#FFFFFF',
+              border: '1px solid #D1D5DB',
+              color: '#0D1B2A',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.10)',
+              borderRadius: '12px',
+              fontSize: '14px',
+              fontWeight: '500',
+            },
+            classNames: {
+              success: 'border-l-4 !border-l-[#2E7D32]',
+              error:   'border-l-4 !border-l-[#D32F2F]',
+              warning: 'border-l-4 !border-l-[#F57C00]',
+              info:    'border-l-4 !border-l-[#1565C0]',
             },
           }}
           position="top-right"

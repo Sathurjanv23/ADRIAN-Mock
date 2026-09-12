@@ -75,13 +75,13 @@ export function RiskGauge({ value, label, size = 'md', className, animated = tru
           >
             {clampedValue}%
           </motion.span>
-          <span className={cn(labelSize, 'text-nova-text-muted font-medium mt-0.5')}>
+          <span className={cn(labelSize, 'text-em-text-muted font-medium mt-0.5')}>
             {riskLabel}
           </span>
         </div>
       </div>
       {label && (
-        <p className="text-xs text-nova-text-dim text-center font-medium">{label}</p>
+        <p className="text-xs text-em-text-dim text-center font-medium">{label}</p>
       )}
     </div>
   );

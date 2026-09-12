@@ -47,9 +47,9 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-xs font-medium text-nova-text-dim block mb-1.5">{label}</label>
+      <label htmlFor={id} className="text-xs font-medium text-em-text-dim block mb-1.5">{label}</label>
       <div className="relative">
-        <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-nova-text-muted pointer-events-none" />
+        <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-em-text-muted pointer-events-none" />
         <input
           id={id}
           type={type}
@@ -58,11 +58,11 @@ function Field({
           placeholder={placeholder}
           autoComplete="new-password"
           className={cn(
-            'w-full bg-nova-surface border rounded-xl pl-10 py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none transition-all',
+            'w-full bg-white border rounded-xl pl-10 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none transition-all',
             suffix ? 'pr-11' : 'pr-4',
             error
               ? 'border-red-500/60 focus:border-red-500 bg-red-500/5'
-              : 'border-nova-border focus:border-nova-cyan/50 focus:bg-nova-surface2'
+              : 'border-em-border focus:border-er-blue/30 focus:bg-em-subtle'
           )}
         />
         {suffix && (
@@ -183,9 +183,9 @@ function ResetPasswordContent() {
   };
 
   return (
-    <div className="min-h-screen bg-nova-bg flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-em-bg flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated BG */}
-      <div className="absolute inset-0 hero-grid-bg opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 opacity-10 opacity-20 pointer-events-none" />
       <motion.div
         className="absolute top-1/4 left-1/3 w-96 h-96 rounded-full blur-[120px] pointer-events-none"
         style={{ background: 'rgba(0,212,255,0.05)' }}
@@ -205,7 +205,7 @@ function ResetPasswordContent() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="nova-card border border-nova-border rounded-2xl p-8 shadow-nova">
+        <div className="em-card border border-em-border rounded-2xl p-8 shadow-nova">
           {/* Logo */}
           <div className="flex justify-center mb-6">
             <NovaLogo size="md" />
@@ -221,7 +221,7 @@ function ResetPasswordContent() {
                   </div>
                 </div>
                 <h1 className="text-xl font-bold text-nova-text mb-2">Invalid Reset Link</h1>
-                <p className="text-sm text-nova-text-dim mb-6 leading-relaxed">
+                <p className="text-sm text-em-text-dim mb-6 leading-relaxed">
                   This password reset link is invalid or has expired. Please request a new one.
                 </p>
                 <Link
@@ -231,7 +231,7 @@ function ResetPasswordContent() {
                   Request New Reset Link
                 </Link>
                 <div className="flex justify-center mt-4">
-                  <Link href="/login" className="flex items-center gap-1.5 text-xs text-nova-text-muted hover:text-nova-text transition-colors">
+                  <Link href="/login" className="flex items-center gap-1.5 text-xs text-em-text-muted hover:text-nova-text transition-colors">
                     <ArrowLeft className="w-3.5 h-3.5" /> Back to Sign In
                   </Link>
                 </div>
@@ -259,11 +259,11 @@ function ResetPasswordContent() {
                   </motion.div>
                 </div>
                 <h2 className="text-xl font-bold text-nova-text mb-2">Password Reset!</h2>
-                <p className="text-sm text-nova-text-dim leading-relaxed">
+                <p className="text-sm text-em-text-dim leading-relaxed">
                   Your password has been updated successfully. Redirecting you to your dashboard…
                 </p>
                 <div className="flex justify-center mt-4">
-                  <Loader2 className="w-5 h-5 text-nova-cyan animate-spin" />
+                  <Loader2 className="w-5 h-5 text-er-blue animate-spin" />
                 </div>
               </motion.div>
             )}
@@ -272,13 +272,13 @@ function ResetPasswordContent() {
             {!success && (
               <motion.div key="form" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}>
                 <div className="flex justify-center mb-4">
-                  <div className="w-16 h-16 rounded-2xl bg-nova-cyan/10 border border-nova-cyan/20 flex items-center justify-center">
-                    <ShieldCheck className="w-8 h-8 text-nova-cyan" />
+                  <div className="w-16 h-16 rounded-2xl bg-er-blue-light border border-er-blue/20 flex items-center justify-center">
+                    <ShieldCheck className="w-8 h-8 text-er-blue" />
                   </div>
                 </div>
                 <div className="text-center mb-6">
                   <h1 className="text-2xl font-bold text-nova-text">Reset Password</h1>
-                  <p className="text-sm text-nova-text-dim mt-1.5 leading-relaxed">
+                  <p className="text-sm text-em-text-dim mt-1.5 leading-relaxed">
                     Enter the verification code sent to your email and your new password.
                   </p>
                 </div>
@@ -297,7 +297,7 @@ function ResetPasswordContent() {
 
                 <form onSubmit={handleSubmit} noValidate className="space-y-4">
                   <div>
-                    <label htmlFor="reset-email" className="text-xs font-medium text-nova-text-dim block mb-1.5">Email Address</label>
+                    <label htmlFor="reset-email" className="text-xs font-medium text-em-text-dim block mb-1.5">Email Address</label>
                     <input
                       id="reset-email"
                       type="email"
@@ -305,15 +305,15 @@ function ResetPasswordContent() {
                       onChange={(e) => { setEmail(e.target.value); setEmailError(null); }}
                       placeholder="you@nova.lk"
                       className={cn(
-                        'w-full bg-nova-surface border rounded-xl px-4 py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none transition-all',
-                        emailError ? 'border-red-500/60 focus:border-red-500 bg-red-500/5' : 'border-nova-border focus:border-nova-cyan/50 focus:bg-nova-surface2'
+                        'w-full bg-white border rounded-xl px-4 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none transition-all',
+                        emailError ? 'border-red-500/60 focus:border-red-500 bg-red-500/5' : 'border-em-border focus:border-er-blue/30 focus:bg-em-subtle'
                       )}
                     />
                     {emailError && <p className="text-[11px] text-red-400 mt-1">{emailError}</p>}
                   </div>
 
                   <div>
-                    <label htmlFor="reset-otp" className="text-xs font-medium text-nova-text-dim block mb-1.5">6-Digit Verification Code (OTP)</label>
+                    <label htmlFor="reset-otp" className="text-xs font-medium text-em-text-dim block mb-1.5">6-Digit Verification Code (OTP)</label>
                     <input
                       id="reset-otp"
                       type="text"
@@ -322,8 +322,8 @@ function ResetPasswordContent() {
                       onChange={(e) => { setOtp(e.target.value); setOtpError(null); }}
                       placeholder="e.g. 123456"
                       className={cn(
-                        'w-full bg-nova-surface border rounded-xl px-4 py-2.5 text-sm font-mono tracking-widest text-nova-text placeholder:text-nova-text-muted focus:outline-none transition-all text-center',
-                        otpError ? 'border-red-500/60 focus:border-red-500 bg-red-500/5' : 'border-nova-border focus:border-nova-cyan/50 focus:bg-nova-surface2'
+                        'w-full bg-white border rounded-xl px-4 py-2.5 text-sm font-mono tracking-widest text-nova-text placeholder:text-em-text-muted focus:outline-none transition-all text-center',
+                        otpError ? 'border-red-500/60 focus:border-red-500 bg-red-500/5' : 'border-em-border focus:border-er-blue/30 focus:bg-em-subtle'
                       )}
                     />
                     {otpError && <p className="text-[11px] text-red-400 mt-1">{otpError}</p>}
@@ -342,7 +342,7 @@ function ResetPasswordContent() {
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="text-nova-text-muted hover:text-nova-text transition-colors"
+                          className="text-em-text-muted hover:text-nova-text transition-colors"
                         >
                           {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -378,7 +378,7 @@ function ResetPasswordContent() {
                 </form>
 
                 <div className="flex justify-center mt-5">
-                  <Link href="/login" className="flex items-center gap-1.5 text-xs text-nova-text-muted hover:text-nova-text transition-colors">
+                  <Link href="/login" className="flex items-center gap-1.5 text-xs text-em-text-muted hover:text-nova-text transition-colors">
                     <ArrowLeft className="w-3.5 h-3.5" /> Back to Sign In
                   </Link>
                 </div>
@@ -387,7 +387,7 @@ function ResetPasswordContent() {
           </AnimatePresence>
         </div>
 
-        <p className="text-center text-[10px] text-nova-text-muted mt-4">
+        <p className="text-center text-[10px] text-em-text-muted mt-4">
           SIMULATION DEMO · Not a real government system · Team Code Catalyst
         </p>
       </motion.div>
@@ -400,8 +400,8 @@ function ResetPasswordContent() {
 export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-nova-bg flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-nova-cyan animate-spin" />
+      <div className="min-h-screen bg-em-bg flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-er-blue animate-spin" />
       </div>
     }>
       <ResetPasswordContent />

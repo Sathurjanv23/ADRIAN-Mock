@@ -58,7 +58,7 @@ export default function IncidentsQueuePage() {
 
   return (
     <AuthGuard allowedRoles={['officer', 'hospital', 'rescue_team', 'admin', 'citizen']} allowGuestCommander={true}>
-      <div className="min-h-screen bg-nova-bg">
+      <div className="min-h-screen bg-em-bg">
         <TopNav role="officer" />
         <DashboardShell role="officer">
           <div className="p-6 space-y-6">
@@ -66,12 +66,12 @@ export default function IncidentsQueuePage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
                 <h1 className="text-2xl font-bold font-display text-nova-text">{t('heading.queue')}</h1>
-                <p className="text-sm text-nova-text-dim mt-0.5">{t('heading.authority_dashboard')} · Live incident tracking & triage queue</p>
+                <p className="text-sm text-em-text-dim mt-0.5">{t('heading.authority_dashboard')} · Live incident tracking & triage queue</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <div className="text-center px-3.5 py-2 bg-nova-surface border border-nova-border rounded-xl">
-                  <div className="text-[10px] text-nova-cyan uppercase font-bold tracking-wider">{t('stats.active_incidents')}</div>
-                  <div className="text-lg font-bold text-nova-cyan font-mono">{activeIncidentsCount}</div>
+                <div className="text-center px-3.5 py-2 bg-white border border-em-border rounded-xl">
+                  <div className="text-[10px] text-er-blue uppercase font-bold tracking-wider">{t('stats.active_incidents')}</div>
+                  <div className="text-lg font-bold text-er-blue font-mono">{activeIncidentsCount}</div>
                 </div>
                 <div className="text-center px-3.5 py-2 bg-red-500/10 border border-red-500/20 rounded-xl">
                   <div className="text-[10px] text-red-400 uppercase font-bold tracking-wider">Critical Active</div>
@@ -81,13 +81,13 @@ export default function IncidentsQueuePage() {
                   <div className="text-[10px] text-green-400 uppercase font-bold tracking-wider">Resolved</div>
                   <div className="text-lg font-bold text-green-400 font-mono">{resolvedCount}</div>
                 </div>
-                <div className="text-center px-3.5 py-2 bg-nova-surface border border-nova-border rounded-xl">
-                  <div className="text-[10px] text-nova-text-muted uppercase font-bold tracking-wider">Total in DB</div>
+                <div className="text-center px-3.5 py-2 bg-white border border-em-border rounded-xl">
+                  <div className="text-[10px] text-em-text-muted uppercase font-bold tracking-wider">Total in DB</div>
                   <div className="text-lg font-bold text-nova-text font-mono">{incidents.length}</div>
                 </div>
                 <button
                   onClick={() => fetchIncidents()}
-                  className="px-3 py-2 bg-nova-surface border border-nova-border rounded-xl text-xs text-nova-text hover:border-nova-cyan/40 hover:text-nova-cyan transition-colors flex items-center gap-1.5 self-center"
+                  className="px-3 py-2 bg-white border border-em-border rounded-xl text-xs text-nova-text hover:border-er-blue/40 hover:text-er-blue transition-colors flex items-center gap-1.5 self-center"
                   title="Refresh incidents"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
@@ -96,17 +96,17 @@ export default function IncidentsQueuePage() {
             </div>
 
           {/* Search & Filter Bar */}
-          <div className="nova-card border border-nova-border rounded-xl p-4 space-y-3">
+          <div className="em-card border border-em-border rounded-xl p-4 space-y-3">
             <div className="flex flex-col lg:flex-row gap-3">
               {/* Search input */}
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-nova-text-muted" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-em-text-muted" />
                 <input
                   type="text"
                   placeholder={t('common.search_placeholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-nova-surface border border-nova-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none focus:border-nova-cyan/40 transition-colors"
+                  className="w-full bg-white border border-em-border rounded-xl pl-10 pr-4 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/40 transition-colors"
                 />
               </div>
 
@@ -116,7 +116,7 @@ export default function IncidentsQueuePage() {
                   <select
                     value={selectedSeverity}
                     onChange={(e) => setSelectedSeverity(e.target.value as SeverityLevel | 'all')}
-                    className="w-full bg-nova-surface border border-nova-border rounded-xl px-3 py-2.5 text-xs text-nova-text focus:outline-none focus:border-nova-cyan/40"
+                    className="w-full bg-white border border-em-border rounded-xl px-3 py-2.5 text-xs text-nova-text focus:outline-none focus:border-er-blue/40"
                   >
                     <option value="all">{t('btn.filter')}: {severityLabel('critical')}/{severityLabel('low')}</option>
                     <option value="critical">🔴 {severityLabel('critical')}</option>
@@ -129,7 +129,7 @@ export default function IncidentsQueuePage() {
                   <select
                     value={selectedStatus}
                     onChange={(e) => setSelectedStatus(e.target.value as IncidentStatus | 'all')}
-                    className="w-full bg-nova-surface border border-nova-border rounded-xl px-3 py-2.5 text-xs text-nova-text focus:outline-none focus:border-nova-cyan/40"
+                    className="w-full bg-white border border-em-border rounded-xl px-3 py-2.5 text-xs text-nova-text focus:outline-none focus:border-er-blue/40"
                   >
                     <option value="all">{t('btn.filter')}: {t('stats.status')}</option>
                     <option value="reported">{statusLabel('reported')}</option>
@@ -145,7 +145,7 @@ export default function IncidentsQueuePage() {
                   <select
                     value={selectedType}
                     onChange={(e) => setSelectedType(e.target.value as EmergencyType | 'all')}
-                    className="w-full bg-nova-surface border border-nova-border rounded-xl px-3 py-2.5 text-xs text-nova-text focus:outline-none focus:border-nova-cyan/40"
+                    className="w-full bg-white border border-em-border rounded-xl px-3 py-2.5 text-xs text-nova-text focus:outline-none focus:border-er-blue/40"
                   >
                     <option value="all">{t('btn.filter')}: Type</option>
                     <option value="flood">{emergencyTypeLabel('flood')}</option>
@@ -162,11 +162,11 @@ export default function IncidentsQueuePage() {
           </div>
 
           {/* Queue List Table */}
-          <div className="nova-card border border-nova-border rounded-xl overflow-hidden">
+          <div className="em-card border border-em-border rounded-xl overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-nova-border bg-nova-surface/40 text-[10px] font-bold text-nova-text-muted uppercase tracking-wider">
+                  <tr className="border-b border-em-border bg-white/40 text-[10px] font-bold text-em-text-muted uppercase tracking-wider">
                     <th className="p-4 w-28">ID</th>
                     <th className="p-4 w-28">{severityLabel('critical')}</th>
                     <th className="p-4">{t('heading.mission_details')}</th>
@@ -182,52 +182,52 @@ export default function IncidentsQueuePage() {
                       filteredIncidents.map((incident) => (
                         <motion.tr
                           key={incident.id}
-                          className="hover:bg-nova-surface/20 transition-colors group cursor-pointer"
+                          className="hover:bg-white/20 transition-colors group cursor-pointer"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                         >
-                          <td className="p-4 font-mono font-bold text-nova-cyan group-hover:underline">
+                          <td className="p-4 font-mono font-bold text-er-blue group-hover:underline">
                             {incident.id}
                           </td>
                           <td className="p-4">
                             <SeverityBadge severity={incident.severity} size="sm" pulse={incident.severity === 'critical'} />
                           </td>
                           <td className="p-4 max-w-sm">
-                            <p className="font-semibold text-nova-text truncate group-hover:text-nova-cyan transition-colors">
+                            <p className="font-semibold text-nova-text truncate group-hover:text-er-blue transition-colors">
                               {getEmergencyTypeIcon(incident.type)} {localize(incident.title)}
                             </p>
-                            <p className="text-xs text-nova-text-dim truncate mt-0.5">{localize(incident.description)}</p>
+                            <p className="text-xs text-em-text-dim truncate mt-0.5">{localize(incident.description)}</p>
                           </td>
-                          <td className="p-4 text-xs text-nova-text-muted">
+                          <td className="p-4 text-xs text-em-text-muted">
                             <div className="flex items-center gap-1.5 truncate">
-                              <MapPin className="w-3.5 h-3.5 text-nova-cyan flex-shrink-0" />
+                              <MapPin className="w-3.5 h-3.5 text-er-blue flex-shrink-0" />
                               <span className="truncate">{localize(incident.location.address || incident.location.district)}</span>
                             </div>
                           </td>
                           <td className="p-4">
                             <span className={cn('text-[10px] font-bold px-2.5 py-1 rounded-full border tracking-wide uppercase', {
-                              'bg-nova-cyan/10 border-nova-cyan/30 text-nova-cyan': incident.status === 'ai_analyzed' || incident.status === 'prioritized',
+                              'bg-er-blue-light border-er-blue/30 text-er-blue': incident.status === 'ai_analyzed' || incident.status === 'prioritized',
                               'bg-yellow-500/10 border-yellow-500/30 text-yellow-400': incident.status === 'assigned' || incident.status === 'en_route',
                               'bg-red-500/10 border-red-500/30 text-red-400': incident.status === 'responding',
                               'bg-green-500/10 border-green-500/30 text-green-400': incident.status === 'resolved',
-                              'bg-nova-surface border-nova-border text-nova-text-muted': incident.status === 'reported',
+                              'bg-white border-em-border text-em-text-muted': incident.status === 'reported',
                             })}>
                               {statusLabel(incident.status)}
                             </span>
                           </td>
-                          <td className="p-4 text-xs text-nova-text-muted whitespace-nowrap">
+                          <td className="p-4 text-xs text-em-text-muted whitespace-nowrap">
                             {timeAgo(incident.reportedAt)}
                           </td>
                           <td className="p-4 text-right">
-                            <ChevronRight className="w-4 h-4 text-nova-text-muted group-hover:text-nova-cyan transition-colors" />
+                            <ChevronRight className="w-4 h-4 text-em-text-muted group-hover:text-er-blue transition-colors" />
                           </td>
                         </motion.tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={7} className="p-12 text-center text-nova-text-muted">
-                          <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-nova-low" />
+                        <td colSpan={7} className="p-12 text-center text-em-text-muted">
+                          <CheckCircle2 className="w-8 h-8 mx-auto mb-2 text-er-green" />
                           <p className="font-semibold text-nova-text">{t('common.no_active_incidents')}</p>
                           <p className="text-xs mt-1">Try adjusting your filters or search terms</p>
                         </td>

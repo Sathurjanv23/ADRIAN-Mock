@@ -10,32 +10,32 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getSeverityColor(severity: SeverityLevel): string {
   const map: Record<SeverityLevel, string> = {
-    critical: 'text-nova-critical',
-    high: 'text-nova-high',
-    medium: 'text-nova-medium',
-    low: 'text-nova-low',
+    critical: 'text-er-red-dark',
+    high:     'text-er-orange',
+    medium:   'text-yellow-700',
+    low:      'text-er-green',
   };
-  return map[severity] || 'text-nova-text-dim';
+  return map[severity] || 'text-em-text-muted';
 }
 
 export function getSeverityBg(severity: SeverityLevel): string {
   const map: Record<SeverityLevel, string> = {
-    critical: 'bg-red-500/10 border-red-500/30 text-red-400',
-    high: 'bg-orange-500/10 border-orange-500/30 text-orange-400',
-    medium: 'bg-yellow-500/10 border-yellow-500/30 text-yellow-400',
-    low: 'bg-green-500/10 border-green-500/30 text-green-400',
+    critical: 'bg-er-red-light border-er-red/30 text-er-red-dark',
+    high:     'bg-er-orange-light border-er-orange/30 text-er-orange',
+    medium:   'bg-yellow-50 border-yellow-300 text-yellow-700',
+    low:      'bg-er-green-light border-er-green/30 text-er-green',
   };
   return map[severity] || '';
 }
 
 export function getSeverityDot(severity: SeverityLevel): string {
   const map: Record<SeverityLevel, string> = {
-    critical: 'bg-nova-critical shadow-[0_0_6px_rgba(255,59,59,0.8)]',
-    high: 'bg-nova-high shadow-[0_0_6px_rgba(255,122,0,0.8)]',
-    medium: 'bg-nova-medium shadow-[0_0_6px_rgba(255,215,0,0.8)]',
-    low: 'bg-nova-low shadow-[0_0_6px_rgba(34,197,94,0.8)]',
+    critical: 'bg-er-red',
+    high:     'bg-er-orange',
+    medium:   'bg-yellow-400',
+    low:      'bg-er-green',
   };
-  return map[severity] || 'bg-gray-500';
+  return map[severity] || 'bg-gray-400';
 }
 
 import { localizeText, formatTimeAgo as i18nTimeAgo, getSeverityLabel as i18nSeverityLabel, getStatusLabel as i18nStatusLabel, getEmergencyTypeLabel as i18nEmergencyTypeLabel, getRiskLabel as i18nRiskLabel } from './i18n';
@@ -52,35 +52,35 @@ export function getStatusLabel(status: IncidentStatus | TeamStatus | string, lan
 
 export function getStatusColor(status: IncidentStatus): string {
   const colors: Record<IncidentStatus, string> = {
-    submitted: 'text-nova-text-dim',
-    analysing: 'text-nova-cyan',
-    verified: 'text-nova-medium',
-    dispatched: 'text-nova-blue-bright',
-    acknowledged: 'text-nova-blue-bright',
-    en_route: 'text-nova-high',
-    on_scene: 'text-nova-critical',
-    transporting: 'text-purple-400',
-    resolved: 'text-nova-low',
-    cancelled: 'text-nova-text-muted',
-    reported: 'text-nova-text-dim',
-    ai_analyzed: 'text-nova-cyan',
-    prioritized: 'text-nova-medium',
-    assigned: 'text-nova-blue-bright',
-    responding: 'text-nova-critical',
-    closed: 'text-nova-text-muted',
+    submitted:    'text-em-text-muted',
+    analysing:    'text-er-blue',
+    verified:     'text-yellow-700',
+    dispatched:   'text-er-blue',
+    acknowledged: 'text-er-blue',
+    en_route:     'text-er-orange',
+    on_scene:     'text-er-red-dark',
+    transporting: 'text-purple-700',
+    resolved:     'text-er-green',
+    cancelled:    'text-em-text-disabled',
+    reported:     'text-em-text-muted',
+    ai_analyzed:  'text-er-blue',
+    prioritized:  'text-yellow-700',
+    assigned:     'text-er-blue',
+    responding:   'text-er-red',
+    closed:       'text-em-text-disabled',
   };
-  return colors[status] || 'text-nova-text-dim';
+  return colors[status] || 'text-em-text-muted';
 }
 
 export function getTeamStatusColor(status: TeamStatus): string {
   const colors: Record<TeamStatus, string> = {
-    available: 'text-nova-low',
-    assigned: 'text-nova-blue-bright',
-    en_route: 'text-nova-high',
-    on_scene: 'text-nova-critical',
-    unavailable: 'text-nova-text-muted',
+    available:   'text-er-green',
+    assigned:    'text-er-blue',
+    en_route:    'text-er-orange',
+    on_scene:    'text-er-red-dark',
+    unavailable: 'text-em-text-disabled',
   };
-  return colors[status] || 'text-nova-text-dim';
+  return colors[status] || 'text-em-text-muted';
 }
 
 // ─── Emergency Type Utilities ────────────────────────────────
@@ -139,17 +139,17 @@ export function formatNumber(n: number): string {
 // ─── Risk Level ──────────────────────────────────────────────
 
 export function getRiskColor(riskPercent: number): string {
-  if (riskPercent >= 80) return 'text-nova-critical';
-  if (riskPercent >= 60) return 'text-nova-high';
-  if (riskPercent >= 40) return 'text-nova-medium';
-  return 'text-nova-low';
+  if (riskPercent >= 80) return 'text-er-red-dark';
+  if (riskPercent >= 60) return 'text-er-orange';
+  if (riskPercent >= 40) return 'text-yellow-700';
+  return 'text-er-green';
 }
 
 export function getRiskBg(riskPercent: number): string {
-  if (riskPercent >= 80) return 'bg-red-500';
-  if (riskPercent >= 60) return 'bg-orange-500';
-  if (riskPercent >= 40) return 'bg-yellow-500';
-  return 'bg-green-500';
+  if (riskPercent >= 80) return 'bg-er-red';
+  if (riskPercent >= 60) return 'bg-er-orange';
+  if (riskPercent >= 40) return 'bg-yellow-400';
+  return 'bg-er-green';
 }
 
 export function getRiskLabel(riskPercent: number, lang: string = 'en'): string {

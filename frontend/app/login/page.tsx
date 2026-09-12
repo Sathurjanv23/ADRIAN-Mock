@@ -59,10 +59,10 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-xs font-medium text-nova-text-dim block mb-1.5">{label}</label>
+      <label htmlFor={id} className="text-xs font-medium text-em-text-dim block mb-1.5">{label}</label>
       <div className="relative">
         {icon && (
-          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-nova-text-muted pointer-events-none">{icon}</span>
+          <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-em-text-muted pointer-events-none">{icon}</span>
         )}
         <input
           id={id}
@@ -72,12 +72,12 @@ function Field({
           placeholder={placeholder}
           autoComplete={type === 'password' ? 'current-password' : type === 'email' ? 'email' : 'off'}
           className={cn(
-            'w-full bg-nova-surface border rounded-xl py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none transition-all',
+            'w-full bg-white border rounded-xl py-2.5 text-sm text-em-text placeholder:text-em-text-muted focus:outline-none transition-all',
             icon ? 'pl-10 pr-4' : 'px-4',
             suffix ? 'pr-11' : '',
             error
               ? 'border-red-500/60 focus:border-red-500 bg-red-500/5'
-              : 'border-nova-border focus:border-nova-cyan/50 focus:bg-nova-surface2'
+              : 'border-em-border focus:border-er-blue/40 focus:bg-em-subtle'
           )}
         />
         {suffix && (
@@ -87,7 +87,7 @@ function Field({
       <AnimatePresence>
         {error && (
           <motion.p
-            className="flex items-center gap-1 text-[11px] text-red-400 mt-1"
+            className="flex items-center gap-1 text-[11px] text-er-red mt-1"
             initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
           >
             <XCircle className="w-3 h-3 flex-shrink-0" /> {error}
@@ -218,16 +218,16 @@ function OtpVerificationScreen({
     >
       {/* Icon */}
       <div className="flex justify-center mb-2">
-        <div className="w-16 h-16 rounded-2xl bg-nova-cyan/10 border border-nova-cyan/20 flex items-center justify-center">
-          <Mail className="w-8 h-8 text-nova-cyan" />
+        <div className="w-16 h-16 rounded-2xl bg-er-blue-light border border-er-blue/20 flex items-center justify-center">
+          <Mail className="w-8 h-8 text-er-blue" />
         </div>
       </div>
 
       <div className="text-center">
-        <h2 className="text-xl font-bold text-nova-text">Verify Your Email</h2>
-        <p className="text-sm text-nova-text-dim mt-1.5 leading-relaxed">
+        <h2 className="text-xl font-bold text-em-text">Verify Your Email</h2>
+        <p className="text-sm text-em-text-dim mt-1.5 leading-relaxed">
           We sent a 6-digit code to<br />
-          <span className="text-nova-cyan font-semibold">{user.email}</span>
+          <span className="text-er-blue font-semibold">{user.email}</span>
         </p>
       </div>
 
@@ -246,8 +246,8 @@ function OtpVerificationScreen({
             onPaste={i === 0 ? handlePaste : undefined}
             disabled={timeLeft === 0}
             className={cn(
-              'w-11 h-12 text-center text-lg font-bold border rounded-xl bg-nova-surface text-nova-text focus:outline-none transition-all disabled:opacity-40',
-              digit ? 'border-nova-cyan bg-nova-cyan/10' : 'border-nova-border focus:border-nova-cyan/50'
+              'w-11 h-12 text-center text-lg font-bold border rounded-xl bg-white text-em-text focus:outline-none transition-all disabled:opacity-40',
+              digit ? 'border-nova-cyan bg-er-blue-light' : 'border-em-border focus:border-er-blue/40'
             )}
           />
         ))}
@@ -256,12 +256,12 @@ function OtpVerificationScreen({
       {/* Countdown timer */}
       <div className="text-center">
         {timeLeft > 0 ? (
-          <p className="text-xs text-nova-text-muted">
+          <p className="text-xs text-em-text-muted">
             OTP expires in{' '}
-            <span className="font-mono font-bold text-nova-cyan">{timeLeft}s</span>
+            <span className="font-mono font-bold text-er-blue">{timeLeft}s</span>
           </p>
         ) : (
-          <p className="text-xs font-semibold text-red-400">
+          <p className="text-xs font-semibold text-er-red">
             ⚠️ OTP expired. Please request a new OTP.
           </p>
         )}
@@ -271,7 +271,7 @@ function OtpVerificationScreen({
       <AnimatePresence>
         {error && (
           <motion.div
-            className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs"
+            className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-er-red text-xs"
             initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
           >
             <XCircle className="w-4 h-4 flex-shrink-0" /> {error}
@@ -293,13 +293,13 @@ function OtpVerificationScreen({
 
       {/* Resend */}
       <div className="flex items-center justify-between text-xs">
-        <button onClick={onBack} className="text-nova-text-muted hover:text-nova-text transition-colors">
+        <button onClick={onBack} className="text-em-text-muted hover:text-em-text transition-colors">
           ← Use different email
         </button>
         <button
           onClick={handleResend}
           disabled={timeLeft > 0 || resending}
-          className="flex items-center gap-1.5 text-nova-cyan hover:underline disabled:text-nova-text-muted disabled:no-underline transition-colors"
+          className="flex items-center gap-1.5 text-er-blue hover:underline disabled:text-em-text-muted disabled:no-underline transition-colors"
         >
           {resending ? <Loader2 className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
           {timeLeft > 0 ? `Resend in ${timeLeft}s` : 'Resend code'}
@@ -411,9 +411,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-nova-bg flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-em-bg flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated BG */}
-      <div className="absolute inset-0 hero-grid-bg opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 opacity-10 opacity-20 pointer-events-none" />
       <motion.div
         className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-[120px] pointer-events-none"
         style={{ background: 'rgba(0,212,255,0.05)' }}
@@ -434,14 +434,14 @@ export default function LoginPage() {
         transition={{ duration: 0.5 }}
       >
         {/* Card */}
-        <div className="nova-card border border-nova-border rounded-2xl p-8 shadow-nova">
+        <div className="em-card border border-em-border rounded-2xl p-8 shadow-nova">
           {/* Header */}
           <div className="text-center mb-7">
             <div className="flex justify-center mb-4">
               <NovaLogo size="md" />
             </div>
-            <h1 className="text-2xl font-bold text-nova-text">Sign In to NOVA</h1>
-            <p className="text-xs text-nova-text-dim mt-1">AI Emergency Response Network</p>
+            <h1 className="text-2xl font-bold text-em-text">Sign In to NOVA</h1>
+            <p className="text-xs text-em-text-dim mt-1">AI Emergency Response Network</p>
           </div>
 
           <AnimatePresence mode="wait">
@@ -468,7 +468,7 @@ export default function LoginPage() {
                   id="google-signin-btn"
                   onClick={handleGoogleSignIn}
                   disabled={googleLoading || loading}
-                  className="w-full flex items-center justify-center gap-3 border border-nova-border rounded-xl py-2.5 text-sm font-medium text-nova-text hover:bg-nova-surface2 hover:border-nova-border2 transition-all disabled:opacity-50 mb-5"
+                  className="w-full flex items-center justify-center gap-3 border border-em-border rounded-xl py-2.5 text-sm font-medium text-em-text hover:bg-em-subtle hover:border-em-border-strong transition-all disabled:opacity-50 mb-5"
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                 >
@@ -483,7 +483,7 @@ export default function LoginPage() {
                 {/* Divider */}
                 <div className="relative flex items-center gap-3 mb-5">
                   <div className="flex-1 h-px bg-nova-border" />
-                  <span className="text-[10px] text-nova-text-muted uppercase tracking-wider">or sign in with email</span>
+                  <span className="text-[10px] text-em-text-muted uppercase tracking-wider">or sign in with email</span>
                   <div className="flex-1 h-px bg-nova-border" />
                 </div>
 
@@ -491,7 +491,7 @@ export default function LoginPage() {
                 <AnimatePresence>
                   {globalError && (
                     <motion.div
-                      className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs mb-4"
+                      className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-er-red text-xs mb-4"
                       initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                     >
                       <XCircle className="w-4 h-4 flex-shrink-0" />
@@ -525,7 +525,7 @@ export default function LoginPage() {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="text-nova-text-muted hover:text-nova-text transition-colors"
+                        className="text-em-text-muted hover:text-em-text transition-colors"
                       >
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -534,7 +534,7 @@ export default function LoginPage() {
 
                   {/* Forgot Password */}
                   <div className="flex justify-end -mt-1">
-                    <Link href="/forgot-password" className="text-xs text-nova-cyan hover:underline">
+                    <Link href="/forgot-password" className="text-xs text-er-blue hover:underline">
                       Forgot password?
                     </Link>
                   </div>
@@ -555,9 +555,9 @@ export default function LoginPage() {
                   </motion.button>
                 </form>
 
-                <p className="text-center text-xs text-nova-text-muted mt-5">
+                <p className="text-center text-xs text-em-text-muted mt-5">
                   New to NOVA?{' '}
-                  <Link href="/register" className="text-nova-cyan hover:underline font-medium">
+                  <Link href="/register" className="text-er-blue hover:underline font-medium">
                     Create an account
                   </Link>
                 </p>

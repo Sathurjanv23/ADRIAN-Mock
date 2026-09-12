@@ -1,18 +1,19 @@
 'use client';
 
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { NovaLogo } from '@/components/shared/TopNav';
 import {
-  Zap, Map, Brain, Shield, Globe, ChevronRight, ArrowRight,
+  Zap, Map, Brain, Shield, Globe, ArrowRight,
   BarChart3, Radio, Users, AlertTriangle, Activity, Cpu,
-  CheckCircle, Bell, Clock, TrendingUp, Cloud, Navigation,
-  Building2, Waves, ThumbsUp
+  CheckCircle, Clock, TrendingUp, Navigation,
+  HeartPulse, Truck, Phone, Menu, X, ChevronDown
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useNovaStore } from '@/lib/store/nova-store';
+import { useTranslation } from '@/lib/i18n';
 
 // ─── Counter animation hook ──────────────────────────────────
 
@@ -29,12 +30,10 @@ function useCounter(target: number, duration = 2000, start = false) {
 
     const updateValue = () => {
       if (!isMounted) return;
-
       const elapsed = performance.now() - startTime;
       const progress = Math.min(elapsed / safeDuration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
       setValue(Math.round(eased * safeTarget));
-
       if (progress >= 1) clearInterval(timer);
     };
 
@@ -56,23 +55,26 @@ function LiveStats() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) setStarted(true); }, { threshold: 0.3 });
+    const observer = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setStarted(true); },
+      { threshold: 0.3 }
+    );
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
   const activeIncidents = useCounter(1247, 2000, started);
-  const peopleAssisted = useCounter(48391, 2500, started);
-  const rescueTeams = useCounter(342, 1800, started);
-  const averageResponse = useCounter(114, 2200, started);
-  const aiPredictions = useCounter(873, 2000, started);
+  const peopleAssisted  = useCounter(48391, 2500, started);
+  const rescueTeams     = useCounter(342, 1800, started);
+  const avgResponse     = useCounter(114, 2200, started);
+  const aiPredictions   = useCounter(873, 2000, started);
 
   const stats = [
-    { value: activeIncidents, label: 'Active Incidents', unit: '', icon: <AlertTriangle className="w-5 h-5" />, color: 'text-red-400' },
-    { value: peopleAssisted, label: 'People Assisted', unit: '+', icon: <Users className="w-5 h-5" />, color: 'text-nova-cyan' },
-    { value: rescueTeams, label: 'Rescue Teams', unit: '', icon: <Shield className="w-5 h-5" />, color: 'text-green-400' },
-    { value: averageResponse, label: 'Avg Response (min)', unit: '', icon: <Clock className="w-5 h-5" />, color: 'text-orange-400' },
-    { value: aiPredictions, label: 'AI Predictions', unit: '', icon: <Brain className="w-5 h-5" />, color: 'text-purple-400' },
+    { value: activeIncidents, label: 'Active Incidents',   unit: '',  icon: <AlertTriangle className="w-5 h-5" />, color: 'text-er-red',    bg: 'bg-er-red-light border-er-red/20' },
+    { value: peopleAssisted,  label: 'People Assisted',    unit: '+', icon: <Users className="w-5 h-5" />,         color: 'text-er-blue',   bg: 'bg-er-blue-light border-er-blue/20' },
+    { value: rescueTeams,     label: 'Rescue Teams',       unit: '',  icon: <Shield className="w-5 h-5" />,        color: 'text-er-green',  bg: 'bg-er-green-light border-er-green/20' },
+    { value: avgResponse,     label: 'Avg Response (min)', unit: '',  icon: <Clock className="w-5 h-5" />,         color: 'text-er-orange', bg: 'bg-er-orange-light border-er-orange/20' },
+    { value: aiPredictions,   label: 'AI Predictions',     unit: '',  icon: <Brain className="w-5 h-5" />,        color: 'text-purple-700', bg: 'bg-purple-50 border-purple-200' },
   ];
 
   return (
@@ -80,124 +82,116 @@ function LiveStats() {
       {stats.map((stat, i) => (
         <motion.div
           key={stat.label}
-          className="nova-glass rounded-xl p-4 text-center"
+          className={cn('em-card p-4 text-center border', stat.bg)}
           initial={{ opacity: 0, y: 20 }}
           animate={started ? { opacity: 1, y: 0 } : {}}
           transition={{ delay: i * 0.1, duration: 0.5 }}
         >
           <div className={cn('flex justify-center mb-2', stat.color)}>{stat.icon}</div>
-          <div className={cn('text-3xl font-bold font-display tabular-nums', stat.color)}>
+          <div className={cn('text-3xl font-black tabular-nums', stat.color)}>
             {stat.value.toLocaleString()}{stat.unit}
           </div>
-          <div className="text-xs text-nova-text-dim mt-1">{stat.label}</div>
+          <div className="text-xs text-em-text-muted mt-1 font-semibold">{stat.label}</div>
         </motion.div>
       ))}
     </div>
   );
 }
 
-// ─── Animated Sri Lanka Map Visual ──────────────────────────
+// ─── Hero Map Visual (Light) ─────────────────────────────────
 
 function HeroMapVisual() {
   const incidents = [
     { x: 45, y: 62, type: 'critical', label: 'Zone 04 · Critical' },
-    { x: 38, y: 55, type: 'high', label: 'Zone 03 · High' },
-    { x: 55, y: 42, type: 'medium', label: 'Zone 07 · Medium' },
+    { x: 38, y: 55, type: 'high',     label: 'Zone 03 · High' },
+    { x: 55, y: 42, type: 'medium',   label: 'Zone 07 · Medium' },
     { x: 42, y: 70, type: 'critical', label: 'Colombo · Critical' },
-    { x: 30, y: 48, type: 'low', label: 'Gampaha · Low' },
+    { x: 30, y: 48, type: 'low',      label: 'Gampaha · Low' },
   ];
 
-  const colors = { critical: '#ff3b3b', high: '#ff7a00', medium: '#ffd700', low: '#22c55e' };
+  const colors = {
+    critical: '#D32F2F',
+    high:     '#F57C00',
+    medium:   '#F9A825',
+    low:      '#2E7D32',
+  };
+
+  const labelBgs = {
+    critical: '#FFEBEE',
+    high:     '#FFF3E0',
+    medium:   '#FFFDE7',
+    low:      '#E8F5E9',
+  };
 
   return (
     <div className="relative w-full h-full">
-      {/* Map-like dark background */}
-      <div className="absolute inset-0 rounded-2xl overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#060a14] via-[#0d1e3a] to-[#060a14]" />
-        <div className="absolute inset-0 hero-grid-bg opacity-40" />
+      <div className="absolute inset-0 rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 via-blue-50 to-slate-100 border border-em-border shadow-em-lg">
+        {/* Grid pattern */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(21,101,192,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(21,101,192,0.06) 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+        />
 
-        {/* Sri Lanka silhouette SVG-like shape */}
-        <svg className="absolute inset-0 w-full h-full opacity-10" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid meet">
-          <ellipse cx="150" cy="200" rx="80" ry="160" fill="none" stroke="#00d4ff" strokeWidth="1" />
-          <ellipse cx="150" cy="200" rx="60" ry="130" fill="rgba(0,212,255,0.03)" stroke="#1a2744" strokeWidth="0.5" />
+        {/* Sri Lanka outline */}
+        <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 300 400" preserveAspectRatio="xMidYMid meet">
+          <ellipse cx="150" cy="200" rx="80" ry="160" fill="none" stroke="#1565C0" strokeWidth="1.5" />
+          <ellipse cx="150" cy="200" rx="60" ry="130" fill="rgba(21,101,192,0.05)" stroke="#1976D2" strokeWidth="0.5" />
         </svg>
 
         {/* Scan line */}
         <motion.div
-          className="absolute inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-nova-cyan to-transparent opacity-60"
+          className="absolute inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-er-blue to-transparent opacity-40"
           animate={{ y: ['0%', '100%', '0%'] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'linear' }}
         />
 
-        {/* Grid intersection dots */}
-        {Array.from({ length: 20 }, (_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-0.5 h-0.5 rounded-full bg-nova-cyan/20"
-            style={{ left: `${(i % 5) * 25 + 5}%`, top: `${Math.floor(i / 5) * 25 + 5}%` }}
-            animate={{ opacity: [0.1, 0.4, 0.1] }}
-            transition={{ duration: 2 + Math.random() * 2, repeat: Infinity, delay: Math.random() * 2 }}
-          />
-        ))}
-
         {/* Incident markers */}
         {incidents.map((incident, i) => (
           <div key={i} className="absolute" style={{ left: `${incident.x}%`, top: `${incident.y}%` }}>
-            {/* Pulse ring */}
             <motion.div
-              className="absolute -inset-3 rounded-full border"
+              className="absolute -inset-4 rounded-full border-2"
               style={{ borderColor: colors[incident.type as keyof typeof colors] + '40' }}
               animate={{ scale: [1, 1.8, 1], opacity: [0.8, 0, 0.8] }}
               transition={{ duration: 2 + i * 0.3, repeat: Infinity }}
             />
-            <motion.div
-              className="absolute -inset-1.5 rounded-full border"
-              style={{ borderColor: colors[incident.type as keyof typeof colors] + '60' }}
-              animate={{ scale: [1, 1.4, 1], opacity: [0.6, 0, 0.6] }}
-              transition={{ duration: 1.5 + i * 0.2, repeat: Infinity, delay: 0.3 }}
-            />
-            {/* Core dot */}
             <div
-              className="w-3 h-3 rounded-full border border-white/20 relative"
-              style={{ background: colors[incident.type as keyof typeof colors], boxShadow: `0 0 8px ${colors[incident.type as keyof typeof colors]}` }}
+              className="w-3.5 h-3.5 rounded-full border-2 border-white shadow-em-md relative"
+              style={{ background: colors[incident.type as keyof typeof colors] }}
             />
-            {/* Label */}
-            <div className="absolute left-4 top-0 bg-nova-surface/90 border border-nova-border text-[9px] text-nova-text px-1.5 py-0.5 rounded whitespace-nowrap pointer-events-none">
+            <div
+              className="absolute left-5 top-0 text-[9px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap border shadow-em-sm"
+              style={{ backgroundColor: labelBgs[incident.type as keyof typeof labelBgs], color: colors[incident.type as keyof typeof colors], borderColor: colors[incident.type as keyof typeof colors] + '40' }}
+            >
               {incident.label}
             </div>
           </div>
         ))}
 
-        {/* AI analysis lines */}
+        {/* AI connection lines */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <motion.line
-            x1="45" y1="62" x2="42" y2="70"
-            stroke="#00d4ff" strokeWidth="0.3" strokeDasharray="2,2"
-            animate={{ opacity: [0.2, 0.7, 0.2] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          />
-          <motion.line
-            x1="38" y1="55" x2="42" y2="70"
-            stroke="#ff7a00" strokeWidth="0.3" strokeDasharray="2,2"
-            animate={{ opacity: [0.2, 0.6, 0.2] }}
-            transition={{ duration: 2.5, repeat: Infinity }}
-          />
+          <motion.line x1="45" y1="62" x2="42" y2="70" stroke="#1565C0" strokeWidth="0.4" strokeDasharray="2,2"
+            animate={{ opacity: [0.2, 0.7, 0.2] }} transition={{ duration: 2, repeat: Infinity }} />
+          <motion.line x1="38" y1="55" x2="42" y2="70" stroke="#F57C00" strokeWidth="0.4" strokeDasharray="2,2"
+            animate={{ opacity: [0.2, 0.6, 0.2] }} transition={{ duration: 2.5, repeat: Infinity }} />
         </svg>
 
-        {/* Corner HUD elements */}
-        <div className="absolute top-3 left-3 text-[9px] font-mono text-nova-cyan/60 space-y-0.5">
+        {/* Corner HUD */}
+        <div className="absolute top-3 left-3 text-[9px] font-mono text-er-blue/70 space-y-0.5 font-semibold">
           <div>SYS: ONLINE</div>
           <div>AI: ACTIVE</div>
           <div>TEAMS: 12</div>
         </div>
-        <div className="absolute top-3 right-3 text-[9px] font-mono text-nova-cyan/60 text-right space-y-0.5">
-          <div>LK-DMC-NOVA</div>
+        <div className="absolute top-3 right-3 text-[9px] font-mono text-er-blue/70 text-right space-y-0.5 font-semibold">
+          <div>LK-DMC-ADRION</div>
           <div>LIVE FEED</div>
-          <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }}>
+          <motion.div animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} className="text-er-red font-black">
             ● REC
           </motion.div>
         </div>
-        <div className="absolute bottom-3 left-3 text-[9px] font-mono text-nova-text-muted">
+        <div className="absolute bottom-3 left-3 text-[9px] font-mono text-em-text-muted font-semibold">
           6.9271°N, 79.8612°E
         </div>
       </div>
@@ -205,521 +199,550 @@ function HeroMapVisual() {
   );
 }
 
-// ─── Feature Grid ────────────────────────────────────────────
+// ─── Features ────────────────────────────────────────────────
 
 const FEATURES = [
-  { icon: <Brain className="w-6 h-6" />, title: 'Multimodal AI', desc: 'Understands text, voice, and image emergency reports in English, Tamil, and Sinhala.', color: 'from-purple-500/20 to-purple-600/5 border-purple-500/20' },
-  { icon: <Map className="w-6 h-6" />, title: 'Live GIS Command', desc: 'Real-time interactive GIS integration plotting all incidents, teams, and risk zones.', color: 'from-nova-cyan/20 to-nova-cyan/5 border-nova-cyan/20' },
-  { icon: <TrendingUp className="w-6 h-6" />, title: 'Predictive Intelligence', desc: 'ML models predict flood and landslide risk up to 6 hours in advance.', color: 'from-blue-500/20 to-blue-600/5 border-blue-500/20' },
-  { icon: <Zap className="w-6 h-6" />, title: 'Smart Prioritization', desc: 'AI ranks all incidents by severity, vulnerability, and resource availability.', color: 'from-orange-500/20 to-orange-600/5 border-orange-500/20' },
-  { icon: <Users className="w-6 h-6" />, title: 'Multi-Role Coordination', desc: 'Connects citizens, officers, rescue teams, and hospitals in one platform.', color: 'from-green-500/20 to-green-600/5 border-green-500/20' },
-  { icon: <Activity className="w-6 h-6" />, title: 'Digital Twin', desc: 'Simulate future risk scenarios to proactively deploy resources.', color: 'from-pink-500/20 to-pink-600/5 border-pink-500/20' },
+  { icon: <Brain className="w-6 h-6" />,      title: 'Multimodal AI',         desc: 'Analyzes text, voice, and image reports in English, Tamil, and Sinhala in under 5 seconds.',       color: 'text-purple-700', bg: 'bg-purple-50 border-purple-200' },
+  { icon: <Map className="w-6 h-6" />,         title: 'Live GIS Command',       desc: 'Real-time interactive map showing all incidents, rescue teams, and risk zones.',                    color: 'text-er-blue',   bg: 'bg-er-blue-light border-er-blue/20' },
+  { icon: <TrendingUp className="w-6 h-6" />,  title: 'Predictive Intelligence',desc: 'ML models predict flood and landslide risk up to 6 hours in advance.',                            color: 'text-er-blue',   bg: 'bg-er-blue-light border-er-blue/20' },
+  { icon: <Zap className="w-6 h-6" />,         title: 'Smart Prioritization',   desc: 'AI ranks all incidents by severity, vulnerability, and available resources automatically.',         color: 'text-er-orange', bg: 'bg-er-orange-light border-er-orange/20' },
+  { icon: <Users className="w-6 h-6" />,       title: 'Multi-Role Coordination',desc: 'Connects citizens, officers, rescue teams, and hospitals in one unified platform.',                  color: 'text-er-green',  bg: 'bg-er-green-light border-er-green/20' },
+  { icon: <Activity className="w-6 h-6" />,    title: 'Digital Twin',           desc: 'Simulate future risk scenarios to proactively position and deploy resources before disasters.',       color: 'text-er-red',    bg: 'bg-er-red-light border-er-red/20' },
 ];
 
-// ─── How NOVA Works ──────────────────────────────────────────
+// ─── How ADRIAN Works ────────────────────────────────────────
 
 const HOW_STEPS = [
-  { icon: '📱', step: '01', title: 'Citizen Reports', desc: 'Citizens send SOS via text, voice, or image in any language' },
-  { icon: '🤖', step: '02', title: 'AI Understands', desc: 'Multimodal AI analyzes report, detects severity & type in <5 seconds' },
-  { icon: '🎯', step: '03', title: 'Priority Assigned', desc: 'NOVA ranks incident against all active emergencies automatically' },
-  { icon: '🗺️', step: '04', title: 'Team Dispatched', desc: 'Nearest capable team is recommended and deployed via live map' },
+  { icon: '📱', step: '01', title: 'Citizen Reports',     desc: 'Send SOS via text, voice, photo, or GPS in any language — no account needed' },
+  { icon: '🤖', step: '02', title: 'AI Understands',       desc: 'Multimodal AI analyzes the report, detects severity & type in under 5 seconds' },
+  { icon: '🎯', step: '03', title: 'Priority Assigned',    desc: 'ADRIAN ranks the incident against all active emergencies automatically' },
+  { icon: '🗺️', step: '04', title: 'Team Dispatched',      desc: 'Nearest capable rescue team is recommended and deployed via live map' },
   { icon: '🏥', step: '05', title: 'Hospital Coordinated', desc: 'Medical facilities receive patient alerts and ETA before arrival' },
-  { icon: '📊', step: '06', title: 'AI Analyses', desc: 'After-action reports generated to continuously improve response' },
+  { icon: '📊', step: '06', title: 'AI Learns',            desc: 'After-action reports generated to continuously improve future responses' },
 ];
 
-// ─── Preparedness Types ──────────────────────────────────────
+// ─── Portals ─────────────────────────────────────────────────
+
+const PORTALS = [
+  {
+    icon: '👤',
+    title: 'Citizen Portal',
+    subtitle: 'No login required for SOS',
+    desc: 'Report emergencies, track rescue status, and access safety guidelines for your area.',
+    href: '/citizen/sos',
+    cta: 'Report Emergency',
+    color: 'border-er-blue bg-er-blue-light',
+    btnColor: 'em-btn em-btn-blue em-btn-lg w-full',
+    badge: 'OPEN — No Login Needed',
+    badgeColor: 'bg-er-green-light text-er-green border-er-green/30',
+  },
+  {
+    icon: '🚒',
+    title: 'Rescue Team',
+    subtitle: 'Login Required',
+    desc: 'Live incident map, priority queue, mission acceptance, and navigation to victims.',
+    href: '/rescue',
+    cta: 'Rescue Dashboard',
+    color: 'border-er-orange bg-er-orange-light',
+    btnColor: 'em-btn em-btn-lg w-full',
+    badge: 'RESCUE TEAMS',
+    badgeColor: 'bg-er-orange-light text-er-orange border-er-orange/30',
+  },
+  {
+    icon: '🏥',
+    title: 'Hospital Portal',
+    subtitle: 'Login Required',
+    desc: 'Manage triage queue, track ambulances, and receive advance patient arrival alerts.',
+    href: '/hospital',
+    cta: 'Hospital Dashboard',
+    color: 'border-pink-300 bg-pink-50',
+    btnColor: 'em-btn em-btn-lg w-full',
+    badge: 'MEDICAL STAFF',
+    badgeColor: 'bg-pink-50 text-pink-700 border-pink-200',
+  },
+  {
+    icon: '🛡️',
+    title: 'Command Center',
+    subtitle: 'Officers Only',
+    desc: 'Full situational awareness: live map, AI analysis, resource coordination, and reporting.',
+    href: '/command',
+    cta: 'Launch Command Center',
+    color: 'border-purple-300 bg-purple-50',
+    btnColor: 'em-btn em-btn-lg w-full',
+    badge: 'OFFICERS',
+    badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+  },
+];
+
+// ─── Emergency Types ──────────────────────────────────────────
 
 const EMERGENCY_TYPES = [
-  { icon: '🌊', label: 'Flood', risk: 82 },
-  { icon: '⛰️', label: 'Landslide', risk: 55 },
-  { icon: '🔥', label: 'Fire', risk: 28 },
-  { icon: '🌍', label: 'Earthquake', risk: 15 },
-  { icon: '🌪️', label: 'Severe Weather', risk: 68 },
-  { icon: '🏥', label: 'Medical', risk: 40 },
+  { icon: '🌊', label: 'Flood',          risk: 82, color: '#1565C0' },
+  { icon: '⛰️', label: 'Landslide',     risk: 55, color: '#F57C00' },
+  { icon: '🔥', label: 'Fire',            risk: 28, color: '#D32F2F' },
+  { icon: '🌍', label: 'Earthquake',      risk: 15, color: '#795548' },
+  { icon: '🌪️', label: 'Severe Weather', risk: 68, color: '#546E7A' },
+  { icon: '🏥', label: 'Medical',         risk: 40, color: '#E91E63' },
 ];
 
-// ─── Main Landing Page ───────────────────────────────────────
+// ─── Main Landing Page ────────────────────────────────────────
 
 export default function LandingPage() {
   const router = useRouter();
-  const { simulation } = useNovaStore();
+  const { language, setLanguage, simulation } = useNovaStore();
+  const { t } = useTranslation();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [portalMenuOpen, setPortalMenuOpen] = useState(false);
+
+  const LANG_OPTIONS = [
+    { code: 'en', label: 'English', short: 'EN' },
+    { code: 'ta', label: 'தமிழ்',   short: 'TA' },
+    { code: 'si', label: 'සිංහල',   short: 'SI' },
+  ] as const;
+
+  const handleLanguageSelect = (code: 'en' | 'ta' | 'si') => {
+    setLanguage(code);
+    if (typeof window !== 'undefined') {
+      try { localStorage.setItem('adrian_lang', code); } catch {}
+    }
+  };
+
+  const PORTAL_LINKS = [
+    { href: '/citizen',  label: t('portal.citizen'),  icon: '👤' },
+    { href: '/command',  label: t('portal.command'),  icon: '🛡️' },
+    { href: '/rescue',   label: t('portal.rescue'),   icon: '🚒' },
+    { href: '/hospital', label: t('portal.hospital'), icon: '🏥' },
+    { href: '/admin',    label: t('portal.admin'),    icon: '⚙️' },
+  ];
 
   return (
-    <div className="min-h-screen bg-nova-bg">
+    <div className="min-h-screen bg-em-bg">
+
       {/* ─ Navigation ─ */}
-      <nav className="sticky top-0 z-50 bg-nova-bg/90 backdrop-blur-xl border-b border-nova-border/50">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <nav className="sticky top-0 z-50 bg-white/97 backdrop-blur-xl border-b border-em-border shadow-em-sm" role="navigation" aria-label="Main navigation">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
           <NovaLogo size="md" />
-          <div className="hidden md:flex items-center gap-6 text-sm text-nova-text-dim">
-            <Link href="/about" className="hover:text-nova-text transition-colors">About</Link>
-            <Link href="/preparedness" className="hover:text-nova-text transition-colors">Preparedness</Link>
-            <Link href="/command" className="hover:text-nova-text transition-colors">Command Center</Link>
+
+          <div className="hidden lg:flex items-center gap-6 text-sm font-semibold text-em-text-dim">
+            <Link href="/about"        className="hover:text-em-text transition-colors">About</Link>
+            <Link href="/preparedness" className="hover:text-em-text transition-colors">Preparedness</Link>
+            <Link href="/command"      className="hover:text-em-text transition-colors">{t('portal.command')}</Link>
           </div>
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm text-nova-text-dim hover:text-nova-text border border-nova-border px-3 py-1.5 rounded-lg hover:border-nova-border2 transition-all">
+
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
+            {/* Language Selector */}
+            <div
+              className="flex items-center gap-0.5 bg-em-subtle border border-em-border rounded-xl p-1"
+              role="group"
+              aria-label="Language selector"
+            >
+              {LANG_OPTIONS.map((opt) => (
+                <button
+                  key={opt.code}
+                  id={`home-lang-${opt.code}-btn`}
+                  onClick={() => handleLanguageSelect(opt.code)}
+                  className={cn(
+                    'px-2 sm:px-2.5 py-1 rounded-lg text-[11px] font-bold transition-all',
+                    language === opt.code
+                      ? 'bg-er-blue text-white shadow-em-sm'
+                      : 'text-em-text-muted hover:text-em-text hover:bg-em-muted'
+                  )}
+                  aria-label={opt.label}
+                  aria-pressed={language === opt.code}
+                >
+                  {opt.short}
+                </button>
+              ))}
+            </div>
+
+            {/* Portal Switcher Dropdown */}
+            <div className="relative">
+              <button
+                id="home-portal-switcher-btn"
+                onClick={() => setPortalMenuOpen(!portalMenuOpen)}
+                className="flex items-center gap-1.5 text-xs font-semibold text-em-text-dim bg-em-subtle border border-em-border rounded-xl px-2.5 sm:px-3 py-2 hover:border-em-border-strong hover:text-em-text transition-colors min-h-[40px]"
+                aria-expanded={portalMenuOpen}
+                aria-label="Select portal"
+              >
+                <span className="w-2 h-2 rounded-full bg-er-green" />
+                <span className="hidden sm:inline">{t('portal.select')}</span>
+                <span className="sm:hidden">⚡</span>
+                <ChevronDown className="w-3.5 h-3.5 text-em-text-disabled ml-0.5" />
+              </button>
+
+              <AnimatePresence>
+                {portalMenuOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setPortalMenuOpen(false)} />
+                    <motion.div
+                      className="absolute right-0 top-full mt-2 w-56 bg-white border border-em-border rounded-2xl shadow-em-xl z-50 overflow-hidden p-1.5 space-y-0.5"
+                      initial={{ opacity: 0, y: -5, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -5, scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <div className="px-3 py-2 text-[10px] font-black text-em-text-muted uppercase tracking-widest">
+                        {t('portal.select')}
+                      </div>
+                      {PORTAL_LINKS.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setPortalMenuOpen(false)}
+                          className="flex items-center gap-2.5 w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold text-em-text-dim hover:bg-em-subtle hover:text-em-text transition-colors"
+                        >
+                          <span className="text-base">{item.icon}</span>
+                          {item.label}
+                        </Link>
+                      ))}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <a href="tel:119" className="hidden sm:flex items-center gap-1.5 em-btn em-btn-red em-btn-sm" aria-label="Emergency 119">
+              <Phone className="w-3.5 h-3.5" /> 119
+            </a>
+            <Link href="/login" className="hidden sm:block text-sm font-semibold text-em-text-dim bg-em-subtle border border-em-border px-3.5 py-2 rounded-xl hover:bg-em-muted transition-all">
               Sign In
             </Link>
-            <Link href="/register" className="text-sm font-semibold bg-nova-cyan text-nova-bg px-4 py-1.5 rounded-lg hover:bg-nova-cyan-dim transition-all">
-              Get Started
+            <Link href="/citizen/sos" className="em-btn em-btn-red em-btn-sm whitespace-nowrap">
+              🆘 SOS
             </Link>
+            <button
+              className="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-em-subtle border border-em-border"
+              onClick={() => setMobileNavOpen(!mobileNavOpen)}
+              aria-label="Menu"
+            >
+              {mobileNavOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile nav */}
+        <AnimatePresence>
+          {mobileNavOpen && (
+            <motion.div
+              className="md:hidden bg-white border-t border-em-border px-4 py-4 space-y-2"
+              initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+            >
+              {[
+                { href: '/about', label: 'About' },
+                { href: '/preparedness', label: 'Preparedness' },
+                { href: '/command', label: 'Command Center' },
+                { href: '/login', label: 'Sign In' },
+              ].map(({ href, label }) => (
+                <Link key={href} href={href} onClick={() => setMobileNavOpen(false)}
+                  className="block px-3 py-3 rounded-xl text-sm font-semibold text-em-text-dim hover:bg-em-subtle hover:text-em-text transition-colors">
+                  {label}
+                </Link>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* ─ Hero Section ─ */}
-      <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        {/* Background effects */}
-        <div className="absolute inset-0 hero-grid-bg opacity-30 pointer-events-none" />
+      <section className="relative min-h-[88vh] flex items-center overflow-hidden bg-white" aria-label="Hero">
+        {/* Subtle background */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(21,101,192,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(21,101,192,0.03) 1px, transparent 1px)',
+            backgroundSize: '48px 48px'
+          }}
+        />
         <motion.div
-          className="absolute top-1/3 left-1/4 w-96 h-96 rounded-full blur-[120px] pointer-events-none"
-          style={{ background: 'rgba(0,212,255,0.06)' }}
+          className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none"
+          style={{ background: 'rgba(21,101,192,0.06)' }}
           animate={{ scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }}
           transition={{ duration: 8, repeat: Infinity }}
         />
         <motion.div
-          className="absolute bottom-1/4 right-1/4 w-64 h-64 rounded-full blur-[80px] pointer-events-none"
-          style={{ background: 'rgba(255,59,59,0.05)' }}
+          className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full blur-[100px] pointer-events-none"
+          style={{ background: 'rgba(211,47,47,0.05)' }}
           animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.8, 0.4] }}
           transition={{ duration: 6, repeat: Infinity, delay: 2 }}
         />
 
-        <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full relative z-10">
+        <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full relative z-10">
           {/* Left: Hero Text */}
           <motion.div
             className="space-y-8"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
           >
-            {/* Status badge */}
+            {/* Live status badge */}
             <motion.div
-              className="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/30 text-red-300 text-xs font-semibold px-3 py-1.5 rounded-full"
-              animate={{ opacity: [1, 0.6, 1] }}
+              className="inline-flex items-center gap-2 bg-er-red-light border border-er-red/30 text-er-red-dark text-sm font-bold px-4 py-2 rounded-full shadow-em-sm"
+              animate={{ opacity: [1, 0.7, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-ping-slow" />
-              ACTIVE — 1,247 Monitored Incidents Nationwide
+              <span className="w-2 h-2 rounded-full bg-er-red animate-ping-slow" />
+              LIVE — 1,247 Incidents Monitored Nationwide
             </motion.div>
 
             <div>
-              <h1 className="text-5xl md:text-6xl font-bold font-display leading-tight">
-                <span className="text-nova-text">Predict. </span>
-                <span className="text-nova-cyan text-glow-cyan">Respond. </span>
-                <span className="text-nova-text">Protect.</span>
+              <h1 className="text-5xl md:text-6xl font-black leading-tight tracking-tight text-em-text">
+                Predict.{' '}
+                <span className="text-er-red">Respond.</span>{' '}
+                Protect.
               </h1>
-              <p className="text-lg text-nova-text-dim mt-4 max-w-lg leading-relaxed">
-                An intelligent emergency response network that transforms real-time citizen reports into coordinated rescue decisions.
+              <p className="text-lg text-em-text-dim mt-5 max-w-lg leading-relaxed">
+                An AI-powered disaster management platform transforming citizen emergency reports into coordinated rescue and relief operations — in seconds.
               </p>
-              <p className="text-sm text-nova-cyan/80 mt-2 font-mono tracking-wide">
-                "From Emergency Reports to Intelligent Action — in Seconds."
+              <p className="text-sm text-er-blue font-bold mt-3 tracking-wide">
+                ADRIAN — AI Disaster Response & Intelligent Assistance Network
               </p>
             </div>
 
-            <div className="flex flex-wrap gap-3 relative z-20">
-              <Link
-                href="/command"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/command');
-                }}
-                className="group flex items-center gap-2 bg-nova-cyan text-nova-bg font-bold px-6 py-3 rounded-xl hover:bg-nova-cyan-dim transition-all hover:shadow-nova-cyan cursor-pointer select-none"
-              >
-                <Map className="w-4 h-4" />
-                Launch Command Center
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
+            {/* CTA buttons — 56px height, touch-friendly */}
+            <div className="flex flex-wrap gap-4">
               <Link
                 href="/citizen/sos"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/citizen/sos');
-                }}
-                className="flex items-center gap-2 bg-red-500/10 border border-red-500/30 text-red-300 font-bold px-6 py-3 rounded-xl hover:bg-red-500/20 transition-all cursor-pointer select-none"
+                id="hero-sos-btn"
+                className="em-btn em-btn-red em-btn-lg group"
               >
-                <Radio className="w-4 h-4" />
+                <Radio className="w-5 h-5" />
                 Report Emergency
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <Link
+                href="/command"
+                id="hero-command-btn"
+                className="em-btn em-btn-blue em-btn-lg group"
+              >
+                <Map className="w-5 h-5" />
+                Command Center
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
 
             {/* Trust badges */}
-            <div className="flex flex-wrap items-center gap-4 text-xs text-nova-text-muted">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-em-text-muted font-semibold">
               {['AI-Powered Analysis', 'Real-Time GIS', 'Multilingual', 'End-to-End Encrypted'].map((badge) => (
                 <span key={badge} className="flex items-center gap-1.5">
-                  <CheckCircle className="w-3.5 h-3.5 text-nova-low" />
+                  <CheckCircle className="w-4 h-4 text-er-green" />
                   {badge}
                 </span>
               ))}
             </div>
           </motion.div>
 
-          {/* Right: Hero Map Visual */}
+          {/* Right: Hero Map */}
           <motion.div
-            className="relative h-[500px] rounded-2xl overflow-hidden border border-nova-border shadow-nova"
-            initial={{ opacity: 0, scale: 0.95 }}
+            className="h-[480px] lg:h-[560px]"
+            initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <HeroMapVisual />
-            {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-nova-bg/40 via-transparent to-transparent pointer-events-none" />
           </motion.div>
         </div>
       </section>
 
-      {/* ─ Live Stats ─ */}
-      <section className="py-16 border-y border-nova-border/30 bg-gradient-to-b from-nova-bg to-nova-surface/20">
+      {/* ─ Live Stats Banner ─ */}
+      <section className="py-16 bg-em-bg border-y border-em-border" aria-label="Live statistics">
         <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            className="text-center mb-10"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-xs font-bold text-nova-cyan uppercase tracking-widest mb-2">Live System Metrics</p>
-            <h2 className="text-3xl font-bold text-nova-text">Real Impact. Real Time.</h2>
-          </motion.div>
+          <div className="text-center mb-10">
+            <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-er-blue bg-er-blue-light border border-er-blue/20 px-4 py-2 rounded-full mb-4">
+              <span className="w-2 h-2 rounded-full bg-er-blue animate-pulse" /> Real-Time Platform Statistics
+            </span>
+            <h2 className="text-3xl font-black text-em-text">Protecting Sri Lanka, in Real-Time</h2>
+          </div>
           <LiveStats />
         </div>
       </section>
 
-      {/* ─ The Problem ─ */}
-      <section className="py-20">
+      {/* ─ Portal Cards ─ */}
+      <section className="py-20 bg-white" aria-label="Access portals">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-xs font-bold text-red-400 uppercase tracking-widest mb-3">The Problem</p>
-              <h2 className="text-4xl font-bold font-display text-nova-text mb-6">
-                Emergency Response is <span className="text-red-400">Broken</span>
-              </h2>
-              <div className="space-y-4">
-                {[
-                  { stat: '22 min', desc: 'Average emergency response delay in disaster scenarios' },
-                  { stat: '67%', desc: 'Of critical incidents misclassified due to language barriers' },
-                  { stat: '3x', desc: 'More casualties when resources are deployed without AI prioritization' },
-                  { stat: '0', desc: 'Centralized real-time platforms connecting all response actors in Sri Lanka' },
-                ].map((item) => (
-                  <div key={item.stat} className="flex items-start gap-4 p-4 rounded-xl bg-red-500/5 border border-red-500/15">
-                    <span className="text-2xl font-bold font-mono text-red-400 flex-shrink-0">{item.stat}</span>
-                    <p className="text-sm text-nova-text-dim">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-xs font-bold text-nova-cyan uppercase tracking-widest mb-3">The Solution</p>
-              <h2 className="text-4xl font-bold font-display text-nova-text mb-6">
-                PROJECT <span className="text-nova-cyan text-glow-cyan">NOVA</span> Changes Everything
-              </h2>
-              <div className="space-y-4">
-                {[
-                  { stat: '<5s', desc: 'AI analysis of any emergency report, any language, any format' },
-                  { stat: '87%', desc: 'Prediction accuracy for flood and landslide events up to 6 hours ahead' },
-                  { stat: '23%', desc: 'Faster average response time compared to manual coordination' },
-                  { stat: '5', desc: 'Role portals unified: Citizens, Officers, Rescue, Hospitals, Admin' },
-                ].map((item) => (
-                  <div key={item.stat} className="flex items-start gap-4 p-4 rounded-xl bg-nova-cyan/5 border border-nova-cyan/15">
-                    <span className="text-2xl font-bold font-mono text-nova-cyan flex-shrink-0">{item.stat}</span>
-                    <p className="text-sm text-nova-text-dim">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─ How NOVA Works ─ */}
-      <section className="py-20 bg-nova-surface/30 border-y border-nova-border/30">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            className="text-center mb-14"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-xs font-bold text-nova-cyan uppercase tracking-widest mb-2">Intelligence Pipeline</p>
-            <h2 className="text-4xl font-bold font-display text-nova-text">
-              How <span className="text-nova-cyan">NOVA</span> Works
-            </h2>
-            <p className="text-nova-text-dim mt-3 max-w-xl mx-auto">
-              A seamless pipeline from citizen input to coordinated rescue action — powered by AI at every step.
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-black text-em-text">Choose Your Portal</h2>
+            <p className="text-lg text-em-text-muted mt-3 max-w-xl mx-auto">
+              Every role has a dedicated workspace designed for their mission.
             </p>
-          </motion.div>
-
-          <div className="relative">
-            {/* Connection line */}
-            <div className="absolute top-10 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-nova-cyan/30 to-transparent hidden lg:block" />
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              {HOW_STEPS.map((step, i) => (
-                <motion.div
-                  key={step.step}
-                  className="flex flex-col items-center text-center"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <div className="w-16 h-16 rounded-2xl nova-glass border border-nova-border/80 flex items-center justify-center text-2xl mb-3 relative z-10">
-                    {step.icon}
-                    <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-nova-cyan text-nova-bg text-[9px] font-bold flex items-center justify-center">
-                      {step.step}
-                    </div>
-                  </div>
-                  <h3 className="text-xs font-bold text-nova-text mb-1">{step.title}</h3>
-                  <p className="text-[10px] text-nova-text-muted leading-relaxed">{step.desc}</p>
-                </motion.div>
-              ))}
-            </div>
           </div>
-        </div>
-      </section>
-
-      {/* ─ Features Grid ─ */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <motion.div
-            className="text-center mb-14"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-xs font-bold text-nova-cyan uppercase tracking-widest mb-2">Platform Capabilities</p>
-            <h2 className="text-4xl font-bold font-display text-nova-text">
-              Built for <span className="text-nova-cyan">National Scale</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {FEATURES.map((feat, i) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {PORTALS.map((portal, i) => (
               <motion.div
-                key={feat.title}
-                className={cn('relative p-6 rounded-2xl border bg-gradient-to-br', feat.color)}
-                initial={{ opacity: 0, y: 20 }}
+                key={portal.title}
+                className={cn('em-card rounded-2xl p-6 flex flex-col gap-4 border-2', portal.color)}
+                initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                whileHover={{ y: -3 }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
               >
-                <div className="text-nova-cyan mb-4">{feat.icon}</div>
-                <h3 className="text-base font-bold text-nova-text mb-2">{feat.title}</h3>
-                <p className="text-sm text-nova-text-dim">{feat.desc}</p>
+                <div className="flex items-start justify-between">
+                  <span className="text-4xl">{portal.icon}</span>
+                  <span className={cn('text-[10px] font-black px-2.5 py-1 rounded-full border', portal.badgeColor)}>
+                    {portal.badge}
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-em-text">{portal.title}</h3>
+                  <p className="text-xs font-semibold text-em-text-muted mt-0.5">{portal.subtitle}</p>
+                  <p className="text-sm text-em-text-dim mt-2 leading-relaxed">{portal.desc}</p>
+                </div>
+                <Link href={portal.href} className={portal.btnColor} id={`portal-${portal.title.toLowerCase().replace(/\s+/g, '-')}-btn`}>
+                  {portal.cta} <ArrowRight className="w-4 h-4" />
+                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─ Predictive Dashboard Preview ─ */}
-      <section className="py-20 bg-nova-surface/20 border-y border-nova-border/30">
+      {/* ─ How It Works ─ */}
+      <section className="py-20 bg-em-bg" aria-label="How ADRIAN works">
         <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <p className="text-xs font-bold text-purple-400 uppercase tracking-widest mb-3">AI Prediction Engine</p>
-              <h2 className="text-4xl font-bold font-display text-nova-text mb-4">
-                Know What's Coming <span className="text-purple-400">Before It Happens</span>
-              </h2>
-              <p className="text-nova-text-dim mb-6">
-                NOVA's machine learning models analyze real-time rainfall, river levels, terrain risk, and historical patterns to predict disaster scenarios up to 6 hours in advance.
-              </p>
-              <div className="space-y-3 mb-6">
-                {[
-                  { zone: 'Zone 04 — Colombo', risk: 82, type: 'Flood', time: 'Next 3 Hours' },
-                  { zone: 'Zone 03 — Gampaha', risk: 74, type: 'Flood', time: 'Next 3 Hours' },
-                  { zone: 'Zone 07 — Kandy', risk: 68, type: 'Landslide', time: 'Next 6 Hours' },
-                ].map((pred) => (
-                  <div key={pred.zone} className="p-3 rounded-xl nova-glass border border-nova-border/50 flex items-center gap-4">
-                    <div className={cn('text-sm font-bold px-2 py-1 rounded', pred.risk >= 80 ? 'text-red-400 bg-red-400/10' : 'text-orange-400 bg-orange-400/10')}>
-                      {pred.risk}%
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-xs font-semibold text-nova-text">{pred.zone}</p>
-                      <p className="text-[10px] text-nova-text-muted">{pred.type} Risk · {pred.time}</p>
-                    </div>
-                    <div className="w-24 h-1.5 rounded-full bg-nova-border overflow-hidden">
-                      <div className={cn('h-full rounded-full', pred.risk >= 80 ? 'bg-red-400' : 'bg-orange-400')} style={{ width: `${pred.risk}%` }} />
-                    </div>
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-black text-em-text">How ADRIAN Works</h2>
+            <p className="text-lg text-em-text-muted mt-3">From citizen SOS to coordinated rescue — in seconds.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {HOW_STEPS.map((step, i) => (
+              <motion.div
+                key={step.step}
+                className="text-center"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+              >
+                {/* Connector line */}
+                <div className="flex items-center justify-center mb-4 relative">
+                  <div className="w-16 h-16 rounded-2xl bg-white border-2 border-em-border shadow-em-md flex items-center justify-center text-3xl">
+                    {step.icon}
                   </div>
-                ))}
-              </div>
-              <Link href="/command/prediction" className="inline-flex items-center gap-2 text-sm font-semibold text-nova-cyan hover:text-nova-cyan-dim transition-colors">
-                View Full Prediction Dashboard <ChevronRight className="w-4 h-4" />
-              </Link>
-            </motion.div>
-
-            {/* Emergency types */}
-            <motion.div
-              className="grid grid-cols-3 gap-3"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              {EMERGENCY_TYPES.map((type, i) => (
-                <motion.div
-                  key={type.label}
-                  className="nova-glass border border-nova-border/50 rounded-xl p-4 text-center"
-                  whileHover={{ scale: 1.04 }}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <div className="text-3xl mb-2">{type.icon}</div>
-                  <p className="text-xs font-semibold text-nova-text mb-2">{type.label}</p>
-                  <div className="text-sm font-bold text-nova-cyan font-mono">{type.risk}%</div>
-                  <div className="text-[10px] text-nova-text-muted">Risk Index</div>
-                  <div className="mt-2 h-1 rounded-full bg-nova-border overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full bg-gradient-to-r from-nova-cyan to-blue-500"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${type.risk}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: 0.3 + i * 0.05 }}
-                    />
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
+                  {i < HOW_STEPS.length - 1 && (
+                    <div className="hidden lg:block absolute left-[calc(50%+32px)] top-1/2 w-[calc(100%-64px)] h-0.5 bg-em-muted" />
+                  )}
+                </div>
+                <div className="text-[10px] font-black text-er-red mb-1">{step.step}</div>
+                <div className="text-sm font-black text-em-text mb-1">{step.title}</div>
+                <div className="text-xs text-em-text-muted leading-relaxed">{step.desc}</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─ Multilingual ─ */}
-      <section className="py-20">
+      {/* ─ Features Grid ─ */}
+      <section className="py-20 bg-white" aria-label="Platform features">
         <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-black text-em-text">Platform Capabilities</h2>
+            <p className="text-lg text-em-text-muted mt-3 max-w-xl mx-auto">
+              Built for the most demanding emergency scenarios — from individual medical incidents to large-scale natural disasters.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {FEATURES.map((feature, i) => (
+              <motion.div
+                key={feature.title}
+                className={cn('em-card p-6 rounded-2xl border', feature.bg)}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.4 }}
+              >
+                <div className={cn('w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-white shadow-em-sm border border-em-border', feature.color)}>
+                  {feature.icon}
+                </div>
+                <h3 className="text-lg font-black text-em-text mb-2">{feature.title}</h3>
+                <p className="text-sm text-em-text-dim leading-relaxed">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─ Risk Types ─ */}
+      <section className="py-20 bg-em-bg" aria-label="Emergency types monitored">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-14">
+            <h2 className="text-4xl font-black text-em-text">Sri Lanka Risk Monitor</h2>
+            <p className="text-lg text-em-text-muted mt-3">Current national risk levels by disaster category.</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {EMERGENCY_TYPES.map((type, i) => (
+              <motion.div
+                key={type.label}
+                className="em-card p-5 rounded-2xl text-center"
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+              >
+                <div className="text-4xl mb-3">{type.icon}</div>
+                <div className="text-sm font-black text-em-text mb-3">{type.label}</div>
+                {/* Risk bar */}
+                <div className="h-2 bg-em-muted rounded-full overflow-hidden mb-1">
+                  <motion.div
+                    className="h-full rounded-full"
+                    style={{ background: type.color }}
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${type.risk}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1.2, delay: i * 0.1 }}
+                  />
+                </div>
+                <div className="text-xs font-bold" style={{ color: type.color }}>{type.risk}%</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─ CTA Banner ─ */}
+      <section className="py-20 bg-er-red" aria-label="Call to action">
+        <div className="max-w-4xl mx-auto px-6 text-center">
           <motion.div
-            className="text-center mb-10"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <p className="text-xs font-bold text-nova-cyan uppercase tracking-widest mb-2">Multilingual AI</p>
-            <h2 className="text-4xl font-bold font-display text-nova-text">
-              No Language <span className="text-nova-cyan">Barrier</span>
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+              Emergency? Report It Now.
             </h2>
-          </motion.div>
-          <div className="nova-glass border border-nova-border/50 rounded-2xl p-8 max-w-3xl mx-auto">
-            <div className="space-y-4">
-              {[
-                { lang: 'Tamil', flag: '🇱🇰', input: '"எங்க வீட்டுக்குள்ள தண்ணி வந்திருக்கு. அப்பாவுக்கு நடக்க முடியாது."', output: { type: 'Flood', severity: 'Critical', vulnerable: 'Elderly', action: 'Immediate Rescue' } },
-                { lang: 'Sinhala', flag: '🇱🇰', input: '"ගෙදර ජලය ඇතුල් වෙලා. ළමයින් සිටිනවා."', output: { type: 'Flood', severity: 'High', vulnerable: 'Children', action: 'Priority Response' } },
-                { lang: 'English', flag: '🌐', input: '"House surrounded by flood water, elderly person cannot walk."', output: { type: 'Flood', severity: 'Critical', vulnerable: 'Elderly', action: 'Immediate Rescue' } },
-              ].map((item, i) => (
-                <motion.div
-                  key={item.lang}
-                  className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-xl bg-nova-surface/50 border border-nova-border/50"
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <div>
-                    <p className="text-[10px] text-nova-text-muted mb-1">{item.flag} Citizen ({item.lang})</p>
-                    <p className="text-sm text-nova-text-dim italic">"{item.input}"</p>
-                  </div>
-                  <div className="border-l border-nova-border pl-4">
-                    <p className="text-[10px] text-nova-cyan mb-1.5">🤖 AI Normalized Output</p>
-                    <div className="grid grid-cols-2 gap-1 text-xs">
-                      <span className="text-nova-text-muted">Type:</span> <span className="text-nova-text font-medium">{item.output.type}</span>
-                      <span className="text-nova-text-muted">Severity:</span> <span className="text-red-400 font-bold">{item.output.severity}</span>
-                      <span className="text-nova-text-muted">Vulnerable:</span> <span className="text-nova-text font-medium">{item.output.vulnerable}</span>
-                      <span className="text-nova-text-muted">Action:</span> <span className="text-orange-400 font-medium">{item.output.action}</span>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ─ Final CTA ─ */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-nova-bg via-nova-surface/20 to-nova-bg" />
-        <motion.div
-          className="absolute inset-0 opacity-30"
-          style={{ background: 'radial-gradient(ellipse at center, rgba(0,212,255,0.1) 0%, transparent 70%)' }}
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 8, repeat: Infinity }}
-        />
-
-        <div className="relative max-w-4xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="inline-block">
-              <div className="text-xs font-bold text-nova-cyan uppercase tracking-widest mb-4">Ready to Deploy</div>
-              <h2 className="text-5xl md:text-6xl font-bold font-display mb-6">
-                <span className="text-nova-text">Every second </span>
-                <span className="text-nova-cyan text-glow-cyan">saves lives.</span>
-              </h2>
-              <p className="text-xl text-nova-text-dim mb-10 max-w-2xl mx-auto">
-                Join the national emergency intelligence network. From prediction to resolution — PROJECT NOVA is ready.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-4 relative z-20">
-              <Link
-                href="/command"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/command');
-                }}
-                className="group flex items-center gap-3 bg-nova-cyan text-nova-bg font-bold text-lg px-8 py-4 rounded-2xl hover:bg-nova-cyan-dim transition-all shadow-nova-cyan cursor-pointer select-none"
-              >
-                <Map className="w-5 h-5" />
-                Launch Command Center
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            <p className="text-lg text-white/80 mb-8 max-w-xl mx-auto">
+              No account needed. Send your location, text, voice, or photo — we'll coordinate the response.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/citizen/sos" id="cta-sos-btn" className="em-btn em-btn-lg bg-white text-er-red hover:bg-er-red-light border-2 border-white font-black">
+                🆘 Send SOS Now
               </Link>
-              <Link
-                href="/citizen/sos"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/citizen/sos');
-                }}
-                className="flex items-center gap-3 bg-red-500/10 border border-red-500/30 text-red-300 font-bold text-lg px-8 py-4 rounded-2xl hover:bg-red-500/20 transition-all cursor-pointer select-none"
-              >
-                <Radio className="w-5 h-5" />
-                Report Emergency
-              </Link>
-              <Link
-                href="/preparedness"
-                className="flex items-center gap-3 border border-nova-border text-nova-text-dim font-bold text-lg px-8 py-4 rounded-2xl hover:border-nova-border2 hover:text-nova-text transition-all"
-              >
-                <Shield className="w-5 h-5" />
-                Preparedness Guide
-              </Link>
+              <a href="tel:119" className="em-btn em-btn-lg bg-er-red-dark text-white border-2 border-white/30 font-black hover:bg-er-red-dark hover:opacity-90">
+                <Phone className="w-5 h-5" /> Call 119
+              </a>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* ─ Footer ─ */}
-      <footer className="border-t border-nova-border/30 py-8">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <NovaLogo size="sm" />
-          <div className="text-xs text-nova-text-muted text-center">
-            PROJECT NOVA — AI Emergency Response Network
-          </div>
-          <div className="flex items-center gap-4 text-xs text-nova-text-muted">
-            <Link href="/login" className="hover:text-nova-text">Login</Link>
-            <Link href="/preparedness" className="hover:text-nova-text">Preparedness</Link>
-            <Link href="/about" className="hover:text-nova-text">About</Link>
+      <footer className="bg-em-text py-12" role="contentinfo">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex items-center gap-3">
+              <div className="text-2xl">🛡️</div>
+              <div>
+                <div className="text-white font-black text-lg">ADRIAN</div>
+                <div className="text-white/50 text-xs">AI Disaster Response & Intelligent Assistance Network</div>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-6 text-sm font-semibold text-white/60">
+              <Link href="/about"        className="hover:text-white transition-colors">About</Link>
+              <Link href="/preparedness" className="hover:text-white transition-colors">Preparedness</Link>
+              <Link href="/command"      className="hover:text-white transition-colors">Command Center</Link>
+              <Link href="/login"        className="hover:text-white transition-colors">Sign In</Link>
+            </div>
+            <div className="text-xs text-white/40 text-center">
+              Emergency: <a href="tel:119" className="text-white font-black hover:underline">119</a> | Disaster Management: <a href="tel:117" className="text-white font-black hover:underline">117</a>
+              <br />© 2026 ADRIAN Emergency Response Network
+            </div>
           </div>
         </div>
       </footer>

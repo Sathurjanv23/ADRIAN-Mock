@@ -14,7 +14,7 @@ interface ResponseTrendProps {
 
 export const ResponseTimeChart = memo(function ResponseTimeChart({ data }: ResponseTrendProps) {
   if (!data || data.length === 0) {
-    return <div className="text-xs text-nova-text-dim text-center py-6">No response time telemetry available.</div>;
+    return <div className="text-xs text-em-text-dim text-center py-6">No response time telemetry available.</div>;
   }
   return (
     <ResponsiveContainer width="100%" height={180}>
@@ -22,7 +22,7 @@ export const ResponseTimeChart = memo(function ResponseTimeChart({ data }: Respo
         <CartesianGrid strokeDasharray="3 3" stroke="rgba(26,39,68,0.6)" />
         <XAxis dataKey="date" tick={{ fill: '#4a5a7a', fontSize: 9 }} interval={0} />
         <YAxis tick={{ fill: '#4a5a7a', fontSize: 10 }} />
-        <Tooltip contentStyle={{ background: '#0d1629', border: '1px solid #1a2744', borderRadius: '8px', fontSize: '10px', color: '#e8f0fe' }} />
+        <Tooltip contentStyle={{ background: '#FFFFFF', border: '1px solid #D1D5DB', borderRadius: '8px', fontSize: '10px', color: '#0D1B2A' }} />
         <Area type="monotone" dataKey="avgTime" stroke="#00d4ff" fill="rgba(0,212,255,0.1)" strokeWidth={2} name="Response Time (min)" isAnimationActive={false} />
       </AreaChart>
     </ResponsiveContainer>
@@ -35,7 +35,7 @@ interface IncidentsByTypeProps {
 
 export const IncidentsByTypeChart = memo(function IncidentsByTypeChart({ data }: IncidentsByTypeProps) {
   if (!data || data.length === 0) {
-    return <div className="text-xs text-nova-text-dim text-center py-6">No incident type distribution available.</div>;
+    return <div className="text-xs text-em-text-dim text-center py-6">No incident type distribution available.</div>;
   }
   return (
     <ResponsiveContainer width="100%" height={160}>
@@ -56,7 +56,7 @@ export const IncidentsByTypeChart = memo(function IncidentsByTypeChart({ data }:
           ))}
         </Pie>
         <Tooltip
-          contentStyle={{ background: '#0d1629', border: '1px solid #1a2744', borderRadius: '8px', fontSize: '10px', color: '#e8f0fe' }}
+          contentStyle={{ background: '#FFFFFF', border: '1px solid #D1D5DB', borderRadius: '8px', fontSize: '10px', color: '#0D1B2A' }}
           formatter={(v, n) => [v, String(n).replace('_', ' ')]}
         />
       </PieChart>
@@ -70,14 +70,14 @@ interface IncidentsByRegionProps {
 
 export const IncidentsByRegionChart = memo(function IncidentsByRegionChart({ data }: IncidentsByRegionProps) {
   if (!data || data.length === 0) {
-    return <div className="text-xs text-nova-text-dim text-center py-6">No regional incident data available.</div>;
+    return <div className="text-xs text-em-text-dim text-center py-6">No regional incident data available.</div>;
   }
   return (
     <ResponsiveContainer width="100%" height={180}>
       <BarChart data={data} layout="vertical">
         <XAxis type="number" tick={{ fill: '#4a5a7a', fontSize: 10 }} />
         <YAxis type="category" dataKey="region" tick={{ fill: '#4a5a7a', fontSize: 10 }} width={70} />
-        <Tooltip contentStyle={{ background: '#0d1629', border: '1px solid #1a2744', borderRadius: '8px', fontSize: '10px', color: '#e8f0fe' }} />
+        <Tooltip contentStyle={{ background: '#FFFFFF', border: '1px solid #D1D5DB', borderRadius: '8px', fontSize: '10px', color: '#0D1B2A' }} />
         <Bar dataKey="count" fill="#2563eb" radius={[0, 4, 4, 0]} name="Incidents" isAnimationActive={false} />
       </BarChart>
     </ResponsiveContainer>
@@ -90,7 +90,7 @@ interface HospitalCapacityProps {
 
 export const HospitalCapacityChart = memo(function HospitalCapacityChart({ data }: HospitalCapacityProps) {
   if (!data || data.length === 0) {
-    return <div className="text-xs text-nova-text-dim text-center py-6">No hospital capacity telemetry available.</div>;
+    return <div className="text-xs text-em-text-dim text-center py-6">No hospital capacity telemetry available.</div>;
   }
   return (
     <ResponsiveContainer width="100%" height={180}>
@@ -98,7 +98,7 @@ export const HospitalCapacityChart = memo(function HospitalCapacityChart({ data 
         <CartesianGrid strokeDasharray="3 3" stroke="rgba(26,39,68,0.6)" />
         <XAxis dataKey="name" tick={{ fill: '#4a5a7a', fontSize: 9 }} interval={0} />
         <YAxis tick={{ fill: '#4a5a7a', fontSize: 10 }} unit="%" domain={[0, 100]} />
-        <Tooltip contentStyle={{ background: '#0d1629', border: '1px solid #1a2744', borderRadius: '8px', fontSize: '10px', color: '#e8f0fe' }} />
+        <Tooltip contentStyle={{ background: '#FFFFFF', border: '1px solid #D1D5DB', borderRadius: '8px', fontSize: '10px', color: '#0D1B2A' }} />
         <Bar dataKey="occupancy" fill="#a855f7" radius={[4, 4, 0, 0]} name="Bed Occupancy %" isAnimationActive={false} />
       </BarChart>
     </ResponsiveContainer>

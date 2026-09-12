@@ -30,17 +30,20 @@ public class IncidentService {
     private final AuditLogRepository auditLogRepository;
     private final com.nova.emergency.repository.NotificationRepository notificationRepository;
     private final GridFsStorageService gridFsStorageService;
+    private final ReliefService reliefService;
 
     public IncidentService(IncidentRepository incidentRepository, RescueTeamRepository rescueTeamRepository,
                            HospitalRepository hospitalRepository, AuditLogRepository auditLogRepository,
                            com.nova.emergency.repository.NotificationRepository notificationRepository,
-                           GridFsStorageService gridFsStorageService) {
+                           GridFsStorageService gridFsStorageService,
+                           @org.springframework.context.annotation.Lazy ReliefService reliefService) {
         this.incidentRepository = incidentRepository;
         this.rescueTeamRepository = rescueTeamRepository;
         this.hospitalRepository = hospitalRepository;
         this.auditLogRepository = auditLogRepository;
         this.notificationRepository = notificationRepository;
         this.gridFsStorageService = gridFsStorageService;
+        this.reliefService = reliefService;
     }
 
     // ─── Emergency Routing Rules Matrix ───────────────────────────
@@ -259,6 +262,16 @@ public class IncidentService {
             notificationRepository.save(notif);
         } catch (Exception ex) {
             log.warn("Could not save alert notification to MongoDB: {}", ex.getMessage());
+        }
+
+        // Auto-trigger Integrated AI Relief Logistics when disaster detected or people affected
+        try {
+            if (reliefService != null && (Set.of("flood", "fire", "earthquake", "landslide", "building_collapse", "severe_weather").contains(saved.getType())
+                    || saved.getPeopleAffected() > 0)) {
+                reliefService.autoTriggerReliefForIncident(saved);
+            }
+        } catch (Exception ex) {
+            log.warn("Automatic relief logistics trigger failed for incident {}: {}", saved.getId(), ex.getMessage());
         }
 
         // Broadcast real-time SSE event to all portals

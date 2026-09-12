@@ -76,7 +76,7 @@ export default function PredictionPage() {
   const allRecommendations = riskPredictions.flatMap((rp) => rp.aiRecommendations || []);
 
   return (
-    <div className="min-h-screen bg-nova-bg">
+    <div className="min-h-screen bg-em-bg">
       <TopNav role="officer" />
       <DashboardShell role="officer">
         <div className="p-6 space-y-6">
@@ -84,9 +84,9 @@ export default function PredictionPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold font-display text-nova-text">Disaster Prediction</h1>
-              <p className="text-sm text-nova-text-dim mt-0.5">ML-driven risk forecasting · Live telemetry & predictive models</p>
+              <p className="text-sm text-em-text-dim mt-0.5">ML-driven risk forecasting · Live telemetry & predictive models</p>
             </div>
-            <div className="flex items-center gap-2 text-xs text-nova-low">
+            <div className="flex items-center gap-2 text-xs text-er-green">
               <div className="w-1.5 h-1.5 rounded-full bg-nova-low animate-pulse" />
               {riskPredictions.length > 0 ? 'AI Telemetry Connected' : 'No Active Sensor Feed'}
             </div>
@@ -99,16 +99,16 @@ export default function PredictionPage() {
                 { label: 'Rainfall', value: `${currentConditions.rainfall}mm`, icon: <CloudRain className="w-4 h-4" />, color: 'text-blue-400', alert: currentConditions.rainfall > 150 },
                 { label: 'River Level', value: `${currentConditions.riverLevel}m`, icon: <Waves className="w-4 h-4" />, color: 'text-red-400', alert: currentConditions.riverLevel > 3.5 },
                 { label: 'Temperature', value: `${currentConditions.temperature}°C`, icon: <Thermometer className="w-4 h-4" />, color: 'text-orange-400', alert: false },
-                { label: 'Wind Speed', value: `${currentConditions.windSpeed}km/h`, icon: <TrendingUp className="w-4 h-4" />, color: 'text-nova-cyan', alert: currentConditions.windSpeed > 40 },
+                { label: 'Wind Speed', value: `${currentConditions.windSpeed}km/h`, icon: <TrendingUp className="w-4 h-4" />, color: 'text-er-blue', alert: currentConditions.windSpeed > 40 },
                 { label: 'Humidity', value: `${currentConditions.humidity}%`, icon: <CloudRain className="w-4 h-4" />, color: 'text-purple-400', alert: currentConditions.humidity > 90 },
               ].map((cond) => (
                 <div key={cond.label} className={cn(
-                  'nova-card border rounded-xl p-3',
-                  cond.alert ? 'border-red-500/30 bg-red-500/5' : 'border-nova-border'
+                  'em-card border rounded-xl p-3',
+                  cond.alert ? 'border-red-500/30 bg-red-500/5' : 'border-em-border'
                 )}>
                   <div className={cn('flex items-center gap-1.5 mb-1.5', cond.color)}>
                     {cond.icon}
-                    <span className="text-[10px] font-medium text-nova-text-muted">{cond.label}</span>
+                    <span className="text-[10px] font-medium text-em-text-muted">{cond.label}</span>
                     {cond.alert && <AlertTriangle className="w-3 h-3 text-red-400 ml-auto" />}
                   </div>
                   <div className={cn('text-xl font-bold font-mono', cond.color)}>{cond.value}</div>
@@ -116,23 +116,23 @@ export default function PredictionPage() {
               ))}
             </div>
           ) : (
-            <div className="p-4 rounded-xl bg-nova-surface border border-nova-border text-center text-xs text-nova-text-dim">
+            <div className="p-4 rounded-xl bg-white border border-em-border text-center text-xs text-em-text-dim">
               No live meteorological sensor telemetry available in database.
             </div>
           )}
 
           {/* Digital Twin — Zone Risk Grid */}
-          <div className="nova-card border border-nova-border rounded-xl p-5">
+          <div className="em-card border border-em-border rounded-xl p-5">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
                 <Brain className="w-5 h-5 text-purple-400" />
                 <div>
                   <h2 className="text-sm font-bold text-nova-text">Digital Twin — Risk Projection</h2>
-                  <p className="text-xs text-nova-text-muted">Scenario projections based on verified operational data</p>
+                  <p className="text-xs text-em-text-muted">Scenario projections based on verified operational data</p>
                 </div>
               </div>
               {/* Time selector */}
-              <div className="flex items-center gap-1 bg-nova-surface border border-nova-border rounded-xl p-1">
+              <div className="flex items-center gap-1 bg-white border border-em-border rounded-xl p-1">
                 {TIME_OPTIONS.map((opt) => (
                   <button
                     key={opt.hours}
@@ -141,7 +141,7 @@ export default function PredictionPage() {
                       'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all',
                       selectedTime === opt.hours
                         ? 'bg-nova-cyan text-nova-bg'
-                        : 'text-nova-text-dim hover:text-nova-text'
+                        : 'text-em-text-dim hover:text-nova-text'
                     )}
                   >
                     {opt.label}
@@ -163,12 +163,12 @@ export default function PredictionPage() {
                     'rounded-xl p-4 border text-center',
                     zone.floodRisk >= 80 ? 'bg-red-500/8 border-red-500/25' :
                     zone.floodRisk >= 60 ? 'bg-orange-500/8 border-orange-500/25' :
-                    'bg-nova-surface border-nova-border'
+                    'bg-white border-em-border'
                   )}>
                     <p className="text-xs font-bold text-nova-text mb-1">{zone.zone}</p>
-                    <p className="text-[10px] text-nova-text-muted mb-3">{zone.district}</p>
+                    <p className="text-[10px] text-em-text-muted mb-3">{zone.district}</p>
                     <RiskGauge value={zone.floodRisk} size="sm" />
-                    <div className="mt-3 space-y-1 text-[10px] text-nova-text-muted">
+                    <div className="mt-3 space-y-1 text-[10px] text-em-text-muted">
                       <div className="flex justify-between">
                         <span>River</span>
                         <span className={cn('font-mono', zone.riverLevel > 3.5 ? 'text-red-400' : 'text-nova-text')}>
@@ -188,7 +188,7 @@ export default function PredictionPage() {
                 ))}
               </motion.div>
             ) : (
-              <div className="p-8 text-center text-sm text-nova-text-dim">
+              <div className="p-8 text-center text-sm text-em-text-dim">
                 No verified risk prediction available.
               </div>
             )}
@@ -197,7 +197,7 @@ export default function PredictionPage() {
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* River Level Chart */}
-            <div className="nova-card border border-nova-border rounded-xl p-4">
+            <div className="em-card border border-em-border rounded-xl p-4">
               <div className="flex items-center gap-2 mb-4">
                 <Waves className="w-4 h-4 text-blue-400" />
                 <p className="text-xs font-bold text-nova-text">River Level Projection (m)</p>
@@ -211,7 +211,7 @@ export default function PredictionPage() {
             </div>
 
             {/* Risk by Zone */}
-            <div className="nova-card border border-nova-border rounded-xl p-4">
+            <div className="em-card border border-em-border rounded-xl p-4">
               <div className="flex items-center gap-2 mb-4">
                 <AlertTriangle className="w-4 h-4 text-orange-400" />
                 <p className="text-xs font-bold text-nova-text">Risk Breakdown by Zone</p>
@@ -230,25 +230,25 @@ export default function PredictionPage() {
           </div>
 
           {/* AI Recommendations */}
-          <div className="nova-card border border-nova-cyan/20 rounded-xl p-5">
+          <div className="em-card border border-er-blue/20 rounded-xl p-5">
             <div className="flex items-center gap-2 mb-4">
-              <Brain className="w-5 h-5 text-nova-cyan" />
+              <Brain className="w-5 h-5 text-er-blue" />
               <p className="text-sm font-bold text-nova-text">NOVA AI Recommendations</p>
-              <span className="text-xs text-nova-cyan ml-auto">Derived from live telemetry</span>
+              <span className="text-xs text-er-blue ml-auto">Derived from live telemetry</span>
             </div>
             {allRecommendations.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {allRecommendations.map((rec, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-nova-cyan/5 border border-nova-cyan/15">
-                    <div className="w-5 h-5 rounded-full bg-nova-cyan/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-[10px] font-bold text-nova-cyan">{i + 1}</span>
+                  <div key={i} className="flex items-start gap-3 p-3 rounded-xl bg-er-blue-light border border-er-blue/30">
+                    <div className="w-5 h-5 rounded-full bg-er-blue-light flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-[10px] font-bold text-er-blue">{i + 1}</span>
                     </div>
-                    <p className="text-sm text-nova-text-dim">{rec}</p>
+                    <p className="text-sm text-em-text-dim">{rec}</p>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-4 text-xs text-nova-text-dim">
+              <div className="text-center py-4 text-xs text-em-text-dim">
                 No active AI recommendations. System is operating within normal baseline.
               </div>
             )}

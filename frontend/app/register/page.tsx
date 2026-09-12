@@ -38,7 +38,7 @@ function GoogleIcon({ className }: { className?: string }) {
 // ─── Public Self-Registration Roles (Admin is strictly excluded) ─
 
 const PUBLIC_ROLES: { value: 'citizen' | 'officer' | 'rescue_team' | 'hospital'; label: string; desc: string; icon: React.ReactNode; color: string; href: string }[] = [
-  { value: 'citizen',     label: 'Citizen',           desc: 'Report emergencies & track rescue operations', icon: <Shield className="w-4 h-4" />,       color: 'border-nova-cyan/60 text-nova-cyan bg-nova-cyan/10',     href: '/citizen' },
+  { value: 'citizen',     label: 'Citizen',           desc: 'Report emergencies & track rescue operations', icon: <Shield className="w-4 h-4" />,       color: 'border-er-blue/30 text-er-blue bg-er-blue-light',     href: '/citizen' },
   { value: 'officer',     label: 'Emergency Officer', desc: 'Command center & dispatch coordination',       icon: <AlertTriangle className="w-4 h-4" />, color: 'border-purple-400/60 text-purple-400 bg-purple-400/10', href: '/command' },
   { value: 'rescue_team', label: 'Rescue Team',       desc: 'Field response & victim extraction units',     icon: <Truck className="w-4 h-4" />,         color: 'border-orange-400/60 text-orange-400 bg-orange-400/10', href: '/rescue' },
   { value: 'hospital',    label: 'Hospital Unit',     desc: 'Emergency triage & casualty management',       icon: <Building2 className="w-4 h-4" />,     color: 'border-pink-400/60 text-pink-400 bg-pink-400/10',       href: '/hospital' },
@@ -63,9 +63,9 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="text-xs font-medium text-nova-text-dim block mb-1.5">{label}</label>
+      <label htmlFor={id} className="text-xs font-medium text-em-text-dim block mb-1.5">{label}</label>
       <div className="relative">
-        {icon && <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-nova-text-muted pointer-events-none">{icon}</span>}
+        {icon && <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-em-text-muted pointer-events-none">{icon}</span>}
         <input
           id={id}
           type={type}
@@ -74,17 +74,17 @@ function Field({
           placeholder={placeholder}
           autoComplete={type === 'password' ? 'new-password' : type === 'email' ? 'email' : type === 'tel' ? 'tel' : 'off'}
           className={cn(
-            'w-full bg-nova-surface border rounded-xl py-2.5 text-sm text-nova-text placeholder:text-nova-text-muted focus:outline-none transition-all',
+            'w-full bg-white border rounded-xl py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none transition-all',
             icon ? 'pl-10' : 'pl-4',
             suffix ? 'pr-11' : 'pr-4',
             error
               ? 'border-red-500/60 focus:border-red-500 bg-red-500/5'
-              : 'border-nova-border focus:border-nova-cyan/50 focus:bg-nova-surface2'
+              : 'border-em-border focus:border-er-blue/30 focus:bg-em-subtle'
           )}
         />
         {suffix && <span className="absolute right-3 top-1/2 -translate-y-1/2">{suffix}</span>}
       </div>
-      {hint && !error && <p className="text-[10px] text-nova-text-muted mt-1">{hint}</p>}
+      {hint && !error && <p className="text-[10px] text-em-text-muted mt-1">{hint}</p>}
       <AnimatePresence>
         {error && (
           <motion.p
@@ -124,8 +124,8 @@ function PasswordStrengthMeter({ password }: { password: string }) {
 
 function PasswordRequirement({ met, text }: { met: boolean; text: string }) {
   return (
-    <div className={cn('flex items-center gap-1.5 text-[10px] transition-colors', met ? 'text-green-400' : 'text-nova-text-muted')}>
-      {met ? <CheckCircle className="w-3 h-3" /> : <div className="w-3 h-3 rounded-full border border-nova-border" />}
+    <div className={cn('flex items-center gap-1.5 text-[10px] transition-colors', met ? 'text-green-400' : 'text-em-text-muted')}>
+      {met ? <CheckCircle className="w-3 h-3" /> : <div className="w-3 h-3 rounded-full border border-em-border" />}
       {text}
     </div>
   );
@@ -238,15 +238,15 @@ function OtpVerificationScreen({
       className="space-y-5"
     >
       <div className="flex justify-center">
-        <div className="w-16 h-16 rounded-2xl bg-nova-cyan/10 border border-nova-cyan/20 flex items-center justify-center">
-          <Mail className="w-8 h-8 text-nova-cyan" />
+        <div className="w-16 h-16 rounded-2xl bg-er-blue-light border border-er-blue/20 flex items-center justify-center">
+          <Mail className="w-8 h-8 text-er-blue" />
         </div>
       </div>
       <div className="text-center">
         <h2 className="text-xl font-bold text-nova-text">Verify Your Email</h2>
-        <p className="text-sm text-nova-text-dim mt-1.5 leading-relaxed">
+        <p className="text-sm text-em-text-dim mt-1.5 leading-relaxed">
           We sent a 6-digit verification code to<br />
-          <span className="text-nova-cyan font-semibold">{user.email}</span>
+          <span className="text-er-blue font-semibold">{user.email}</span>
         </p>
       </div>
 
@@ -264,8 +264,8 @@ function OtpVerificationScreen({
             onPaste={i === 0 ? handlePaste : undefined}
             disabled={timeLeft === 0}
             className={cn(
-              'w-11 h-12 text-center text-lg font-bold border rounded-xl bg-nova-surface text-nova-text focus:outline-none transition-all disabled:opacity-40',
-              digit ? 'border-nova-cyan bg-nova-cyan/10' : 'border-nova-border focus:border-nova-cyan/50'
+              'w-11 h-12 text-center text-lg font-bold border rounded-xl bg-white text-nova-text focus:outline-none transition-all disabled:opacity-40',
+              digit ? 'border-nova-cyan bg-er-blue-light' : 'border-em-border focus:border-er-blue/30'
             )}
           />
         ))}
@@ -274,9 +274,9 @@ function OtpVerificationScreen({
       {/* Countdown timer */}
       <div className="text-center">
         {timeLeft > 0 ? (
-          <p className="text-xs text-nova-text-muted">
+          <p className="text-xs text-em-text-muted">
             OTP expires in{' '}
-            <span className="font-mono font-bold text-nova-cyan">{timeLeft}s</span>
+            <span className="font-mono font-bold text-er-blue">{timeLeft}s</span>
           </p>
         ) : (
           <p className="text-xs font-semibold text-red-400">
@@ -308,13 +308,13 @@ function OtpVerificationScreen({
       </motion.button>
 
       <div className="flex items-center justify-between text-xs">
-        <button onClick={onBack} className="text-nova-text-muted hover:text-nova-text transition-colors">
+        <button onClick={onBack} className="text-em-text-muted hover:text-nova-text transition-colors">
           ← Change email
         </button>
         <button
           onClick={handleResend}
           disabled={timeLeft > 0 || resending}
-          className="flex items-center gap-1.5 text-nova-cyan hover:underline disabled:text-nova-text-muted disabled:no-underline transition-colors"
+          className="flex items-center gap-1.5 text-er-blue hover:underline disabled:text-em-text-muted disabled:no-underline transition-colors"
         >
           {resending ? <Loader2 className="w-3 h-3 animate-spin" /> : <RefreshCw className="w-3 h-3" />}
           {timeLeft > 0 ? `Resend in ${timeLeft}s` : 'Resend code'}
@@ -364,7 +364,7 @@ function StepAccountInfo({
           icon={<Lock className="w-4 h-4" />}
           placeholder="••••••••"
           suffix={
-            <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-nova-text-muted hover:text-nova-text transition-colors">
+            <button type="button" onClick={() => setShowPassword(!showPassword)} className="text-em-text-muted hover:text-nova-text transition-colors">
               {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
           }
@@ -399,7 +399,7 @@ function StepRoleProfile({ selectedRole, setSelectedRole, phone, setPhone, distr
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-xs font-semibold text-nova-text-muted uppercase tracking-wider mb-3">Select Your Role</p>
+        <p className="text-xs font-semibold text-em-text-muted uppercase tracking-wider mb-3">Select Your Role</p>
         <div className="space-y-2">
           {PUBLIC_ROLES.map((role) => (
             <button
@@ -411,7 +411,7 @@ function StepRoleProfile({ selectedRole, setSelectedRole, phone, setPhone, distr
                 'w-full flex items-center gap-3 p-3 rounded-xl border transition-all text-left',
                 selectedRole === role.value
                   ? role.color
-                  : 'border-nova-border text-nova-text-dim hover:border-nova-border2 hover:text-nova-text'
+                  : 'border-em-border text-em-text-dim hover:border-em-border-strong hover:text-nova-text'
               )}
             >
               {role.icon}
@@ -438,19 +438,19 @@ function StepRoleProfile({ selectedRole, setSelectedRole, phone, setPhone, distr
       />
 
       <div>
-        <label htmlFor="reg-district" className="text-xs font-medium text-nova-text-dim block mb-1.5">District (optional)</label>
+        <label htmlFor="reg-district" className="text-xs font-medium text-em-text-dim block mb-1.5">District (optional)</label>
         <div className="relative">
-          <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-nova-text-muted pointer-events-none" />
+          <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-em-text-muted pointer-events-none" />
           <select
             id="reg-district"
             value={district}
             onChange={(e) => setDistrict(e.target.value)}
-            className="w-full bg-nova-surface border border-nova-border rounded-xl pl-10 pr-10 py-2.5 text-sm text-nova-text focus:outline-none focus:border-nova-cyan/50 transition-all appearance-none"
+            className="w-full bg-white border border-em-border rounded-xl pl-10 pr-10 py-2.5 text-sm text-nova-text focus:outline-none focus:border-er-blue/30 transition-all appearance-none"
           >
             <option value="">Select district…</option>
             {SL_DISTRICTS.map((d) => <option key={d} value={d}>{d}</option>)}
           </select>
-          <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-nova-text-muted pointer-events-none" />
+          <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-em-text-muted pointer-events-none" />
         </div>
       </div>
     </div>
@@ -600,8 +600,8 @@ export default function RegisterPage() {
   const stepIndex = step === 1 ? 0 : step === 2 ? 1 : 2;
 
   return (
-    <div className="min-h-screen bg-nova-bg flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 hero-grid-bg opacity-20 pointer-events-none" />
+    <div className="min-h-screen bg-em-bg flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute inset-0 opacity-10 opacity-20 pointer-events-none" />
       <motion.div
         className="absolute top-1/3 right-1/4 w-96 h-96 rounded-full blur-[120px] pointer-events-none"
         style={{ background: 'rgba(0,212,255,0.05)' }}
@@ -621,13 +621,13 @@ export default function RegisterPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="nova-card border border-nova-border rounded-2xl p-8 shadow-nova">
+        <div className="em-card border border-em-border rounded-2xl p-8 shadow-nova">
           <div className="text-center mb-6">
             <div className="flex justify-center mb-3">
               <NovaLogo size="md" />
             </div>
             <h1 className="text-2xl font-bold text-nova-text">Create Your Account</h1>
-            <p className="text-xs text-nova-text-dim mt-1">Join the AI Emergency Response Network</p>
+            <p className="text-xs text-em-text-dim mt-1">Join the AI Emergency Response Network</p>
           </div>
 
           <div className="flex items-center gap-1 mb-6">
@@ -636,12 +636,12 @@ export default function RegisterPage() {
                 <div className={cn(
                   'w-6 h-6 rounded-full border-2 flex items-center justify-center text-[10px] font-bold transition-all flex-shrink-0',
                   idx < stepIndex ? 'bg-nova-cyan border-nova-cyan text-nova-bg' :
-                  idx === stepIndex ? 'border-nova-cyan text-nova-cyan' :
-                  'border-nova-border text-nova-text-muted'
+                  idx === stepIndex ? 'border-nova-cyan text-er-blue' :
+                  'border-em-border text-em-text-muted'
                 )}>
                   {idx < stepIndex ? <CheckCircle className="w-3.5 h-3.5" /> : idx + 1}
                 </div>
-                <span className={cn('text-[10px] font-medium flex-shrink-0', idx === stepIndex ? 'text-nova-text' : 'text-nova-text-muted')}>
+                <span className={cn('text-[10px] font-medium flex-shrink-0', idx === stepIndex ? 'text-nova-text' : 'text-em-text-muted')}>
                   {s.label}
                 </span>
                 {idx < progressSteps.length - 1 && (
@@ -657,7 +657,7 @@ export default function RegisterPage() {
                 id="google-signup-btn"
                 onClick={handleGoogleSignUp}
                 disabled={googleLoading}
-                className="w-full flex items-center justify-center gap-3 border border-nova-border rounded-xl py-2.5 text-sm font-medium text-nova-text hover:bg-nova-surface2 hover:border-nova-border2 transition-all disabled:opacity-50 mb-5"
+                className="w-full flex items-center justify-center gap-3 border border-em-border rounded-xl py-2.5 text-sm font-medium text-nova-text hover:bg-em-subtle hover:border-em-border-strong transition-all disabled:opacity-50 mb-5"
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
               >
@@ -666,7 +666,7 @@ export default function RegisterPage() {
               </motion.button>
               <div className="relative flex items-center gap-3 mb-5">
                 <div className="flex-1 h-px bg-nova-border" />
-                <span className="text-[10px] text-nova-text-muted uppercase tracking-wider">or register with email</span>
+                <span className="text-[10px] text-em-text-muted uppercase tracking-wider">or register with email</span>
                 <div className="flex-1 h-px bg-nova-border" />
               </div>
             </>
@@ -682,7 +682,7 @@ export default function RegisterPage() {
                 <div>
                   <p>{globalError}</p>
                   {conflictError && (
-                    <Link href="/login" className="text-nova-cyan font-bold underline mt-1 inline-block">
+                    <Link href="/login" className="text-er-blue font-bold underline mt-1 inline-block">
                       Sign in to your existing account →
                     </Link>
                   )}
@@ -754,16 +754,16 @@ export default function RegisterPage() {
                       onClick={() => { setAgreed(!agreed); setAgreedError(null); }}
                       className={cn(
                         'w-4 h-4 mt-0.5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-all',
-                        agreed ? 'bg-nova-cyan border-nova-cyan' : 'border-nova-border hover:border-nova-border2'
+                        agreed ? 'bg-nova-cyan border-nova-cyan' : 'border-em-border hover:border-em-border-strong'
                       )}
                     >
                       {agreed && <CheckCircle className="w-3 h-3 text-nova-bg" />}
                     </div>
-                    <span className="text-xs text-nova-text-dim leading-relaxed">
+                    <span className="text-xs text-em-text-dim leading-relaxed">
                       I agree to the{' '}
-                      <span className="text-nova-cyan hover:underline cursor-pointer">Terms of Service</span>
+                      <span className="text-er-blue hover:underline cursor-pointer">Terms of Service</span>
                       {' '}and{' '}
-                      <span className="text-nova-cyan hover:underline cursor-pointer">Privacy Policy</span>.
+                      <span className="text-er-blue hover:underline cursor-pointer">Privacy Policy</span>.
                     </span>
                   </label>
                   {agreedError && (
@@ -777,7 +777,7 @@ export default function RegisterPage() {
                   <button
                     type="button"
                     onClick={() => { setStep(1); setGlobalError(null); }}
-                    className="flex-1 border border-nova-border text-nova-text-dim py-3 rounded-xl hover:border-nova-border2 hover:text-nova-text transition-all text-sm font-medium"
+                    className="flex-1 border border-em-border text-em-text-dim py-3 rounded-xl hover:border-em-border-strong hover:text-nova-text transition-all text-sm font-medium"
                   >
                     ← Back
                   </button>
@@ -797,9 +797,9 @@ export default function RegisterPage() {
           </AnimatePresence>
 
           {step !== 'otp' && (
-            <p className="text-center text-xs text-nova-text-muted mt-5">
+            <p className="text-center text-xs text-em-text-muted mt-5">
               Already have an account?{' '}
-              <Link href="/login" className="text-nova-cyan hover:underline font-medium">Sign In</Link>
+              <Link href="/login" className="text-er-blue hover:underline font-medium">Sign In</Link>
             </p>
           )}
         </div>
