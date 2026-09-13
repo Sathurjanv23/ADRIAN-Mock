@@ -50,7 +50,13 @@ public class GoogleOAuthService {
     private final HttpClient httpClient = HttpClient.newHttpClient();
 
     public boolean isConfigured() {
-        return clientId != null && !clientId.isBlank() && !"NOT_SET".equalsIgnoreCase(clientId.trim());
+        return hasValue(clientId) && hasValue(clientSecret);
+    }
+
+    private boolean hasValue(String value) {
+        return value != null && !value.isBlank()
+            && !"NOT_SET".equalsIgnoreCase(value.trim())
+            && !value.trim().startsWith("placeholder-");
     }
 
     public String getEffectiveRedirectUri() {
@@ -86,9 +92,7 @@ public class GoogleOAuthService {
             throw new IllegalStateException("Google OAuth credentials are not fully configured.");
         }
 
-        String redirectUri = (customRedirectUri != null && !customRedirectUri.isBlank())
-            ? customRedirectUri.trim()
-            : getEffectiveRedirectUri();
+        String redirectUri = getEffectiveRedirectUri();
 
         log.info("Exchanging Google code with redirect_uri: {}", redirectUri);
 

@@ -108,10 +108,17 @@ public class AuthController {
     // ─── Google OAuth — Initiate ────────────────────────────────
 
     @GetMapping("/oauth2/google")
-    public ResponseEntity<Void> initiateGoogleOAuth() {
+    public ResponseEntity<Void> initiateGoogleOAuth(
+            @RequestParam(required = false) String from,
+            @RequestHeader(value = "Referer", required = false) String referer) {
         if (!googleOAuthService.isConfigured()) {
-            log.warn("Google OAuth is not configured. Returning 503.");
-            return ResponseEntity.status(503).build();
+            log.warn("Google OAuth is not configured. Redirecting with error.");
+            String target = "register".equalsIgnoreCase(from) || (referer != null && referer.contains("/register"))
+                ? frontendUrl + "/register?error=google_not_configured"
+                : frontendUrl + "/login?error=google_not_configured";
+            return ResponseEntity.status(302)
+                .header("Location", target)
+                .build();
         }
         String googleAuthUrl = googleOAuthService.buildGoogleAuthUrl();
         return ResponseEntity.status(302)
@@ -129,7 +136,6 @@ public class AuthController {
     public ResponseEntity<Void> handleGoogleCallback(
             @RequestParam(required = false) String code,
             @RequestParam(required = false) String error,
-            @RequestParam(required = false) String redirect_uri,
             @RequestParam(required = false) String state) {
 
         if (error != null || code == null) {
@@ -139,7 +145,7 @@ public class AuthController {
         }
 
         try {
-            AuthService.GoogleAuthResult result = googleOAuthService.handleCallback(code, redirect_uri);
+            AuthService.GoogleAuthResult result = googleOAuthService.handleCallback(code);
 
             if (result.isNewUser()) {
                 // New user: Redirect to frontend role-selection screen with short-lived intent ticket
