@@ -151,10 +151,11 @@ class AuthControllerTest {
     @DisplayName("API Test: Google Callback with existing user redirects to frontend with auth code")
     void testGoogleCallbackExistingUserRedirectsWithCode() throws Exception {
         AuthService.GoogleAuthResult result = AuthService.GoogleAuthResult.existingUser("auth-code-12345");
-        when(googleOAuthService.handleCallback(eq("mock-google-code"), any())).thenReturn(result);
+        when(googleOAuthService.handleCallback(eq("mock-google-code"))).thenReturn(result);
 
         mockMvc.perform(get("/api/auth/oauth2/callback/google")
-                .param("code", "mock-google-code"))
+                .param("code", "mock-google-code")
+                .param("redirect_uri", "https://attacker.example/callback"))
                 .andExpect(status().isFound())
                 .andExpect(header().string("Location", org.hamcrest.Matchers.containsString("/auth/callback?code=auth-code-12345")));
     }
@@ -163,7 +164,7 @@ class AuthControllerTest {
     @DisplayName("API Test: Google Callback with new user redirects to frontend with intent ticket")
     void testGoogleCallbackNewUserRedirectsWithIntent() throws Exception {
         AuthService.GoogleAuthResult result = AuthService.GoogleAuthResult.newUser("intent-ticket-abc", "newuser@gmail.com", "New User");
-        when(googleOAuthService.handleCallback(eq("mock-google-code"), any())).thenReturn(result);
+        when(googleOAuthService.handleCallback(eq("mock-google-code"))).thenReturn(result);
 
         mockMvc.perform(get("/api/auth/oauth2/callback/google")
                 .param("code", "mock-google-code"))
