@@ -15,7 +15,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!isAuthenticated) {
       const session = getSession();
-      if (session && session.isVerified) {
+      const isVerified = session?.isVerified ?? (session as any)?.verified ?? (session?.status === 'ACTIVE');
+      if (session && isVerified) {
         login({
           id: session.id,
           name: session.name,
@@ -41,12 +42,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const user = await fetchCurrentUser();
         if (!active) return;
 
+        const isVerified = user.isVerified ?? (user as any)?.verified ?? (user.status === 'ACTIVE');
+
         // Commit auth state first
         login({
           id: user.id, name: user.name, email: user.email, role: user.role,
           language: user.language || 'en', createdAt: user.createdAt,
           lastActive: user.lastActive, isActive: user.isActive,
-          status: user.status, isVerified: user.isVerified,
+          status: user.status, isVerified,
           rescueTeamId: user.rescueTeamId,
           approvalStatus: user.approvalStatus,
         });

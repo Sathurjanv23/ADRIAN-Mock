@@ -30,7 +30,7 @@ export default function AboutPage() {
               <ShieldAlert className="w-5 h-5 text-er-blue" />
             </div>
             <div>
-              <span className="font-mono font-black tracking-widest text-nova-text">PROJECT NOVA</span>
+              <span className="font-mono font-black tracking-widest text-nova-text">ADRIAN</span>
               <span className="text-[10px] block text-er-blue font-mono leading-none">EMERGENCY NETWORK</span>
             </div>
           </Link>
@@ -85,7 +85,7 @@ export default function AboutPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-base md:text-lg text-em-text-dim max-w-3xl mx-auto leading-relaxed"
           >
-            PROJECT NOVA unites citizens, first responders, hospitals, and command operations
+            ADRIAN unites citizens, first responders, hospitals, and command operations
             through predictive geospatial AI, automated triage, and live digital-twin simulations to save lives during critical disasters in Sri Lanka.
           </motion.p>
         </div>
@@ -184,7 +184,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <ShieldAlert className="w-5 h-5 text-er-blue" />
-            <span className="font-mono text-xs text-em-text-muted">PROJECT NOVA — Autonomous Emergency Response Network</span>
+            <span className="font-mono text-xs text-em-text-muted">ADRIAN — Autonomous Emergency Response Network</span>
           </div>
 
           <div className="flex items-center gap-6 text-xs text-em-text-dim">

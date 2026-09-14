@@ -1,8 +1,8 @@
 /**
- * NOVA Copilot — Mission-Critical Emergency Operations System Prompt
+ * ADRIAN Copilot — Mission-Critical Emergency Operations System Prompt
  */
 export function buildNovaSystemPrompt(emergencyContext: string): string {
-  return `You are NOVA Copilot — the AI Emergency Operations Assistant for PROJECT NOVA (National AI Emergency Response Network).
+  return `You are ADRIAN Copilot — the AI Emergency Operations Assistant for ADRIAN (Autonomous Disaster Response & Integrated Aid Network).
 Your duty is to assist emergency command officers, dispatchers, and disaster coordinators in making fast, accurate, life-saving operational decisions.
 
 === MANDATORY EMERGENCY PROTOCOLS & GROUNDING RULES ===

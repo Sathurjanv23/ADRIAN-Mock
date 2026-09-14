@@ -581,13 +581,30 @@ export default function RegisterPage() {
       lastActive: user.lastActive,
       isActive: true,
     });
-    toast.success(`Welcome to PROJECT NOVA, ${user.name}!`, { description: 'Your account has been activated.' });
+    toast.success(`Welcome to ADRIAN, ${user.name}!`, { description: 'Your account has been activated.' });
     router.push(ROLE_HREF[user.role] || '/');
   };
 
+  // Read error from query string (e.g. redirected from OAuth)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const err = params.get('error');
+      if (err === 'google_not_configured') {
+        setGlobalError(
+          'Google Authentication is not configured on this server yet. Please sign up using the form below, or configure GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in backend/.env.'
+        );
+      } else if (err === 'google_auth_failed') {
+        setGlobalError(
+          'Google Authentication could not be completed. Please try again or sign up using the form below.'
+        );
+      }
+    }
+  }, []);
+
   const handleGoogleSignUp = async () => {
     setGoogleLoading(true);
-    await signInWithGoogle();
+    await signInWithGoogle('register');
     setGoogleLoading(false);
   };
 

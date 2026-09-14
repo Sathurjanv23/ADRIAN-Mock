@@ -30,7 +30,7 @@ export default function CopilotPage() {
     {
       id: 'welcome-msg',
       role: 'assistant',
-      content: "Hello, I'm **NOVA Copilot** — your AI emergency operations assistant powered by local Ollama. I have full situational awareness of all active incidents, team deployments, hospital capacities, and risk predictions in the system.\n\nHow can I assist you right now?",
+      content: "Hello, I'm **ADRIAN Copilot** — your AI emergency operations assistant powered by local Ollama. I have full situational awareness of all active incidents, team deployments, hospital capacities, and risk predictions in the system.\n\nHow can I assist you right now?",
       timestamp: new Date().toISOString(),
       sources: ['Live Database', 'Local Ollama'],
     },
@@ -113,7 +113,7 @@ export default function CopilotPage() {
         setMessages((prev) => [...prev, aiMsg]);
         setServiceStatus('online');
       } else {
-        const errorContent = data.message || 'NOVA Copilot is temporarily unavailable because the local AI service is offline.';
+        const errorContent = data.message || 'ADRIAN Copilot is temporarily unavailable because the local AI service is offline.';
         const errorMsg: CopilotMessage = {
           id: `ai-err-${Date.now()}`,
           role: 'assistant',
@@ -128,7 +128,7 @@ export default function CopilotPage() {
       const fallbackMsg: CopilotMessage = {
         id: `ai-err-${Date.now()}`,
         role: 'assistant',
-        content: '⚠️ **Network Notice:** Unable to reach NOVA Copilot API service. Please verify your connection and ensure the local Ollama server is running.',
+        content: '⚠️ **Network Notice:** Unable to reach ADRIAN Copilot API service. Please verify your connection and ensure the local Ollama server is running.',
         timestamp: new Date().toISOString(),
         sources: ['Local Connection'],
       };
@@ -176,7 +176,7 @@ export default function CopilotPage() {
                 )} />
               </div>
               <div>
-                <h1 className="text-base font-bold text-nova-text">NOVA Copilot</h1>
+                <h1 className="text-base font-bold text-nova-text">ADRIAN Copilot</h1>
                 <p className="text-xs text-purple-400">
                   AI Emergency Operations Assistant · {serviceStatus === 'online' ? `Online (${modelName})` : serviceStatus === 'offline' ? 'Offline (Ollama service unavailable)' : 'Checking Service...'}
                 </p>
@@ -279,7 +279,7 @@ export default function CopilotPage() {
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask NOVA Copilot about incidents, teams, hospital capacity, risk predictions..."
+                  placeholder="Ask ADRIAN Copilot about incidents, teams, hospital capacity, risk predictions..."
                   disabled={isTyping}
                   className="flex-1 bg-white border border-em-border rounded-xl px-4 py-2.5 text-sm text-nova-text placeholder:text-em-text-muted focus:outline-none focus:border-er-blue/40 transition-colors disabled:opacity-50"
                 />

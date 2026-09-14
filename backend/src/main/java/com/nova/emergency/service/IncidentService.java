@@ -6,11 +6,14 @@ import com.nova.emergency.model.AuditLog;
 import com.nova.emergency.model.Hospital;
 import com.nova.emergency.model.Incident;
 import com.nova.emergency.model.IncidentStatus;
+import com.nova.emergency.model.Notification;
 import com.nova.emergency.model.RescueTeam;
+import com.nova.emergency.model.User;
 import com.nova.emergency.repository.IncidentRepository;
 import com.nova.emergency.repository.RescueTeamRepository;
 import com.nova.emergency.repository.HospitalRepository;
 import com.nova.emergency.repository.AuditLogRepository;
+import com.nova.emergency.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -31,12 +34,16 @@ public class IncidentService {
     private final com.nova.emergency.repository.NotificationRepository notificationRepository;
     private final GridFsStorageService gridFsStorageService;
     private final ReliefService reliefService;
+    private final UserRepository userRepository;
+    private final EmailService emailService;
 
     public IncidentService(IncidentRepository incidentRepository, RescueTeamRepository rescueTeamRepository,
                            HospitalRepository hospitalRepository, AuditLogRepository auditLogRepository,
                            com.nova.emergency.repository.NotificationRepository notificationRepository,
                            GridFsStorageService gridFsStorageService,
-                           @org.springframework.context.annotation.Lazy ReliefService reliefService) {
+                           @org.springframework.context.annotation.Lazy ReliefService reliefService,
+                           UserRepository userRepository,
+                           EmailService emailService) {
         this.incidentRepository = incidentRepository;
         this.rescueTeamRepository = rescueTeamRepository;
         this.hospitalRepository = hospitalRepository;
@@ -44,6 +51,8 @@ public class IncidentService {
         this.notificationRepository = notificationRepository;
         this.gridFsStorageService = gridFsStorageService;
         this.reliefService = reliefService;
+        this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     // ─── Emergency Routing Rules Matrix ───────────────────────────
@@ -246,23 +255,8 @@ public class IncidentService {
         log.info("New emergency incident created: {} (Tracking: {}, Type: {}, Severity: {})",
                 saved.getId(), saved.getTrackingCode(), saved.getType(), saved.getSeverity());
 
-        // Save real-time alert notification directly in MongoDB Atlas for Rescue Teams, Hospitals & Command Center
-        try {
-            com.nova.emergency.model.Notification notif = new com.nova.emergency.model.Notification();
-            notif.setType("critical_incident");
-            notif.setTitle("🚨 EMERGENCY REPORTED: " + saved.getTrackingCode());
-            notif.setMessage(saved.getSeverity().toUpperCase() + " " + saved.getType().replace('_', ' ').toUpperCase() +
-                             " emergency reported at " + saved.getLocation().getAddress() + ". Dispatching rescue and hospital triage.");
-            notif.setSeverity(saved.getSeverity());
-            notif.setRead(false);
-            notif.setCreatedAt(now);
-            notif.setRelatedId(saved.getId());
-            notif.setRelatedType("incident");
-            notif.setTargetRole(List.of("rescue_team", "hospital", "officer", "admin"));
-            notificationRepository.save(notif);
-        } catch (Exception ex) {
-            log.warn("Could not save alert notification to MongoDB: {}", ex.getMessage());
-        }
+        // Dispatch user-specific in-app notifications + async emails to assigned rescue team & hospital
+        dispatchEmergencyNotificationsAndEmails(saved, now);
 
         // Auto-trigger Integrated AI Relief Logistics when disaster detected or people affected
         try {
@@ -279,6 +273,7 @@ public class IncidentService {
 
         return saved;
     }
+
 
     public Incident create(Map<String, Object> data, String reportedByEmail) {
         String type = (String) data.getOrDefault("type", "other");
@@ -799,4 +794,131 @@ public class IncidentService {
         log.setSeverity("info");
         auditLogRepository.save(log);
     }
+
+    // ─── Emergency Notification Dispatch ──────────────────────────────────────
+
+    /**
+     * Creates user-specific in-app notifications and sends async emails to:
+     *  - Active rescue_team users whose rescueTeamId matches the Haversine-assigned team
+     *  - Active hospital users whose hospitalId/organization matches the assigned hospital
+     *  - Active officer/admin users (in-app notification only)
+     *
+     * All Notifications have an exact userId — no user sees another user's notification.
+     * Email is sent via @Async EmailService — never blocks, never throws.
+     * Deduplication: dispatched userId set prevents double notifications.
+     */
+    private void dispatchEmergencyNotificationsAndEmails(Incident incident, String now) {
+        try {
+            String assignedTeamId   = incident.getAssignedTeamId();
+            String assignedHospital = incident.getAssignedHospital(); // hospital name
+
+            String location = (incident.getLocation() != null && incident.getLocation().getAddress() != null)
+                    ? incident.getLocation().getAddress() : "Unknown location";
+            String title   = "🚨 NEW EMERGENCY: " + incident.getTrackingCode();
+            String message = incident.getSeverity().toUpperCase() + " "
+                    + incident.getType().replace('_', ' ').toUpperCase()
+                    + " emergency at " + location + ". Immediate response required.";
+
+            Set<String> dispatched = new HashSet<>();
+            List<Notification> toSave = new ArrayList<>();
+
+            // ── Rescue Team Users ──────────────────────────────────────────
+            List<User> rescueUsers = userRepository.findByRoleAndIsActiveTrue("rescue_team");
+            boolean rescueMatched = false;
+
+            if (assignedTeamId != null && !assignedTeamId.isBlank()) {
+                for (User u : rescueUsers) {
+                    if (assignedTeamId.equals(u.getRescueTeamId()) && dispatched.add(u.getId())) {
+                        toSave.add(buildNotification(u.getId(), "rescue_team", incident, title, message, now));
+                        if (u.getEmail() != null && !u.getEmail().isBlank()) {
+                            emailService.sendEmergencyAlertEmail(u.getEmail(), u.getName(), incident, "rescue_team");
+                        }
+                        rescueMatched = true;
+                    }
+                }
+            }
+
+            // Fallback: no matched team users → notify all rescue_team users
+            if (!rescueMatched) {
+                log.info("No users matched rescue team '{}' — fallback to all rescue_team users", assignedTeamId);
+                for (User u : rescueUsers) {
+                    if (dispatched.add(u.getId())) {
+                        toSave.add(buildNotification(u.getId(), "rescue_team", incident, title, message, now));
+                        if (u.getEmail() != null && !u.getEmail().isBlank()) {
+                            emailService.sendEmergencyAlertEmail(u.getEmail(), u.getName(), incident, "rescue_team");
+                        }
+                    }
+                }
+            }
+
+            // ── Hospital Users ─────────────────────────────────────────────
+            List<User> hospitalUsers = userRepository.findByRoleAndIsActiveTrue("hospital");
+            boolean hospitalMatched = false;
+
+            for (User u : hospitalUsers) {
+                boolean isMatch = assignedHospital != null && !assignedHospital.isBlank()
+                        && (assignedHospital.equals(u.getHospitalId())
+                            || (u.getOrganization() != null
+                                && u.getOrganization().equalsIgnoreCase(assignedHospital)));
+                if (isMatch && dispatched.add(u.getId())) {
+                    toSave.add(buildNotification(u.getId(), "hospital", incident, title, message, now));
+                    if (u.getEmail() != null && !u.getEmail().isBlank()) {
+                        emailService.sendEmergencyAlertEmail(u.getEmail(), u.getName(), incident, "hospital");
+                    }
+                    hospitalMatched = true;
+                }
+            }
+
+            // Fallback: no matched hospital users → notify all hospital users
+            if (!hospitalMatched && !hospitalUsers.isEmpty()) {
+                log.info("No users matched hospital '{}' — fallback to all hospital users", assignedHospital);
+                for (User u : hospitalUsers) {
+                    if (dispatched.add(u.getId())) {
+                        toSave.add(buildNotification(u.getId(), "hospital", incident, title, message, now));
+                        if (u.getEmail() != null && !u.getEmail().isBlank()) {
+                            emailService.sendEmergencyAlertEmail(u.getEmail(), u.getName(), incident, "hospital");
+                        }
+                    }
+                }
+            }
+
+            // ── Officers & Admins (in-app only) ───────────────────────────
+            for (String role : List.of("officer", "admin")) {
+                for (User u : userRepository.findByRoleAndIsActiveTrue(role)) {
+                    if (dispatched.add(u.getId())) {
+                        toSave.add(buildNotification(u.getId(), role, incident, title, message, now));
+                    }
+                }
+            }
+
+            // Batch save all notifications
+            if (!toSave.isEmpty()) {
+                notificationRepository.saveAll(toSave);
+                log.info("Dispatched {} user-specific in-app notifications for incident {}", toSave.size(), incident.getId());
+            }
+
+        } catch (Exception ex) {
+            // IMPORTANT: must never propagate — incident is already saved successfully
+            log.error("Emergency notification dispatch failed for incident {}: {}",
+                    incident.getId(), ex.getMessage(), ex);
+        }
+    }
+
+    /** Builds a user-specific Notification with all required fields set. */
+    private Notification buildNotification(String userId, String role, Incident incident,
+                                            String title, String message, String now) {
+        Notification notif = new Notification();
+        notif.setUserId(userId);
+        notif.setType("critical_incident");
+        notif.setTitle(title);
+        notif.setMessage(message);
+        notif.setSeverity(incident.getSeverity() != null ? incident.getSeverity() : "high");
+        notif.setRead(false);
+        notif.setCreatedAt(now);
+        notif.setRelatedId(incident.getId());
+        notif.setRelatedType("incident");
+        notif.setTargetRole(List.of(role));
+        return notif;
+    }
 }
+

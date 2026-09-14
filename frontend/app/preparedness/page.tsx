@@ -87,7 +87,7 @@ export default function PreparednessPage() {
               <ShieldAlert className="w-5 h-5 text-er-blue" />
             </div>
             <div>
-              <span className="font-mono font-black tracking-widest text-nova-text">PROJECT NOVA</span>
+              <span className="font-mono font-black tracking-widest text-nova-text">ADRIAN</span>
               <span className="text-[10px] block text-er-blue font-mono leading-none">PREPAREDNESS HUB</span>
             </div>
           </Link>

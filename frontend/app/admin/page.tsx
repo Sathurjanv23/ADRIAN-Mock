@@ -82,7 +82,7 @@ export default function AdminDashboardPage() {
           {/* Header */}
           <div>
             <h1 className="text-2xl font-bold font-display text-nova-text">{t('heading.system_dashboard')}</h1>
-            <p className="text-sm text-em-text-dim mt-0.5">{t('portal.admin')} · PROJECT NOVA Operations Hub</p>
+            <p className="text-sm text-em-text-dim mt-0.5">{t('portal.admin')} · ADRIAN Operations Hub</p>
           </div>
 
           {/* KPIs */}

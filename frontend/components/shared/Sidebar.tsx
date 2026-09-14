@@ -119,13 +119,7 @@ function getNavSections(role: UserRole, badges: BadgeCounts, t: (k: string) => s
         {
           items: [
             { href: '/hospital',              label: t('nav.dashboard') || 'Dashboard',     icon: <LayoutDashboard className="w-4 h-4" /> },
-            {
-              href: '/hospital/emergencies',  label: t('nav.incoming') || 'Incoming',      icon: <AlertTriangle className="w-4 h-4" />,
-              badge: badges.hospitalEmergencies > 0 ? badges.hospitalEmergencies : undefined,
-              badgeVariant: 'critical',
-            },
             { href: '/hospital/triage',      label: t('nav.triage') || 'Triage Queue',  icon: <ClipboardList className="w-4 h-4" /> },
-            { href: '/hospital/capacity',    label: t('nav.capacity') || 'Capacity',       icon: <Activity className="w-4 h-4" /> },
             { href: '/hospital/ambulances',  label: t('nav.ambulances') || 'Ambulances',     icon: <Truck className="w-4 h-4" /> },
           ],
         },

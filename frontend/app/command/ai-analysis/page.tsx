@@ -227,7 +227,7 @@ function AnalysisResult({
   };
 
   const copyDiagnostic = () => {
-    const text = `PROJECT NOVA - AI EMERGENCY ANALYSIS REPORT
+    const text = `ADRIAN - AI EMERGENCY ANALYSIS REPORT
 ---------------------------------------------
 Emergency Type: ${analysis.emergencyType.toUpperCase()}
 Severity: ${analysis.severity.toUpperCase()}

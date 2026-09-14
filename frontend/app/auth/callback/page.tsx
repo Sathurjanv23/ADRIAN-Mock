@@ -111,7 +111,7 @@ function AuthCallbackContent() {
           description: 'Your specialized role registration is pending command verification.',
         });
       } else {
-        toast.success(`Welcome to PROJECT NOVA, ${user.name}!`, {
+        toast.success(`Welcome to ADRIAN, ${user.name}!`, {
           description: 'Google account registered successfully.',
         });
       }
@@ -212,7 +212,7 @@ function AuthCallbackContent() {
         <Loader2 className="w-12 h-12 text-er-blue animate-spin" />
         <h2 className="text-xl font-bold text-nova-text">Authenticating with Google…</h2>
         <p className="text-xs text-em-text-dim max-w-sm">
-          Verifying security credentials and retrieving command clearance from PROJECT NOVA.
+          Verifying security credentials and retrieving command clearance from ADRIAN.
         </p>
       </div>
     );

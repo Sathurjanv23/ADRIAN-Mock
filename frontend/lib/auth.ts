@@ -450,9 +450,10 @@ export async function resetPassword(email: string, otp: string, newPassword: str
 
 // ─── Google OAuth Initiate ───────────────────────────────────
 
-export async function signInWithGoogle(): Promise<AuthResult> {
+export async function signInWithGoogle(from?: string): Promise<AuthResult> {
   if (typeof window !== 'undefined') {
-    window.location.href = `${API_BASE}/auth/oauth2/google`;
+    const query = from ? `?from=${encodeURIComponent(from)}` : '';
+    window.location.href = `${API_BASE}/auth/oauth2/google${query}`;
     return new Promise(() => {});
   }
   return { success: false, error: 'Browser window required for Google login.' };
