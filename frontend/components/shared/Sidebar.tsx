@@ -9,7 +9,7 @@ import {
   Truck, Building2, Cpu, Bell, FileText, Activity, Shield,
   Settings, ClipboardList, HeartPulse, Package, Radio, UserCheck,
   Navigation, Waves, ChevronLeft, ChevronRight, UtensilsCrossed,
-  Menu, X, MessageCircle
+  Menu, X, MessageCircle, Bot
 } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import type { UserRole } from '@/types';
@@ -544,15 +544,15 @@ export function DashboardShell({ children, role }: DashboardShellProps) {
         </main>
       </div>
 
-      {/* Floating quick-access button — jump straight to AI Analysis */}
+      {/* Floating ADRIAN Copilot button — jump straight to AI Analysis */}
       {pathname !== '/command/ai-analysis' && (
         <Link
           href="/command/ai-analysis"
-          aria-label="Go to AI Analysis"
-          title="AI Analysis"
+          aria-label="Open ADRIAN Copilot"
+          title="ADRIAN Copilot"
           className="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-2xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
         >
-          <MessageCircle className="w-6 h-6" />
+          <Bot className="w-6 h-6" />
         </Link>
       )}
     </div>
