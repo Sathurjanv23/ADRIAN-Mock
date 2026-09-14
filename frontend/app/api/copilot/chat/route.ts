@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         {
           success: false,
           message:
-            'NOVA Copilot is temporarily unavailable because the local AI service is offline. Please ensure Ollama is running on localhost:11434.',
+            'ADRIAN Copilot is temporarily unavailable because the local AI service is offline. Please ensure Ollama is running on localhost:11434.',
           confidence: 0,
           sources: [],
           error: health.error,
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
         {
           success: false,
           message:
-            'NOVA Copilot encountered an issue while processing the emergency response reasoning.',
+            'ADRIAN Copilot encountered an issue while processing the emergency response reasoning.',
           confidence: 0,
           sources: contextBundle.relevantSources,
           error: aiResult.error,
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
       {
         success: false,
         message:
-          'An unexpected error occurred in NOVA Copilot service. Please try again.',
+          'An unexpected error occurred in ADRIAN Copilot service. Please try again.',
         confidence: 0,
         sources: [],
         error: errorMessage,

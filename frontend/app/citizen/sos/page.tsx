@@ -242,7 +242,7 @@ export default function SOSPage() {
             id: `upd-${Date.now()}`,
             status: 'submitted',
             message: `Emergency report submitted. Multi-agency notification sent to ${recommendedAgencies.length} authorities.`,
-            updatedBy: 'PROJECT NOVA Automated Dispatch',
+            updatedBy: 'ADRIAN Automated Dispatch',
             updatedAt: new Date().toISOString(),
             isAI: true,
           },

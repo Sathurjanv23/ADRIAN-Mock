@@ -74,8 +74,15 @@ public class AuthResponse {
         public void setLastActive(String lastActive) { this.lastActive = lastActive; }
         public boolean isActive() { return isActive; }
         public void setActive(boolean active) { isActive = active; }
+
+        @com.fasterxml.jackson.annotation.JsonProperty("isVerified")
         public boolean isVerified() { return isVerified; }
+
+        @com.fasterxml.jackson.annotation.JsonProperty("isVerified")
         public void setVerified(boolean verified) { isVerified = verified; }
+
+        @com.fasterxml.jackson.annotation.JsonProperty("verified")
+        public boolean getVerified() { return isVerified; }
 
         public static UserDto from(User user) {
             UserDto dto = new UserDto();

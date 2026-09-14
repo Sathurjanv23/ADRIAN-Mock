@@ -32,7 +32,7 @@ export const DICTIONARY: Record<string, Record<string, string>> = {
     'nav.rescue_ops': 'Rescue Ops',
     'nav.resources': 'Resources',
     'nav.hospitals': 'Hospitals',
-    'nav.copilot': 'NOVA Copilot',
+    'nav.copilot': 'ADRIAN Copilot',
     'nav.alerts': 'Alerts',
     'nav.analytics': 'Analytics',
     'nav.sos': 'SOS Distress',
@@ -145,7 +145,7 @@ export const DICTIONARY: Record<string, Record<string, string>> = {
     'copilot.risk_text': 'River level at 4.8m — 23% above critical threshold. Zone 4 residents should be pre-evacuated within 2 hours.',
     'copilot.rec_text': 'Activate Shelter B now. Move 2 rescue boats to Zone 4 staging area. Alert Kelaniya Hospital for incoming cases.',
     'copilot.full_copilot': 'Open full Copilot',
-    'copilot.ask_placeholder': 'Ask NOVA Copilot anything about active emergencies, teams, or risks...',
+    'copilot.ask_placeholder': 'Ask ADRIAN Copilot anything about active emergencies, teams, or risks...',
 
     // Common Phrases / Units
     'common.affected': 'affected',

@@ -32,7 +32,7 @@ export default function IncidentDetailPage() {
     );
   }
 
-  const handleAutoAssign = () => {
+  const handleAutoAssign = async () => {
     // Find closest available team
     const availableTeam = rescueTeams.find((t) => t.status === 'available');
     if (!availableTeam) {
@@ -40,58 +40,76 @@ export default function IncidentDetailPage() {
       return;
     }
 
-    updateIncident(incident.id, {
-      status: 'assigned',
-      assignedTeamId: availableTeam.id,
-      assignedTeamName: availableTeam.name,
-      eta: 8,
-    });
+    try {
+      await (await import('@/lib/api/client')).incidentsApi.assignTeam(incident.id, availableTeam.id, availableTeam.name);
+      
+      updateIncident(incident.id, {
+        status: 'assigned',
+        assignedTeamId: availableTeam.id,
+        assignedTeamName: availableTeam.name,
+        eta: 8,
+      });
 
-    updateTeam(availableTeam.id, {
-      status: 'assigned',
-      currentIncident: incident.id,
-    });
+      updateTeam(availableTeam.id, {
+        status: 'assigned',
+        currentIncident: incident.id,
+      });
 
-    toast.success(`Assigned ${availableTeam.name} to this incident.`);
+      toast.success(`Assigned ${availableTeam.name} to this incident.`);
+    } catch (err: any) {
+      toast.error('Failed to assign team', { description: err.message });
+    }
   };
 
   const handleDispatch = async () => {
     if (!assignedTeam) return;
     setDispatching(true);
-    await new Promise((r) => setTimeout(r, 1200));
+    
+    try {
+      await (await import('@/lib/api/client')).incidentsApi.updateMissionStatus(incident.id, 'en_route', assignedTeam.id);
+      
+      updateIncident(incident.id, {
+        status: 'en_route',
+        updates: [
+          { id: `upd-${Date.now()}`, status: 'en_route', message: `Rescue Team ${assignedTeam.name} dispatched.`, updatedBy: 'Dispatcher', updatedAt: new Date().toISOString() },
+          ...incident.updates,
+        ],
+      });
 
-    updateIncident(incident.id, {
-      status: 'en_route',
-      updates: [
-        { id: `upd-${Date.now()}`, status: 'en_route', message: `Rescue Team ${assignedTeam.name} dispatched.`, updatedBy: 'Dispatcher', updatedAt: new Date().toISOString() },
-        ...incident.updates,
-      ],
-    });
-
-    updateTeam(assignedTeam.id, { status: 'en_route' });
-    setDispatching(false);
-    toast.success('Rescue team dispatched.');
+      updateTeam(assignedTeam.id, { status: 'en_route' });
+      toast.success('Rescue team dispatched.');
+    } catch (err: any) {
+      toast.error('Failed to dispatch team', { description: err.message });
+    } finally {
+      setDispatching(false);
+    }
   };
 
   const handleResolve = async () => {
     setResolving(true);
-    await new Promise((r) => setTimeout(r, 1500));
+    
+    try {
+      await (await import('@/lib/api/client')).incidentsApi.resolve(incident.id, 'Emergency fully resolved on-scene.');
+      
+      updateIncident(incident.id, {
+        status: 'resolved',
+        updates: [
+          { id: `upd-${Date.now()}`, status: 'resolved', message: 'Emergency fully resolved on-scene.', updatedBy: 'On-scene Lead', updatedAt: new Date().toISOString() },
+          ...incident.updates,
+        ],
+      });
 
-    updateIncident(incident.id, {
-      status: 'resolved',
-      updates: [
-        { id: `upd-${Date.now()}`, status: 'resolved', message: 'Emergency fully resolved on-scene.', updatedBy: 'On-scene Lead', updatedAt: new Date().toISOString() },
-        ...incident.updates,
-      ],
-    });
+      if (assignedTeam) {
+        updateTeam(assignedTeam.id, { status: 'available', currentIncident: undefined });
+      }
 
-    if (assignedTeam) {
-      updateTeam(assignedTeam.id, { status: 'available', currentIncident: undefined });
+      toast.success('Incident status updated: RESOLVED');
+      router.push('/command/incidents');
+    } catch (err: any) {
+      toast.error('Failed to resolve incident', { description: err.message });
+    } finally {
+      setResolving(false);
     }
-
-    setResolving(false);
-    toast.success('Incident status updated: RESOLVED');
-    router.push('/command/incidents');
   };
 
   return (

@@ -57,10 +57,26 @@ export default function HospitalDashboardPage() {
   const bedUsagePercent = Math.round(((myHospital.totalBeds - myHospital.availableBeds) / myHospital.totalBeds) * 100);
   const icuUsagePercent = Math.round(((myHospital.icuTotal - myHospital.icuAvailable) / myHospital.icuTotal) * 100);
 
-  const updateBeds = (delta: number) => {
+  const updateBeds = async (delta: number) => {
     const newAvailable = Math.max(0, Math.min(myHospital.totalBeds, myHospital.availableBeds + delta));
-    updateHospital(myHospital.id, { availableBeds: newAvailable });
-    toast.success(`Bed count updated for ${myHospital.name}: ${newAvailable} ${t('status.available')}`);
+    try {
+      await hospitalsApi.updateCapacity(myHospital.id, { availableBeds: newAvailable });
+      updateHospital(myHospital.id, { availableBeds: newAvailable });
+      toast.success(`Bed count updated for ${myHospital.name}: ${newAvailable} ${t('status.available')}`);
+    } catch (err: any) {
+      toast.error('Failed to update capacity', { description: err.message });
+    }
+  };
+
+  const updateIcuBeds = async (delta: number) => {
+    const newAvailable = Math.max(0, Math.min(myHospital.icuTotal, myHospital.icuAvailable + delta));
+    try {
+      await hospitalsApi.updateCapacity(myHospital.id, { icuAvailable: newAvailable });
+      updateHospital(myHospital.id, { icuAvailable: newAvailable });
+      toast.success(`ICU count updated for ${myHospital.name}: ${newAvailable} ${t('status.available')}`);
+    } catch (err: any) {
+      toast.error('Failed to update capacity', { description: err.message });
+    }
   };
 
   const handleAdmitCase = async (ic: any, requiresIcu: boolean = false) => {
@@ -216,7 +232,13 @@ export default function HospitalDashboardPage() {
 
               {/* ICU */}
               <div className="em-card border border-em-border rounded-xl p-4">
-                <p className="text-xs font-bold text-nova-text mb-3">{t('stats.icu_available')}</p>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-xs font-bold text-nova-text">{t('stats.icu_available')}</p>
+                  <div className="flex items-center gap-1.5">
+                    <button onClick={() => updateIcuBeds(-1)} className="w-6 h-6 rounded bg-white border border-em-border text-em-text-dim hover:text-nova-text flex items-center justify-center text-sm">-</button>
+                    <button onClick={() => updateIcuBeds(1)} className="w-6 h-6 rounded bg-white border border-em-border text-em-text-dim hover:text-nova-text flex items-center justify-center text-sm">+</button>
+                  </div>
+                </div>
                 <div className="flex items-end justify-between mb-2">
                   <span className={cn('text-2xl font-bold font-mono', myHospital.icuAvailable <= 3 ? 'text-red-400' : 'text-nova-text')}>
                     {myHospital.icuAvailable}

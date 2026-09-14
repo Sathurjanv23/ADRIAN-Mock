@@ -7,7 +7,7 @@ import { DashboardShell } from '@/components/shared/Sidebar';
 import { useNovaStore } from '@/lib/store/nova-store';
 import { SeverityBadge } from '@/components/emergency/SeverityBadge';
 import { motion } from 'framer-motion';
-import { HeartPulse, Bed, Truck, ClipboardList, AlertTriangle, CheckCircle, Clock, Plus, Minus } from 'lucide-react';
+import { HeartPulse, Bed, Truck, ClipboardList, CheckCircle, Clock } from 'lucide-react';
 import { cn, formatDateTime } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useTranslation } from '@/lib/i18n';
@@ -29,82 +29,6 @@ export default function HospitalOperationsCatchAll() {
   const myHospital = hospitals.find((h) => h.id === activeHospitalId) || userHospital || hospitals[0];
 
   const [triageFilter, setTriageFilter] = useState<'all' | 'critical' | 'high'>('all');
-
-  const updateBeds = (delta: number) => {
-    const newAvailable = Math.max(0, Math.min(myHospital.totalBeds, myHospital.availableBeds + delta));
-    updateHospital(myHospital.id, { availableBeds: newAvailable });
-    toast.success(`Bed availability updated: ${newAvailable} ${t('status.available')}`);
-  };
-
-  const updateICU = (delta: number) => {
-    const newAvailable = Math.max(0, Math.min(myHospital.icuTotal, myHospital.icuAvailable + delta));
-    updateHospital(myHospital.id, { icuAvailable: newAvailable });
-    toast.success(`ICU availability updated: ${newAvailable} ${t('status.available')}`);
-  };
-
-  // 1. INCOMING EMERGENCIES PANEL
-  const renderEmergencies = () => {
-    const { incidents } = useNovaStore.getState();
-    const hospitalDistrict = (myHospital?.district || '').toLowerCase();
-
-    // Use hospital's own incomingCases if available, otherwise strictly partition district incidents per facility
-    const cases = (myHospital?.incomingCases && myHospital.incomingCases.length > 0)
-      ? myHospital.incomingCases
-      : incidents.filter(i => {
-          const incDistrict = i.location?.district?.toLowerCase();
-          if (!incDistrict || incDistrict !== hospitalDistrict) return false;
-          if (myHospital.id === 'h001') return i.id.endsWith('1') || i.id.endsWith('3') || i.id.endsWith('5') || i.type === 'medical';
-          if (myHospital.id === 'h002') return i.id.endsWith('2') || i.id.endsWith('4') || i.id.endsWith('6') || i.type === 'flood';
-          if (myHospital.id === 'h003') return i.type === 'flood' || i.type === 'fire';
-          if (myHospital.id === 'h004') return i.type === 'landslide' || i.type === 'medical';
-          return true;
-        }).filter(i => i.severity === 'critical' || i.status === 'responding' || i.status === 'en_route').map((inc, index) => ({
-          id: `ic-${myHospital.id}-${inc.id}`,
-          incidentId: inc.trackingCode || inc.id,
-          condition: inc.title || 'Emergency Casualty',
-          requiredCare: [inc.type.toUpperCase(), 'Emergency Room Triage'],
-          severity: inc.severity || 'critical',
-          eta: inc.eta || (index + 1) * 5,
-        }));
-
-    return (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-red-400 animate-pulse" /> {t('heading.incoming_emergencies')}
-          </h2>
-          <span className="text-xs text-er-blue font-mono bg-er-blue-light border border-er-blue/20 px-2.5 py-1 rounded-full">
-            {myHospital.name} ({myHospital.district})
-          </span>
-        </div>
-
-        {cases.length === 0 ? (
-          <div className="em-card border border-em-border rounded-xl p-10 text-center text-em-text-muted text-xs">
-            No active incoming emergency casualties reported for {myHospital.name} at this time.
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {cases.map((ic) => (
-              <div key={ic.id} className="em-card border border-em-border rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                  <span className="text-[10px] font-mono text-er-blue">{ic.incidentId}</span>
-                  <p className="text-sm font-bold text-nova-text mt-0.5">{localize(ic.condition)}</p>
-                  <p className="text-xs text-em-text-muted mt-1">Care Required: {ic.requiredCare.join(', ')}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <SeverityBadge severity={ic.severity} size="sm" pulse={ic.severity === 'critical'} />
-                  <div className="text-right">
-                    <p className="text-xs text-em-text-muted">{t('common.eta')}</p>
-                    <p className="text-sm font-bold text-er-orange">{ic.eta} {t('common.min')}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
 
   // 2. TRIAGE QUEUE PANEL
   const renderTriage = () => {
@@ -169,45 +93,6 @@ export default function HospitalOperationsCatchAll() {
             </table>
           </div>
         )}
-      </div>
-    );
-  };
-
-  // 3. CAPACITY CONTROL PANEL
-  const renderCapacity = () => {
-    return (
-      <div className="space-y-4">
-        <h2 className="text-lg font-bold text-nova-text flex items-center gap-2">
-          <Bed className="w-5 h-5 text-er-blue" /> {t('heading.ward_capacity')}
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="em-card border border-em-border rounded-xl p-5 space-y-4">
-            <div>
-              <p className="text-sm font-bold text-nova-text">{t('stats.available_beds')}</p>
-              <p className="text-xs text-em-text-muted mt-0.5">Directly controls available emergency beds</p>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-3xl font-bold font-mono text-nova-text">{myHospital.availableBeds}</span>
-              <div className="flex items-center gap-2">
-                <button onClick={() => updateBeds(-1)} className="w-10 h-10 bg-white border border-em-border rounded-lg text-nova-text hover:bg-em-subtle transition-colors flex items-center justify-center"><Minus className="w-4 h-4" /></button>
-                <button onClick={() => updateBeds(1)} className="w-10 h-10 bg-white border border-em-border rounded-lg text-nova-text hover:bg-em-subtle transition-colors flex items-center justify-center"><Plus className="w-4 h-4" /></button>
-              </div>
-            </div>
-          </div>
-          <div className="em-card border border-em-border rounded-xl p-5 space-y-4">
-            <div>
-              <p className="text-sm font-bold text-nova-text">{t('stats.icu_available')}</p>
-              <p className="text-xs text-em-text-muted mt-0.5">Critical care patient ventilators count</p>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-3xl font-bold font-mono text-nova-text">{myHospital.icuAvailable}</span>
-              <div className="flex items-center gap-2">
-                <button onClick={() => updateICU(-1)} className="w-10 h-10 bg-white border border-em-border rounded-lg text-nova-text hover:bg-em-subtle transition-colors flex items-center justify-center"><Minus className="w-4 h-4" /></button>
-                <button onClick={() => updateICU(1)} className="w-10 h-10 bg-white border border-em-border rounded-lg text-nova-text hover:bg-em-subtle transition-colors flex items-center justify-center"><Plus className="w-4 h-4" /></button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     );
   };
@@ -350,9 +235,7 @@ export default function HospitalOperationsCatchAll() {
             </div>
           </div>
 
-          {slug === 'emergencies' && renderEmergencies()}
           {slug === 'triage' && renderTriage()}
-          {slug === 'capacity' && renderCapacity()}
           {slug === 'ambulances' && renderAmbulances()}
         </div>
       </DashboardShell>

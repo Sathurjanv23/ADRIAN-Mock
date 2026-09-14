@@ -189,7 +189,7 @@ function OtpVerificationScreen({
       return;
     }
 
-    toast.success('Email verified!', { description: 'Welcome to PROJECT NOVA.' });
+    toast.success('Email verified!', { description: 'Welcome to ADRIAN.' });
     onSuccess(result.user);
   };
 
@@ -324,6 +324,23 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, currentUser, router]);
 
+  // Read error from query string (e.g. redirected from OAuth)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const err = params.get('error');
+      if (err === 'google_not_configured') {
+        setGlobalError(
+          'Google Authentication is not configured on this server yet. Please sign in with your email and password, or configure GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in backend/.env.'
+        );
+      } else if (err === 'google_auth_failed') {
+        setGlobalError(
+          'Google Authentication could not be completed. Please try again or sign in with your email and password.'
+        );
+      }
+    }
+  }, []);
+
   const [step, setStep] = useState<LoginStep>('credentials');
   const [pendingUser, setPendingUser] = useState<AuthUser | null>(null);
   const [demoOtp, setDemoOtp] = useState<string | undefined>();
@@ -440,7 +457,7 @@ export default function LoginPage() {
             <div className="flex justify-center mb-4">
               <NovaLogo size="md" />
             </div>
-            <h1 className="text-2xl font-bold text-em-text">Sign In to NOVA</h1>
+            <h1 className="text-2xl font-bold text-em-text">Sign In to ADRIAN</h1>
             <p className="text-xs text-em-text-dim mt-1">AI Emergency Response Network</p>
           </div>
 
@@ -510,7 +527,7 @@ export default function LoginPage() {
                     onChange={(v) => { setEmail(v); setEmailError(null); setGlobalError(null); }}
                     error={emailError}
                     icon={<Mail className="w-4 h-4" />}
-                    placeholder="you@nova.lk"
+                    placeholder="you@adrian-emergency.lk"
                   />
                   <Field
                     id="password"
@@ -550,13 +567,13 @@ export default function LoginPage() {
                     {loading ? (
                       <><Loader2 className="w-4 h-4 animate-spin" /> Authenticating…</>
                     ) : (
-                      <>Sign In to NOVA <ArrowRight className="w-4 h-4" /></>
+                      <>Sign In to ADRIAN <ArrowRight className="w-4 h-4" /></>
                     )}
                   </motion.button>
                 </form>
 
                 <p className="text-center text-xs text-em-text-muted mt-5">
-                  New to NOVA?{' '}
+                  New to ADRIAN?{' '}
                   <Link href="/register" className="text-er-blue hover:underline font-medium">
                     Create an account
                   </Link>

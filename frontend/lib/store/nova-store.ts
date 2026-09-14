@@ -141,8 +141,8 @@ interface AppState {
   notifications: Notification[];
   fetchNotifications: () => Promise<void>;
   addNotification: (notif: Notification) => void;
-  markNotificationRead: (id: string) => void;
-  markAllRead: () => void;
+  markNotificationRead: (id: string) => Promise<void> | void;
+  markAllRead: () => Promise<void> | void;
   unreadCount: number;
   alerts: OperationalAlert[];
   fetchAlerts: () => Promise<void>;
@@ -754,22 +754,40 @@ export const useNovaStore = create<AppState>()(
       }
     },
     addNotification: (notif) =>
-      set((state) => ({
-        notifications: [notif, ...state.notifications],
-        unreadCount: state.unreadCount + 1,
-      })),
-    markNotificationRead: (id) =>
-      set((state) => ({
-        notifications: state.notifications.map((n) =>
+      set((state) => {
+        const next = [notif, ...state.notifications];
+        return {
+          notifications: next,
+          unreadCount: next.filter((n) => !n.read).length,
+        };
+      }),
+    markNotificationRead: async (id) => {
+      set((state) => {
+        const next = state.notifications.map((n) =>
           n.id === id ? { ...n, read: true } : n
-        ),
-        unreadCount: Math.max(0, state.unreadCount - 1),
-      })),
-    markAllRead: () =>
+        );
+        return {
+          notifications: next,
+          unreadCount: next.filter((n) => !n.read).length,
+        };
+      });
+      try {
+        await apiFetch(`/notifications/${id}/read`, { method: 'PATCH' });
+      } catch (err) {
+        console.warn('Backend markNotificationRead error:', err);
+      }
+    },
+    markAllRead: async () => {
       set((state) => ({
         notifications: state.notifications.map((n) => ({ ...n, read: true })),
         unreadCount: 0,
-      })),
+      }));
+      try {
+        await apiFetch('/notifications/read-all', { method: 'POST' });
+      } catch (err) {
+        console.warn('Backend markAllRead error:', err);
+      }
+    },
     unreadCount: 0,
     alerts: [],
     fetchAlerts: async () => {

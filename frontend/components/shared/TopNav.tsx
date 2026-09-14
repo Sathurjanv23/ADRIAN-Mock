@@ -114,9 +114,21 @@ export function AlertTicker() {
 
 function NotificationBell() {
   const [open, setOpen] = useState(false);
-  const { notifications, unreadCount, markNotificationRead, markAllRead } = useNovaStore();
+  const { notifications, unreadCount, markNotificationRead, markAllRead, currentUser } = useNovaStore();
   const { t, localize, timeAgo } = useTranslation();
   const recent = notifications.slice(0, 8);
+
+  const viewAllHref = currentUser
+    ? currentUser.role === 'officer'
+      ? '/command/alerts'
+      : currentUser.role === 'rescue_team'
+      ? '/rescue'
+      : currentUser.role === 'hospital'
+      ? '/hospital'
+      : currentUser.role === 'admin'
+      ? '/admin'
+      : '/citizen'
+    : '/login';
 
   return (
     <div className="relative">
@@ -220,7 +232,7 @@ function NotificationBell() {
               {/* Footer */}
               <div className="px-4 py-3 bg-em-subtle border-t border-em-border flex justify-between items-center">
                 <Link
-                  href="/command/alerts"
+                  href={viewAllHref}
                   className="text-xs text-er-blue hover:underline font-semibold"
                   onClick={() => setOpen(false)}
                 >
