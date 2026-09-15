@@ -9,7 +9,7 @@ import {
   Truck, Building2, Cpu, Bell, FileText, Activity, Shield,
   Settings, ClipboardList, HeartPulse, Package, Radio, UserCheck,
   Navigation, Waves, ChevronLeft, ChevronRight, UtensilsCrossed,
-  Menu, X
+  Menu, X, MessageCircle, Bot
 } from 'lucide-react';
 import { useState, useMemo, useEffect } from 'react';
 import type { UserRole } from '@/types';
@@ -93,6 +93,7 @@ function getNavSections(role: UserRole, badges: BadgeCounts, t: (k: string) => s
             { href: '/citizen/sos',      label: t('nav.sos') || 'SOS',             icon: <Radio className="w-4 h-4" /> },
             { href: '/citizen/reports',  label: t('nav.reports') || 'My Reports',      icon: <ClipboardList className="w-4 h-4" /> },
             { href: '/citizen/safety',   label: t('nav.safety') || 'Safety Guide',    icon: <Shield className="w-4 h-4" /> },
+            { href: '/command/ai-analysis', label: t('nav.ai_analysis') || 'AI Analysis', icon: <MessageCircle className="w-4 h-4" /> },
           ],
         },
       ];
@@ -110,6 +111,7 @@ function getNavSections(role: UserRole, badges: BadgeCounts, t: (k: string) => s
             { href: '/rescue/navigation', label: t('nav.navigation') || 'Navigation',    icon: <Navigation className="w-4 h-4" /> },
             { href: '/rescue/team',       label: t('nav.team_status') || 'Team Status',   icon: <Users className="w-4 h-4" /> },
             { href: '/relief/missions',   label: 'Relief Missions', icon: <Truck className="w-4 h-4" /> },
+            { href: '/command/ai-analysis', label: t('nav.ai_analysis') || 'AI Analysis', icon: <MessageCircle className="w-4 h-4" /> },
           ],
         },
       ];
@@ -121,6 +123,7 @@ function getNavSections(role: UserRole, badges: BadgeCounts, t: (k: string) => s
             { href: '/hospital',              label: t('nav.dashboard') || 'Dashboard',     icon: <LayoutDashboard className="w-4 h-4" /> },
             { href: '/hospital/triage',      label: t('nav.triage') || 'Triage Queue',  icon: <ClipboardList className="w-4 h-4" /> },
             { href: '/hospital/ambulances',  label: t('nav.ambulances') || 'Ambulances',     icon: <Truck className="w-4 h-4" /> },
+            { href: '/command/ai-analysis',  label: t('nav.ai_analysis') || 'AI Analysis', icon: <MessageCircle className="w-4 h-4" /> },
           ],
         },
       ];
@@ -142,6 +145,7 @@ function getNavSections(role: UserRole, badges: BadgeCounts, t: (k: string) => s
             { href: '/admin/ai-config',   label: t('nav.ai_config') || 'AI Config',  icon: <Cpu className="w-4 h-4" /> },
             { href: '/admin/monitoring',  label: t('nav.monitoring') || 'Monitoring', icon: <Activity className="w-4 h-4" /> },
             { href: '/admin/audit-logs',  label: t('nav.audit_logs') || 'Audit Logs', icon: <FileText className="w-4 h-4" /> },
+            { href: '/command/ai-analysis', label: t('nav.ai_analysis') || 'AI Analysis', icon: <MessageCircle className="w-4 h-4" /> },
           ],
         },
       ];
@@ -539,6 +543,18 @@ export function DashboardShell({ children, role }: DashboardShellProps) {
           {children}
         </main>
       </div>
+
+      {/* Floating ADRIAN Copilot button — jump straight to AI Analysis */}
+      {pathname !== '/command/ai-analysis' && (
+        <Link
+          href="/command/ai-analysis"
+          aria-label="Open ADRIAN Copilot"
+          title="ADRIAN Copilot"
+          className="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full bg-purple-600 hover:bg-purple-700 text-white shadow-2xl flex items-center justify-center transition-all hover:scale-105 active:scale-95"
+        >
+          <Bot className="w-6 h-6" />
+        </Link>
+      )}
     </div>
   );
 }
