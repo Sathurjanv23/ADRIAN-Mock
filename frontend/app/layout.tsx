@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/components/shared/AuthProvider";
+import { InstallPrompt } from "@/components/shared/InstallPrompt";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,6 +40,25 @@ export const metadata: Metadata = {
     description: "From Emergency Reports to Coordinated Action — in Seconds.",
     type: "website",
   },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "ADRIAN",
+  },
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#D32F2F",
 };
 
 export default function RootLayout({
@@ -55,6 +75,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
         </AuthProvider>
+        <InstallPrompt />
         <Toaster
           theme="light"
           toastOptions={{
